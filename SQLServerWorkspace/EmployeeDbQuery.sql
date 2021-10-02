@@ -9,3 +9,4 @@ SELECT TOP (1000) [EmployeeID]
   /****** Select all  ******/
   SELECT *
   FROM [EmployeeDB].[dbo].[Employee];
+
