@@ -602,3 +602,10 @@ delete from small_orders;
 delete from medium_orders;
 delete from big_orders;
 *****************************************
+
+UPDATE
+
+*****************************************
+
+
+*****************************************
