@@ -4,6 +4,7 @@ Instructions:
 Links:
 https://www.oracletutorial.com/
 https://www.techonthenet.com/oracle/index.php
+https://oracle-base.com/
 
 Connect to OT Database.
 
@@ -31,6 +32,11 @@ WHERE DF.TABLESPACE_NAME = TU.TABLESPACE_NAME
 AND TU.OWNER = 'OT';
 
 select * from v$version;
+select * from all_users order by 3 desc;
+select user from dual;
+SELECT sys_context('userenv','instance_name') FROM dual;
+select sys_context('userenv','db_name') from dual; -- To ckeck DB name
+SELECT sys_context('USERENV', 'SID') FROM DUAL;
 
 *****************************************
 
@@ -917,6 +923,7 @@ CREATE [OR REPLACE] VIEW view_name [(column_aliases)] AS
 [WITH READ ONLY]
 [WITH CHECK OPTION]
 ;
+oracletutorial_Learning.sql
 
 -- Drop a View
 DROP VIEW schema_name.view_name 
@@ -926,167 +933,210 @@ SELECT object_name, status
 FROM user_objects
 WHERE object_type = 'VIEW' AND object_name = 'SALESMAN_CONTACTS';
 
+-- DML operation on Views
+CREATE VIEW all_cars AS 
+SELECT
+    car_id,
+    car_name,
+    c.brand_id,
+    brand_name
+FROM
+    cars c
+INNER JOIN brands b ON
+    b.brand_id = c.brand_id;
+
+-- This will insert a row in CARS table
+INSERT INTO all_cars(car_name, brand_id )
+VALUES('Audi A5 Cabriolet', 1);
+
+select * from cars;
+select * from brands;
+select * from all_cars;
+
+-- This will delete rows from CARS table
+delete from all_cars where brand_name = 'Audi';
+
+-- Find list of updatable columns for a View
+SELECT * FROM USER_UPDATABLE_COLUMNS WHERE TABLE_NAME = 'ALL_CARS';
+
+-- Inline View/Dervived table/subselect
+-- We can perform Select/DML operations on this
+SELECT
+    category_name,
+    max_list_price
+FROM
+    product_categories a,
+    (
+        SELECT
+            category_id,
+            MAX( list_price ) max_list_price
+        FROM
+            products
+        GROUP BY
+            category_id
+    ) b -- this is an inline view
+WHERE
+    a.category_id = b.category_id
+ORDER BY
+    category_name;
+
+-- LATERAL inline view
+-- inline view cannot reference the tables from the outside of its definition
+-- to make this work we can use LATERAL keyword
+SELECT
+    product_name,
+    category_name
+FROM
+    products p,
+    LATERAL(
+        SELECT
+            *
+        FROM
+            product_categories c
+        WHERE
+            c.category_id = p.category_id
+    )
+ORDER BY
+    product_name;
+
+-- WITH CHECK OPTION
+CREATE
+VIEW ford_cars AS SELECT
+    car_id,
+    car_name,
+    brand_id
+FROM
+    cars
+WHERE
+    brand_id = 3 WITH CHECK OPTION;
+
+INSERT
+INTO
+    ford_cars(
+        car_name,
+        brand_id
+    )
+VALUES(
+    'Audi RS6 Avant',
+    1
+);
+-- This will fail due to the WITH CHECK OPTION clause
+
+-- Materialized Views
+
+
 *****************************************
 
+Database Link
+
+*****************************************
 
+select * from user_tables;
+select sys_context('userenv','db_name') from dual; -- To ckeck DB name
+-- D:\db_home\network\admin
+grant select on OT.customers to HR; -- This will work due to same Database "pdb"
+grant select on OT.customers to RAKESH; -- This will not work due to different DB "orcl"
 
+select * from OT.customers;
 
+CREATE DATABASE LINK pdb 
+CONNECT TO OT IDENTIFIED BY OT
+USING 'PDB';
 
+select * from customers@pdb;
 
 
+*****************************************
 
+Index
 
+*****************************************
+-- By default, the CREATE INDEX statement creates a btree index.
 
+-- Explain plan to check query performance
+EXPLAIN PLAN FOR
+SELECT * FROM members WHERE last_name = 'Harse';
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+-- Before: TABLE ACCESS FULL; Cost: 5
+-- After: INDEX RANGE SCAN; Cost: 2
 
+CREATE INDEX members_last_name_i ON members(last_name);
 
+SELECT 
+    index_name, 
+    index_type, 
+    visibility, 
+    status 
+FROM 
+    all_indexes
+WHERE 
+    table_name = 'MEMBERS';
 
+-- The below query will go for "Full table scan"
+-- due to the OR condition used
+SELECT * FROM members WHERE last_name = 'Harse' or gender = 'F';
 
+drop index members_last_name_i;
 
+-- UNIQUE INDEX
+-- Prevents duplicate entry
+CREATE UNIQUE INDEX members_email_i ON members(email);
 
+-- Primary and Unique key by default creates unique index
+CREATE TABLE t2 (
+    pk2 INT PRIMARY KEY,
+    c2 INT
+);
 
+SELECT ai.index_name ,ai.uniqueness
+FROM all_indexes ai
+WHERE table_name = 'T2';
 
+-- To explicitly provides a name use below syntax
+CREATE TABLE t2 (
+    pk2 INT PRIMARY KEY 
+        USING INDEX (
+            CREATE UNIQUE INDEX t1_pk1_i ON t2 (pk2)
+    ),
+    c2 INT
+);
 
+drop table t2;
 
+--Function-based index
+EXPLAIN PLAN FOR
+SELECT * FROM members WHERE upper(last_name) = upper('Harse');
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+-- Before: TABLE ACCESS FULL; Cost: 5 -- This is due to UPPER function is used
+-- After: INDEX RANGE SCAN; Cost: 2
 
+CREATE INDEX members_last_name_fi ON members(UPPER(last_name));
 
+-- Bitmap Index
 
+-- As gender column has only two distinct values (lots of duplicate values - low cardinality) 
+-- so we should create bitmap index, instead b-tree index
+EXPLAIN PLAN FOR
+SELECT COUNT(*) FROM members WHERE gender = 'F';
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+-- Before: TABLE ACCESS FULL; Cost: 5 -- This is due to UPPER function is used
+-- After: BITMAP INDEX SINGLE VALUE; Cost: 1
 
+CREATE BITMAP INDEX members_gender_i ON members(gender);
 
+-- To check Cradinality/Number of groupings
+-- Here Cradinality = 2, if Cradinality > 100, consider creating b-tree index
+select gender, count(*)
+from members
+group by gender;
 
+*****************************************
 
+Functions
 
+*****************************************
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*****************************************
 
 
 
