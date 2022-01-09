@@ -1,83 +1,20 @@
-/*
-    Change password, RUn the below command.
-    Instead of rakesh3 use a new password.
-*/
---ALTER USER rakesh IDENTIFIED BY rakesh3;
+*****************************************
 
-/*
-    Cleanup-Drop all existing tables.
-    Import Sample HR Database. 
-    Refer Learning >> Oracle Install >> Create a Sample Database
-*/
-/*
-BEGIN
-    FOR c IN (SELECT table_name FROM user_tables) LOOP
-    EXECUTE IMMEDIATE ('DROP TABLE "' || c.table_name || '" CASCADE CONSTRAINTS');
-    END LOOP;
-    
-    FOR s IN (SELECT sequence_name FROM user_sequences) LOOP
-    EXECUTE IMMEDIATE ('DROP SEQUENCE ' || s.sequence_name);
-    END LOOP;
-END;
-*/
+Instructions:
 
-/*** Data Dictionary ***/
-select * from all_tables where UPPER(table_name) like upper('%course%');
-select * from all_tables where owner = 'HR';
+*****************************************
 
-/*** Tables schema ***/
-SH:
-SALES
-CUSTOMERS
-PRODUCTS
-TIMES
+Oracle livesql:
+https://livesql.oracle.com/apex/f?p=590:1:1254310546419::NO:::
 
-HR:
-EMPLOYEES
+Schema ER Diagrams:
+https://docs.oracle.com/en/database/oracle/oracle-database/19/comsc/schema-diagrams.html
 
-OE:
-ORDERS
-CUSTOMERS
+*****************************************
 
-/*********************/
+examtopics Questions
 
-/*** Misc ***/
-SELECT DF.TABLESPACE_NAME "TABLESPACE",
-TOTALUSEDSPACE "USED MB",
-(DF.TOTALSPACE - TU.TOTALUSEDSPACE) "FREE MB",
-DF.TOTALSPACE "TOTAL MB",
-ROUND(100 * ( (DF.TOTALSPACE - TU.TOTALUSEDSPACE)/ DF.TOTALSPACE))
-"PCT. FREE"
-FROM
-(SELECT TABLESPACE_NAME,
-ROUND(SUM(BYTES) / 1048576) TOTALSPACE
-FROM DBA_DATA_FILES
-GROUP BY TABLESPACE_NAME) DF,
-(SELECT OWNER, ROUND(SUM(BYTES)/(1024*1024)) TOTALUSEDSPACE, TABLESPACE_NAME
-FROM DBA_SEGMENTS
-GROUP BY OWNER, TABLESPACE_NAME) TU
-WHERE DF.TABLESPACE_NAME = TU.TABLESPACE_NAME
-AND TU.OWNER = 'RAKESH';
-
-select * from DBA_SEGMENTS;
-
-select count(*) from user_objects;
-select count(*) from dba_objects;
-
-select distinct do.owner from dba_objects do 
-where do.owner not in
-('SYS','SYSTEM','DBSNMP','APPQOSSYS','DBSFWUSER','REMOTE_SCHEDULER_AGENT',
-'PUBLIC','CTXSYS','AUDSYS','OJVMSYS','SI_INFORMTN_SCHEMA','DVF','DVSYS',
-'GSMADMIN_INTERNAL','ORDPLUGINS','ORDDATA','MDSYS','OLAPSYS','LBACSYS',
-'OUTLN','ORACLE_OCM','XDB','WMSYS','ORDSYS');
-
-select object_type, count(*) 
-from dba_objects where owner = 'RAKESH'
-group by object_type;
-
-select * from dba_objects where owner = 'RAKESH' and object_type = 'TABLE PARTITION';
-
-select * from v$version;
+*****************************************
 
 /*** Qn-7 ***/
 CREATE TABLE table1(
@@ -404,7 +341,391 @@ group by e.salary
 having min(e.employee_id) = 100;
 --only the columns present in GROUP BY needs to present in SELECT
 
-/*** Qn-141 ***/
+/*** Qn-144 ***/
+with t as (
+    select 1 c, 9 d from dual union
+    select 21, 10 from dual union
+    select 2, 3 from dual union
+    select null, null from dual
+)
+select sum(case when c < 5 then c else null end) c_sum,
+    sum(case when d > 5 then d else null end) d_sum,
+    count(c) c_cnt,
+    count(case when c is not null then 1 else 0 end) c_cnt_null
+from t;
+
+/*** Qn-145 ***/
+-- option E
+select * from employees where employee_id not in (select null from dual);
+-- This returns no rows, but we were expecting all rows
+
+/*** Qn-147 ***/
+SELECT p.product_name, i.item_cnt
+FROM (SELECT product_id, COUNT (*) item_cnt
+FROM co.order_items
+GROUP BY product_id) i RIGHT OUTER JOIN co.products p
+ON i.product_id = p.product_id
+order by 1;
+
+/*** Qn-148 ***/
+SELECT 1 FROM DUAL
+UNION
+SELECT 2 FROM DUAL
+UNION
+SELECT NULL FROM DUAL
+UNION
+SELECT 3 FROM DUAL
+UNION
+SELECT 1 FROM DUAL
+UNION
+SELECT NULL FROM DUAL
+UNION
+SELECT 2 FROM DUAL;
+
+SELECT 1 FROM DUAL
+UNION ALL
+SELECT 2 FROM DUAL
+UNION ALL
+SELECT NULL FROM DUAL
+UNION ALL
+SELECT 3 FROM DUAL
+UNION ALL
+SELECT 1 FROM DUAL
+UNION ALL
+SELECT NULL FROM DUAL
+UNION ALL
+SELECT 2 FROM DUAL;
+
+/*** Qn-151 ***/
+select initcap('Abigail' || ' ' || upper(substr('Paris', -length('Paris'), 2))) from dual;
+select initcap('abigail'|| ' ' || substr('Paris', 0, 2)) from dual;
+
+/*** Qn-159 ***/
+SELECT first_name, to_char(ROUND(ROUND(sysdate-hire_date)/365 *salary+commission_pct) ) "comp"
+FROM employees;
+
+SELECT first_name, to_char(ROUND(ROUND(sysdate-hire_date)/365 *salary+ nvl(commission_pct,0)) ) "comp"
+FROM employees;
+-- need to use nvl() to handle NULL commission_pct values
+
+/*** Qn-160 ***/
+SELECT INTERVAL '300' month,
+   INTERVAL '54-2' year to month,
+   INTERVAL ' 11:12:10.1234567' hour to second 
+FROM DUAL;
+
+/*** Qn-162 ***/
+select * from hr.departments;
+
+select * from hr.employees;
+
+select distinct d.department_id
+from hr.employees e 
+inner join hr.departments d
+on e.department_id <> d.department_id
+order by 1;
+
+select distinct department_id 
+from hr.departments
+order by 1;
+
+select distinct d.department_id
+from hr.employees e 
+inner join hr.departments d
+on e.department_id = d.department_id
+order by 1;
+
+-- Correct answer
+select department_id from hr.departments
+minus
+select department_id from hr.employees;
+
+/*** Qn-164 ***/
+SELECT cust_last_name AS "Name", cust_credit_limit + 1000 AS "New Credit Limit" FROM SH.customers;
+
+/*** Qn-165 ***/
+select to_number(NULL) from dual;
+
+
+/*** Qn-168 ***/
+select NVL2(NULL,1,2) from dual;
+
+-- This should be the correct answer for option A
+SELECT first_name, salary, ((salary + NVL2 (commission_pct,( commission_pct * salary),0)) * 12) "Total" FROM employees;
+SELECT first_name, salary, (salary + NVL (commission_pct, 0)*salary)*12 "Total" FROM EMPLOYEES;
+
+/*** Qn-171 ***/
+create table t
+(v varchar2);
+
+create table t
+(v varchar2(10));
+
+drop table t;
+
+/*** Qn-172 ***/
+CREATE TABLE marks (
+student_id VARCHAR2(4) NOT NULL,
+student_name VARCHAR(25),
+subject1 NUMBER(3),
+subject2 NUMBER(3),
+subject3 NUMBER(3)
+);
+
+SELECT SUM(DISTINCT NVL(subject1,0)), MAX(subject1) FROM marks WHERE subject1 > subject2;
+SELECT SUM(subject1+subject2+subject3) FROM marks WHERE student_name IS NULL;
+
+/*** Qn-173 ***/
+CREATE TABLE CUSTOMERS(
+CUSTNO NUMBER PRIMARY KEY,
+CUSTNAME VARCHAR2(20),
+CITY VARCHAR2(20));
+
+INSERT INTO CUSTOMERS(CUSTNO, CUSTNAME, CITY) VALUES(1,'KING','SEATTLE');
+INSERT INTO CUSTOMERS(CUSTNO, CUSTNAME, CITY) VALUES(2,'GREEN','BOSTON');
+INSERT INTO CUSTOMERS(CUSTNO, CUSTNAME, CITY) VALUES(3,'KOCHAR','SEATTLE');
+INSERT INTO CUSTOMERS(CUSTNO, CUSTNAME, CITY) VALUES(4,'SMITH','NEW YORK');
+
+select * from customers;
+
+SELECT c1.custname, c1.city, c2.custname, c2.city
+FROM CUSTOMERS c1 FULL OUTER JOIN CUSTOMERS C2
+ON (c1.city = c2.city AND c1.custname<>c2.custname);
+
+SELECT c1.custname, c1.city, c2.custname, c2.city
+FROM CUSTOMERS c1 JOIN CUSTOMERS C2
+ON (c1.city = c2.city AND c1.custname<>c2.custname);
+
+SELECT c1.custname, c1.city, c2.custname, c2.city
+FROM CUSTOMERS c1 RIGHT OUTER JOIN CUSTOMERS C2
+ON (c1.city = c2.city AND c1.custname<>c2.custname);
+-- Here the c1 columns will be NULL as c2 is the driving table
+
+SELECT c1.custname, c1.city, c2.custname, c2.city
+FROM CUSTOMERS c1 LEFT OUTER JOIN CUSTOMERS C2
+ON (c1.city = c2.city AND c1.custname<>c2.custname);
+
+drop table rakesh.customers;
+
+/*** Qn-174 ***/
+create table t
+(v varchar2(1),
+c char,
+n number);
+
+insert into t values (1, 22, 2.2);
+
+insert into t values (1, 22, 2.2);
+-- Error
+
+select * from t;
+
+drop table t;
+
+/*** Qn-177 ***/
+create table t
+(n number);
+
+insert into t values (1);
+
+ALTER TABLE T ADD n1 NUMBER NOT NULL;
+-- ORA-01758: table must be empty to add mandatory (NOT NULL) column
+
+alter table t add n1 number default 0 not null;
+
+select * from t;
+
+drop table t;
+
+/*** Qn-178 ***/
+SELECT promo_name, promo_cost, promo_begin_date 
+FROM SH.promotions 
+WHERE promo_category = 'post' AND promo_begin_date < '01-01-00';
+-- ORA-01843: not a valid month
+
+SELECT promo_name, promo_cost, promo_begin_date 
+FROM SH.promotions 
+WHERE promo_category LIKE 'P%' AND promo_begin_date < '1-JANUARY-00';
+-- no data found
+
+SELECT promo_name, promo_cost, promo_begin_date 
+FROM SH.promotions 
+WHERE promo_cost LIKE 'post%' AND promo_begin_date < '01-01-2000';
+-- no data found
+
+SELECT promo_name, promo_cost, promo_begin_date 
+FROM SH.promotions 
+WHERE promo_category LIKE '%post%' AND promo_begin_date < '1-JAN-00';
+
+/*** Qn-179 ***/
+CREATE OR REPLACE VIEW TESTDELETE AS SELECT DISTINCT FIRST_NAME FROM EMPLOYEES;
+DELETE FROM TESTDELETE;
+-- ORA-01732: data manipulation operation not legal on this view
+
+drop view TESTDELETE;
+
+/*** Qn-181 ***/
+CREATE SEQUENCE seq1
+START WITH 100
+INCREMENT BY 10
+MAXVALUE 200
+CYCLE
+NOCACHE;
+
+-- After Sequce reaches it MAX value it will restart from 1, due to absence of MINVALUE
+
+SELECT seq1.nextval FROM dual;
+SELECT seq1.currval FROM dual;
+
+drop sequence seq1;
+
+CREATE SEQUENCE seq1
+START WITH 100
+MINVALUE 12
+INCREMENT BY 10
+MAXVALUE 200
+CYCLE
+NOCACHE;
+-- After Sequce reaches it MAXVALUE it will restart from 12
+
+/*** Qn-182 ***/
+select * from SESSION_PRIVS;
+select * from USER_TAB_PRIVS;
+
+/*** Qn-186 ***/
+SELECT 'PROMO_NAME' || q'{'s start date was \}' || SYSDATE AS "Promotion Launches" FROM Dual;
+
+
+/*** Qn-189 ***/
+SELECT MAX(unit_price*quantity) "Maximum Order"
+FROM OE.order_items;
+-- Single row
+
+SELECT MAX(unit_price*quantity) "Maximum Order"
+FROM OE.order_items
+GROUP BY order_id;
+-- Multi Rows due to the presence of group by
+
+/*** Qn-191 ***/
+create table t (id number,fname varchar2(20),test long);
+alter table t modify test not null;
+-- but if the table contains data, then this will fail
+drop table t;
+
+/*** Qn-192 ***/
+CREATE TABLE t_a (x INT PRIMARY KEY);
+CREATE TABLE t_b (x INT, FOREIGN KEY(x) REFERENCES t_a(X));
+
+INSERT INTO t_a VALUES (1);
+INSERT INTO t_a VALUES (2);
+INSERT INTO t_b VALUES (1);
+
+DELETE (SELECT * FROM t_a tab1 JOIN t_b tab2 ON tab1.x=tab2.x);
+-- DELETE on Inner Join Table, deletes the content from Child Table.
+
+SELECT * FROM t_a;
+SELECT * FROM t_b;
+
+drop table t_a;
+drop table t_b;
+
+/*** Qn-193 ***/
+SELECT NVL2 (hire_date, hire_date + 15,'') FROM employees;
+SELECT NVL (hire_date, hire_date + 15) FROM employees;
+
+/*** Qn-195 ***/
+SELECT cust_last_name--, cust_credit_limit 
+FROM sh.customers
+WHERE (UPPER(cust_last_name) LIKE 'A%'OR UPPER (cust_last_name) LIKE 'B%' OR UPPER (cust_last_name) LIKE 'C%')
+AND cust_credit_limit < 10000
+group by cust_last_name
+order by 1 desc;
+
+SELECT cust_last_name--, cust_credit_limit 
+FROM 
+    (select cust_last_name, cust_credit_limit from sh.customers union
+    select 'C', 10 from dual union
+    select 'Ca', 10 from dual)
+WHERE (UPPER(cust_last_name) BETWEEN 'A' AND 'C')
+AND cust_credit_limit < 10000
+group by cust_last_name
+order by 1 desc;
+-- This will include rows whose cust_last_name = 'C'
+-- anything greater than that will not be considered
+-- Greater than 'C' means 'Ca', 'Cabc', .. etc
+
+/*** Qn-200 ***/
+select * from USER_RECYCLEBIN;
+
+/*** Qn-204 ***/
+SELECT supplier_name,
+DECODE(supplier_id, 10000, 'IBM',
+                    10001, 'Microsoft',
+                    10002, 'Hewlett Packard',
+                    'Gateway') result
+FROM suppliers;
+-- If supplier_id = 10000, then IBM
+-- If supplier_id = 10001, then Microsoft
+-- Gateway is the ELSE part
+
+select months_between(sysdate, hire_date) from employees;
+
+/*** Qn-205 ***/
+CREATE TABLE price_list (
+PROD_ID NUMBER(3) NOT NULL,
+PROD_PRICE VARCHAR2(10));
+
+INSERT INTO price_list VALUES (100, '$234.55');
+INSERT INTO price_list VALUES (101, '$6,509.75');
+INSERT INTO price_list VALUES (102, '$1,234');
+
+select to_char(prod_price*.25, '$99,999.99') FROM price_list;
+-- ORA-01722: invalid number
+
+select to_char(to_number(prod_price)*.25, '$99,999.00') FROM price_list;
+-- ORA-01722: invalid number
+
+select to_char(to_number(prod_price, '$99,999.99')*.25, '99,999.00') FROM price_list;
+
+select to_number(to_number(prod_price, '$99,999.99') *.25, '$99,999.00') FROM price_list;
+-- ORA-01722: invalid number
+
+/*** Qn-210 ***/
+select lpad('kesh', 6, '*') from dual;
+
+/*** Qn-211 ***/
+create table t
+(n number);
+
+insert into t values (1);
+insert into t values (2);
+commit;
+
+select * from t;
+
+insert into t values (3);
+
+savepoint a;
+
+delete from t;
+
+rollback to savepoint a;
+
+rollback;
+
+drop table t;
+
+/*** Qn-213 ***/
+select next_day(trunc(sysdate), 1) from dual;
+select next_day(trunc(sysdate), 'Sunday') from dual;
+select next_day(trunc(sysdate), 'Sun') from dual;
+
+select *
+from nls_database_parameters
+where parameter in ('NLS_TERRITORY');
+-- For the America territory: 1 = SUNDAY
+-- For the Europian territory: 1 = MONDAY
+
 
 /*** Qn- ***/
 
@@ -430,86 +751,6 @@ having min(e.employee_id) = 100;
 
 /*** Qn- ***/
 
-/*** Qn- ***/
 
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-/*** Qn- ***/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*****************************************
 

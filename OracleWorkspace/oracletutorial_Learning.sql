@@ -8,6 +8,29 @@ https://oracle-base.com/
 
 Connect to OT Database.
 
+/*
+    Change password, Run the below command.
+    Instead of rakesh3 use a new password.
+*/
+--ALTER USER rakesh IDENTIFIED BY rakesh3;
+
+/*
+    Cleanup-Drop all existing tables.
+    Import Sample HR Database. 
+    Refer Learning >> Oracle Install >> Create a Sample Database
+*/
+/*
+BEGIN
+    FOR c IN (SELECT table_name FROM user_tables) LOOP
+    EXECUTE IMMEDIATE ('DROP TABLE "' || c.table_name || '" CASCADE CONSTRAINTS');
+    END LOOP;
+    
+    FOR s IN (SELECT sequence_name FROM user_sequences) LOOP
+    EXECUTE IMMEDIATE ('DROP SEQUENCE ' || s.sequence_name);
+    END LOOP;
+END;
+*/
+
 *****************************************
 
 SYS Query
@@ -33,6 +56,21 @@ AND TU.OWNER = 'OT';
 
 select * from v$version;
 select * from all_users order by 3 desc;
+select * from DBA_SEGMENTS;
+select count(*) from user_objects;
+select count(*) from dba_objects;
+select object_type, count(*) 
+from dba_objects where owner = 'RAKESH'
+group by object_type;
+select * from dba_objects where owner = 'RAKESH' and object_type = 'TABLE PARTITION';
+select distinct do.owner 
+from dba_objects do 
+where do.owner not in
+('SYS','SYSTEM','DBSNMP','APPQOSSYS','DBSFWUSER','REMOTE_SCHEDULER_AGENT',
+'PUBLIC','CTXSYS','AUDSYS','OJVMSYS','SI_INFORMTN_SCHEMA','DVF','DVSYS',
+'GSMADMIN_INTERNAL','ORDPLUGINS','ORDDATA','MDSYS','OLAPSYS','LBACSYS',
+'OUTLN','ORACLE_OCM','XDB','WMSYS','ORDSYS');
+
 select user from dual;
 SELECT sys_context('userenv','instance_name') FROM dual;
 select sys_context('userenv','db_name') from dual; -- To ckeck DB name
@@ -735,7 +773,7 @@ drop table t;
 -- NVARCHAR2 can only store data in char not bytes
 SELECT *
 FROM nls_database_parameters
-WHERE PARAMETER in ('NLS_CHARACTERSET', 'NLS_NCHAR_CHARACTERSET');
+WHERE PARAMETER in ('NLS_CHARACTERSET', 'NLS_NCHAR_CHARACTERSET', 'NLS_TERRITORY');
 
 SET SERVEROUTPUT ON;
 
@@ -1132,9 +1170,96 @@ group by gender;
 
 *****************************************
 
+Sequence
+
+*****************************************
+
+XXX
+
+*****************************************
+
+Synonym
+
+*****************************************
+
+XXX
+
+
+*****************************************
+
 Functions
 
 *****************************************
+-- CONCAT
+select CONCAT('Rakesh', ' Panigrahi') from dual;
+
+-- POWER
+select POWER(2,3) from dual; -- 2*2*2 = 8
+
+-- MOD
+select MOD(9,2) "Remainder" from dual; -- 9/2 = 4 (Quotient); 1 = Remainder
+
+-- TRUNC(Number)
+select TRUNC(874.917) from dual;
+select TRUNC(874.917,1) from dual;
+select TRUNC(874.917,2) from dual;
+select TRUNC(874.917,3) from dual;
+select TRUNC(874.917,-1) from dual;
+select TRUNC(874.917,-2) from dual;
+select TRUNC(874.917,-3) from dual;
+
+-- TRUNC(date)
+select TRUNC(avg(sysdate - hire_date)) from employees;
+
+WITH dates AS (   
+  SELECT date'2015-01-01' d FROM dual union   
+  SELECT date'2015-01-10' d FROM dual union   
+  SELECT date'2015-02-01' d FROM dual union   
+  SELECT timestamp'2015-03-03 23:45:00' d FROM dual union   
+  SELECT timestamp'2015-04-11 12:34:56' d FROM dual    
+)   
+SELECT d "Original Date",   
+       trunc(d) "Nearest Day, Time Removed",   
+       trunc(d, 'ww') "Nearest Week", 
+       trunc(d, 'iw') "Start of Week",   
+       trunc(d, 'mm') "Start of Month",   
+       trunc(d, 'year') "Start of Year"   
+FROM dates;
+
+-- TRIM
+select TRIM(' 874 ') from dual;
+select TRIM(BOTH 8 FROM 8748) from dual;
+select TRIM(LEADING 8 FROM 8748) from dual;
+select TRIM(TRAILING 8 FROM 8748) from dual;
+
+-- ROUND
+select ROUND(874.917) from dual;
+select ROUND(874.917,1) from dual;
+select ROUND(874.917,2) from dual;
+select ROUND(874.917,3) from dual;
+select ROUND(874.917,-1) from dual;
+select ROUND(874.917,-2) from dual;
+select ROUND(874.917,-3) from dual;
+
+-- INSTR
+select INSTR('CORPORATE FLOOR','OR', 1, 1) "Instring" FROM DUAL; 
+-- Starting Pos = 1, Occurance = 1
+select INSTR('CORPORATE FLOOR','OR', 1, 2) "Instring" FROM DUAL; 
+-- Starting Pos = 1, Occurance = 2
+select INSTR('CORPORATE FLOOR','OR', 1, 3) "Instring" FROM DUAL; 
+-- Starting Pos = 1, Occurance = 3
+select INSTR('CORPORATE FLOOR','OR', 3, 2) "Instring" FROM DUAL; 
+-- Starting Pos = 3, Occurance = 2
+select INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL;
+-- Starting Pos = -3, Occurance = 2
+
+*****************************************
+
+Misc
+
+*****************************************
+
+
 
 *****************************************
 
