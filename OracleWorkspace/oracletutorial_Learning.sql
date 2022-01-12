@@ -1255,6 +1255,27 @@ select INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL;
 
 *****************************************
 
+Advanced Oracle SQL
+
+*****************************************
+-- How to Find Duplicate Records in Oracle
+select * from fruits;
+
+-- Finding duplicate rows using the aggregate function
+SELECT fruit_name, color, COUNT(*)
+FROM fruits
+GROUP BY fruit_name, color
+having count(*) > 1
+order by 1, 2;
+
+-- Finding duplicate records using analytic function (Using inline view)
+SELECT *
+FROM (SELECT f.*, COUNT(*) OVER (PARTITION BY fruit_name, color) c FROM fruits f)
+WHERE c > 1;
+
+
+*****************************************
+
 Misc
 
 *****************************************

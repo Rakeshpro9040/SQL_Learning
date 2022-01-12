@@ -726,6 +726,240 @@ where parameter in ('NLS_TERRITORY');
 -- For the America territory: 1 = SUNDAY
 -- For the Europian territory: 1 = MONDAY
 
+/*** Qn-214 ***/
+create table customers 
+(customer_id number(6) not null,
+cust_name varchar(20),
+cust_email varchar(30),
+income_level varchar(20));  
+
+create table customers_vu as select * from customers;  
+
+merge into customers c 
+using customers_vu cv 
+on (c.customer_id=cv.customer_id)  
+when matched then 
+update set c.customer_id=cv.customer_id, c.cust_name=cv.cust_name, 
+c.cust_email=cv.cust_email, c.income_level=cv.income_level 
+when not matched then  
+insert values(cv.customer_id,cv.cust_name,cv.cust_email,cv.income_level) 
+where cv.income_level>100000;
+-- SQL Error: ORA-38104: Columns referenced in the ON Clause cannot be updated: "C"."CUSTOMER_ID"
+
+merge into customers c 
+using customers_vu cv 
+on (c.customer_id=cv.customer_id)  
+when matched then 
+update set c.cust_name=cv.cust_name, 
+c.cust_email=cv.cust_email, c.income_level=cv.income_level 
+when not matched then
+insert values(cv.customer_id,cv.cust_name,cv.cust_email,cv.income_level) 
+where cv.income_level>100000;
+
+drop table customers;
+drop table customers_vu;
+
+/*** Qn-217 ***/
+select * from USER_SYNONYMS;
+select * from USER_OBJECTS where OBJECT_TYPE = 'VIEW';
+select * from dictionary;
+
+/*** Qn-220 ***/
+-- The following single-set aggregate example lists all of the employees 
+-- in Department 30 in the hr.employees table, 
+-- ordered by hire date and last name.
+SELECT LISTAGG(last_name, '; ')
+   WITHIN GROUP (ORDER BY hire_date) "Emp_list",
+   MIN(hire_date) "Earliest"
+FROM employees
+WHERE department_id = 30;
+
+/*** Qn-224 ***/
+-- Both returns same result
+-- If the aggregation is not done at SELECT level, 
+-- then it will ba calculated as a whole not columnwise
+select product_id, avg(quantity)
+from co.order_items
+having avg(quantity) > min(quantity) * 2
+group by product_id
+order by 1;
+
+select product_id, avg(quantity)
+from co.order_items
+having avg(quantity) > (select min(quantity) from co.order_items) * 2
+group by product_id
+order by 1;
+
+/*** Qn-226 ***/
+create table t (pcode number(2),  pname varchar(10));
+select * from t;
+insert into t values (1,'pen');   
+insert into t values (2, 'pencil');  
+savepoint a;  
+update t set pcode=10 where pcode = 1;  
+savepoint b;  
+delete from t where pcode=2;  
+commit;
+delete from t where pcode=10; 
+rollback to savepoint a;
+--ORA-01086: savepoint 'A' never established in this session or is invalid
+
+drop table t;
+
+/*** Qn-229 ***/
+select trunc(sysdate) + 1 from dual;
+select trunc(sysdate) * 1 from dual; --Error
+
+/*** Qn- 230***/
+select * from sys.user_indexes;
+desc 
+
+/*** Qn-237 ***/
+create table t
+as
+select employee_id from employees
+where 1 = 1;
+
+select count(*) from t;
+-- returned 107 rows
+
+drop table t;
+
+/*** Qn-239 ***/
+SELECT COL1 FROM 
+(SELECT 1 COL1 FROM DUAL 
+UNION ALL   
+SELECT 1 FROM DUAL 
+UNION ALL   
+SELECT NULL FROM DUAL)   
+INTERSECT   
+SELECT COL2 FROM 
+(SELECT NULL COL2 FROM DUAL 
+UNION ALL   
+SELECT 1 FROM DUAL 
+UNION ALL   
+SELECT NULL FROM DUAL)   
+ORDER BY 1 NULLS FIRST;  
+
+/*** Qn-240 ***/
+-- You can use SELF-JOIN, example: 
+SELECT * 
+FROM 
+    customers ctmr1  
+JOIN
+    (SELECT custno, COUNT(*) 
+    FROM customers 
+    GROUP BY custno 
+    HAVING count(*) > 1 )ctmr2   
+ON ctmr1.custno = ctmr2.custno  
+ORDER BY ctmr1.custno; 
+
+-- You can use SUBQUERY, example:    
+SELECT * FROM customers 
+WHERE custno IN 
+    (SELECT custno FROM customers GROUP BY custno HAVING COUNT(*)>1)  
+ORDER BY custno;
+
+/*** Qn-241 ***/
+create table t 
+(
+    ord_no NUMBER(2),   
+    item_no NUMBER(3),   
+    --v varchar2(4000) default ROWNUM,
+    ord_date DATE DEFAULT SYSDATE NOT NULL,   
+    --CONSTRAINT ord_uk UNIQUE (ord_no),   
+    CONSTRAINT ord_pk PRIMARY KEY (ord_no)
+);
+-- UNIQUE & PRIMARY KEY: ORA-02261: such unique or primary key already exists in the table
+-- ROWNUM: ORA-00976: Specified pseudocolumn or operator not allowed here
+
+select * from t;
+
+drop table t;
+
+/*** Qn-246 ***/
+-- First Monday after 6 months of hire
+SELECT employee_id, NEXT_DAY(ADD_MONTHS(hire_date, 6), 'MONDAY') FROM employees;
+
+/*** Qn-247 ***/
+select *
+from nls_database_parameters
+where parameter in ('NLS_DATE_FORMAT');
+
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-RR'; -- default
+ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-YYYY HH24:MI:SS';
+
+select CURRENT_TIMESTAMP, --11-JAN-22 08.29.34.913000000 AM ASIA/CALCUTTA
+CURRENT_DATE, --11-JAN-2022 08:29:34
+SYSDATE --11-JAN-2022 08:30:29
+from dual;
+
+/*** Qn-254 ***/
+SELECT * FROM (SELECT * FROM employees);
+
+/*** Qn-256 ***/
+select dbms_transaction.step_id from dual;
+SELECT dbms_transaction.LOCAL_TRANSACTION_ID FROM DUAL;
+select USED_UBLK, USED_UREC from v$transaction;
+
+create table t (n number);
+insert into t values (1);
+insert into t values (2a);
+insert into t values (3);
+select * from t;
+rollback;
+commit;
+drop table t;
+
+create table t1 (n number);
+insert into t1 values (1);
+insert into t1 values (2a);
+insert into t1 values (3);
+commit;
+drop table t1;
+
+/*** Qn-258 ***/
+create table t (n number);
+insert into t values (1);
+insert into t values (null);
+insert into t values (3);
+insert into t values (3);
+commit;
+
+select * from t;
+select count(*), count(1), count(n), count(distinct n) from t;
+
+drop table t;
+
+/*** Qn-259 ***/
+SELECT 1 AS id, 'John' AS first_name FROM dual   
+UNION   
+SELECT 1, 'John' AS name FROM dual   
+ORDER BY 1;  
+
+/*** Qn-260 ***/
+SELECT COUNT(commission_pct) FROM employees WHERE commission_pct IS NULL; -- 0 rows
+SELECT COUNT(distinct commission_pct) FROM employees WHERE commission_pct IS NULL; -- 0 rows
+SELECT COUNT(NVL(commission_pct, 0)) FROM employees WHERE commission_pct IS NULL; -- 72 rows
+
+/*** Qn-262 ***/
+select
+    SYSTIMESTAMP, -- 12-JAN-22 09.53.58.204000000 AM +05:30
+    SESSIONTIMEZONE, -- Asia/Calcutta
+    CURRENT_TIMESTAMP, -- 12-JAN-22 09.51.49.238000000 AM ASIA/CALCUTTA
+    DBTIMEZONE, -- +00:00
+    CAST(sysdate as TIMESTAMP), -- 12-JAN-22 09.51.49.000000000 AM
+    CAST(sysdate as TIMESTAMP WITH LOCAL TIME ZONE) -- 12-JAN-22 09.51.49.000000000 AM
+from dual;
+
+/*** Qn-265 ***/
+with t as
+(select 'a' col from dual
+union
+select 'A' from dual)
+select col col1
+from t
+order by col1 desc;
 
 /*** Qn- ***/
 
@@ -750,7 +984,6 @@ where parameter in ('NLS_TERRITORY');
 /*** Qn- ***/
 
 /*** Qn- ***/
-
 
 *****************************************
 
