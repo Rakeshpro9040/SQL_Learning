@@ -1,0 +1,17 @@
+CREATE USER ora41 IDENTIFIED BY cloud_4U;
+
+ALTER USER ora41
+    QUOTA UNLIMITED ON users;
+
+CREATE USER ora61 IDENTIFIED BY cloud_4U;
+
+ALTER USER ora61
+    QUOTA UNLIMITED ON users;
+
+CREATE USER ora62 IDENTIFIED BY cloud_4U;
+
+ALTER USER ora62
+    QUOTA UNLIMITED ON users;
+
+GRANT connect, resource, create table TO ora41, ora61, ora62;
+GRANT dba to ora61;

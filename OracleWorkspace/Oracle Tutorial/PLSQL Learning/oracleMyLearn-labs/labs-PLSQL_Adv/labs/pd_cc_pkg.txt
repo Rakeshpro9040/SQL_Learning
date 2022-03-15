@@ -1,0 +1,108 @@
+P#V PLSHPROF Internal Version 1.0
+P#! PL/SQL Timer Started
+P#C PLSQL."".""."__plsql_vm"
+P#X 3
+P#C PLSQL."".""."__anonymous_block"
+P#X 58
+P#C PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 #129
+P#X 3
+P#R
+P#X 17
+P#R
+P#X 2
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 4
+P#C PLSQL."".""."__anonymous_block"
+P#X 94
+P#C PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 #129
+P#X 4
+P#R
+P#X 9
+P#R
+P#X 3
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 2
+P#C PLSQL."".""."__anonymous_block"
+P#X 41
+P#C PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 #129
+P#X 2
+P#R
+P#X 5
+P#R
+P#X 2
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 2
+P#C PLSQL."".""."__anonymous_block"
+P#X 38
+P#C PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 #3
+P#X 26
+P#C SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" #9."3zjmncb1j06t6"
+P#! SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_
+P#X 515
+P#R
+P#X 74
+P#C SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" #17."4zv5t057j52sn"
+P#! UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST
+P#X 4222
+P#R
+P#X 23
+P#R
+P#X 1
+P#R
+P#X 3
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 3
+P#C PLSQL."".""."__anonymous_block"
+P#X 42
+P#C PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 #129
+P#X 3
+P#R
+P#X 6
+P#R
+P#X 2
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 3
+P#C PLSQL."".""."__anonymous_block"
+P#X 55
+P#C PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 #3
+P#X 12
+P#C SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" #9."3zjmncb1j06t6"
+P#! SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_
+P#X 256
+P#R
+P#X 51
+P#C SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" #17."4zv5t057j52sn"
+P#! UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST
+P#X 957
+P#R
+P#X 16
+P#R
+P#X 1
+P#R
+P#X 3
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 2
+P#C PLSQL."".""."__anonymous_block"
+P#X 41
+P#C PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 #129
+P#X 3
+P#R
+P#X 7
+P#R
+P#X 1
+P#R
+P#C PLSQL."".""."__plsql_vm"
+P#X 4
+P#C PLSQL."".""."__anonymous_block"
+P#X 52
+P#C PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec #453
+P#R
+P#R
+P#R
+P#! PL/SQL Timer Stopped

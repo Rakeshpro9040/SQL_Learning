@@ -129,8 +129,8 @@ CREATE TABLE ord_items
 drop table ord_items purge;
 
 /*** Qn-89 ***/
-select to_date(HIRE_DATE+1) from hr.employees;
-desc hr.employees;
+select to_date(HIRE_DATE+1) from employees; --18-JUN-03
+desc employees;
 
 /*** Qn-90 ***/
 SELECT NVL(TO_CHAR(cust_credit_limit*.15), 'Not Available') "NEW CREDIT" FROM SH.customers;
@@ -140,8 +140,8 @@ select * from SH.SALES;
 
 /*** Qn-94 ***/
 select sysdate from dual;
-select TO_CHAR(sysdate,'MON DD YYYY') from dual;
-select TO_DATE('JUL 10 2006','MON DD YYYY') from dual;
+select TO_CHAR(sysdate,'MON DD YYYY') from dual; -- JAN 16 2022
+select TO_DATE('JUL 10 2006','MON DD YYYY') from dual; -- 10-JUL-06
 
 /*** Qn-97 ***/
 create table TAB1
@@ -152,9 +152,13 @@ desc TAB1;
 drop table TAB1;
 
 /*** Qn-98 ***/
-SELECT list_price, TO_CHAR(list_price, '$9,999'),
-TO_CHAR('11235.90', '$9,999'), TO_CHAR('9999', '$9,999'),
-TO_CHAR('11111', '$9,999'), TO_CHAR('1123.90', '$9,999')
+SELECT 
+    list_price, -- 349
+    TO_CHAR(list_price, '$9,999'), -- $349
+    TO_CHAR('11235.90', '$9,999'), -- ####### 
+    TO_CHAR('9999', '$9,999'), -- $9,999
+    TO_CHAR('11111', '$9,999'), -- #######
+    TO_CHAR('1123.90', '$9,999') -- $1,124
 From oe.product_information;
 
 select to_char(1234, '999999') from dual; -- 1234
@@ -263,6 +267,8 @@ select * from all_constraints where owner = 'HR';
 select to_char(to_date('2051-05-04','rr-mm-dd'), 'CC') as "Century" from dual
 union all
 select to_char(to_date('51-05-04','rr-mm-dd'), 'CC') as "Century" from dual;
+-- 21 
+-- 20
 
 /*** Qn-123 ***/
 create table EMPLOYEES
@@ -322,16 +328,37 @@ SELECT &col1, &col2 FROM &&table WHERE &condition = &&cond;
 
 /*** Qn-137 ***/
 SELECT department_id "DEPT_ID", department_name, 'b'
-FROM hr.departments
+FROM departments
 WHERE department_id = 90
 UNION
 SELECT department_id, department_name DEPT_NAME, 'a'
-FROM hr.departments
+FROM departments
 WHERE department_id = 10
 order by DEPT_ID;
 
 select employee_id, 'b' from employees order by 'b';
 --Stops working with union
+
+-- UNION Vs UNION ALL
+SELECT department_id "DEPT_ID", department_name, 'b'
+FROM departments
+WHERE department_id = 90
+UNION
+SELECT department_id, department_name DEPT_NAME, 'a'
+FROM departments
+WHERE department_id = 10;
+-- 10	Administration	a
+-- 90	Executive	b
+
+SELECT department_id "DEPT_ID", department_name, 'b'
+FROM departments
+WHERE department_id = 90
+UNION ALL
+SELECT department_id, department_name DEPT_NAME, 'a'
+FROM departments
+WHERE department_id = 10;
+-- 90	Executive	b
+-- 10	Administration	a
 
 /*** Qn-138 ***/
 select e.salary
@@ -571,7 +598,6 @@ INCREMENT BY 10
 MAXVALUE 200
 CYCLE
 NOCACHE;
-
 -- After Sequce reaches it MAX value it will restart from 1, due to absence of MINVALUE
 
 SELECT seq1.nextval FROM dual;
@@ -593,8 +619,10 @@ select * from SESSION_PRIVS;
 select * from USER_TAB_PRIVS;
 
 /*** Qn-186 ***/
-SELECT 'PROMO_NAME' || q'{'s start date was \}' || SYSDATE AS "Promotion Launches" FROM Dual;
-
+SELECT 
+'PROMO_NAME' || q'{'s start date was \}' || SYSDATE AS "Promotion Launches" 
+FROM Dual;
+-- PROMO_NAME's start date was \15-JAN-22
 
 /*** Qn-189 ***/
 SELECT MAX(unit_price*quantity) "Maximum Order"
@@ -679,15 +707,22 @@ INSERT INTO price_list VALUES (100, '$234.55');
 INSERT INTO price_list VALUES (101, '$6,509.75');
 INSERT INTO price_list VALUES (102, '$1,234');
 
-select to_char(prod_price*.25, '$99,999.99') FROM price_list;
+select to_char(prod_price*.25, '$99,999.99') 
+FROM price_list;
 -- ORA-01722: invalid number
 
-select to_char(to_number(prod_price)*.25, '$99,999.00') FROM price_list;
+select to_char(to_number(prod_price)*.25, '$99,999.00') 
+FROM price_list;
 -- ORA-01722: invalid number
 
-select to_char(to_number(prod_price, '$99,999.99')*.25, '99,999.00') FROM price_list;
+select prod_price, to_char(to_number(prod_price, '$99,999.99')*.25, '99,999.00') 
+FROM price_list;
+-- $234.55 58.64
+-- $6,509.75 1,627.44
+-- $1,234 308.50
 
-select to_number(to_number(prod_price, '$99,999.99') *.25, '$99,999.00') FROM price_list;
+select to_number(to_number(prod_price, '$99,999.99') *.25, '$99,999.00') 
+FROM price_list;
 -- ORA-01722: invalid number
 
 /*** Qn-210 ***/
@@ -716,13 +751,13 @@ rollback;
 drop table t;
 
 /*** Qn-213 ***/
-select next_day(trunc(sysdate), 1) from dual;
-select next_day(trunc(sysdate), 'Sunday') from dual;
-select next_day(trunc(sysdate), 'Sun') from dual;
+select next_day(trunc(sysdate), 1) from dual; -- 23-JAN-22
+select next_day(trunc(sysdate), 'Sunday') from dual; -- 23-JAN-22
+select next_day(trunc(sysdate), 'Sun') from dual; -- 23-JAN-22
 
 select *
 from nls_database_parameters
-where parameter in ('NLS_TERRITORY');
+where parameter in ('NLS_TERRITORY'); -- AMERICA
 -- For the America territory: 1 = SUNDAY
 -- For the Europian territory: 1 = MONDAY
 
@@ -880,11 +915,13 @@ drop table t;
 /*** Qn-246 ***/
 -- First Monday after 6 months of hire
 SELECT employee_id, NEXT_DAY(ADD_MONTHS(hire_date, 6), 'MONDAY') FROM employees;
+-- 100 22-DEC-03
 
 /*** Qn-247 ***/
 select *
 from nls_database_parameters
 where parameter in ('NLS_DATE_FORMAT');
+-- DD-MON-RR
 
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-RR'; -- default
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-YYYY HH24:MI:SS';
@@ -961,15 +998,336 @@ select col col1
 from t
 order by col1 desc;
 
-/*** Qn- ***/
+/*** Qn-266 ***/
+SELECT sysdate, -- 16-JAN-22
+last_day(SYSDATE),   -- 31-JAN-22
+next_day(last_day(SYSDATE), 'MON'), -- 07-FEB-22  
+to_char(next_day(last_day(SYSDATE), 'MON'), 'dd "Monday for" fmMonth rrrr') col
+-- 07 Monday for February 2022
+-- It returns the date for the first Monday of the next month  
+FROM dual;  
 
 /*** Qn- ***/
+select object_name, object_type, object_id 
+from user_objects 
+where object_type ='SYNONYM';
+
+/*** Qn-272 ***/
+SELECT 2 
+FROM dual d1 
+CROSS JOIN dual d2 
+CROSS JOIN dual d3;  
+
+/*** Qn-273 ***/
+SELECT TO_CHAR(1023.99, '$9,999') FROM dual; -- $1,024
+SELECT TO_CHAR(10235.99, '$9,999') FROM dual; -- #######
+
+/*** Qn-276 ***/
+select cast(87654.556 as NUMBER(6,2)) col
+from dual;
+-- ORA-01438: value larger than specified precision allowed for this column
+
+select cast(-.551 as NUMBER(6,2)) col
+from dual;
+-- -0.55
+
+/*** Qn-279 ***/
+select max(avg(salary)) from employees;
+-- ORA-00978: nested group function without GROUP BY
+
+/*** Qn-285 ***/
+DEFINE v = SYSDATE;  
+SELECT &v from dual;  
+
+SELECT * FROM employees
+WHERE EMAIL='&1'
+AND SAL=&2;
+-- This data saved in MYFILE.sql file
+
+START MYFILE SKING 24000;
+
+/*** Qn-293 ***/
+select * from dual;
+desc dual;
+
+-- But here dual alone can't have multiple rows and columns
+SELECT sequence, sysdate - Sequence   
+FROM 
+(SELECT Level AS Sequence   
+FROM Dual   
+CONNECT BY Level <= 365);
+
+/*** Qn-294 ***/
+SELECT NVL(TO_CHAR(commission_pct * .15), 'Not Available') FROM employees;
+SELECT NVL2(commission_pct, TO_CHAR(commission_pct * .15), 'Not Available') FROM employees;
+
+/*** Qn-296 ***/
+SELECT hire_date FROM employees WHERE hire_date > '10-02-2018';
+-- ORA-01843: not a valid month
+SELECT hire_date FROM employees WHERE to_char(hire_date, 'DD-MM-YYYY') > '10-02-2018'; 
+-- Explicit Conversion -- 17-JUN-03 ..
+SELECT hire_date+1 FROM employees; 
+-- Implicit -- 14-JAN-01 ..
+select hire_date || ' | ' || salary from employees; 
+-- Implicit
+-- 17-JUN-03 | 24000
+
+/*** Qn-299 ***/
+select hire_date date, salary as salary from employees; -- Erros due to date alias
+select hire_date as date, salary as salary from employees; -- Error due to date alias
+select hire_date as "date", salary as salary from employees; -- Works
+
+/*** Qn-302 ***/
+create table t
+(n1 number,
+n2 number,
+n3 number);
+
+update t
+set n1 = 1,
+(n2, n3) = (select 2, 3 from dual)
+where n1 = 0;
+-- This works
+
+drop table t;
+
+/*** Qn-6 ***/
+select MONTHS_BETWEEN(sysdate, '01-JAN-1995') "Months" FROM DUAL;
+-- 324.499018070489844683393070489844683393
+select MONTHS_BETWEEN(sysdate, to_date('01-JAN-1995', 'DD-MON-YYYY')) "Months" FROM DUAL;
+-- 324.499021057347670250896057347670250896
+
+/*** Qn-8 ***/
+SELECT m.last_name, e.manager_id 
+FROM employees e 
+LEFT OUTER JOIN employees m 
+on (e.manager_id = m.manager_id) 
+WHERE e.employee_id = 123;
+
+select last_name, manager_id 
+from employees   
+where manager_id = 
+    (select manager_id 
+    from employees   
+    where employee_id = 123);
+
+SELECT e.last_name, m.manager_id 
+FROM employees e 
+LEFT OUTER JOIN employees m 
+on (e.manager_id = m.manager_id) 
+WHERE m.employee_id = 123;
+
+/*** Qn-26 ***/
+select 
+    ceil(1.8),
+    ceil(1.4),
+    floor(1.8),
+    floor(1.4),
+    ceil(-1.8),
+    floor(-1.8)
+from dual;
+
+/*** Qn-28 ***/
+SET VERIFY ON
+DEFINE employee_num = 200
+SELECT employee_id, last_name, salary
+FROM   employees
+WHERE  employee_id = &&employee_num;
+-- Work both for & and &&
+
+/*** Qn-29 ***/
+select 5+4 || 'a' from dual; -- 9a
+select 5*6/6/2 from dual; -- 15
+
+/*** Qn-33 ***/
+select &col from &table where &left = &right;
+
+/*** Qn-35 ***/
+desc emp_details_view;
+desc employees;
+
+/*** Qn-36 ***/
+create table names (name1 varchar(10));  
+insert into names values ('Anderson');   
+insert into names values ('Ausson');   
+select * from names; 
+
+SELECT REPLACE (TRIM(TRAILING 'son' FROM name1), 'An', 'O') FROM names; 
+-- ORA-30001: trim set should have only one character
+SELECT INITCAP (REPLACE(TRIM('son' FROM name1), 'An', 'O')) FROM names;
+SELECT REPLACE (SUBSTR(name1, -3), 'An', 'O') FROM names;
+SELECT REPLACE (REPLACE(name1, 'son', ''), 'An', 'O') FROM names;
+
+drop table names;
+
+/*** Qn-39 ***/
+select concat(hire_date, salary) from employees;
+
+/*** Qn-40 ***/
+create table t (n number(10));
+
+delete from t where 1 = 1; -- valid
+delete t; -- valid
+
+drop table t;
+
+/*** Qn-42 ***/
+SELECT TRUNC(ROUND(156.00, -2), -1) FROM DUAL; -- 200
+select trunc(271.19,1) from dual; -- 271.1
+select round(271.19,1) from dual; -- 271.2
+select trunc(271,-2) from dual; -- 200
+select round(271,-2) from dual; -- 300
+
+select trunc(sysdate) from dual; -- 14-JAN-22
+select trunc(systimestamp) from dual; -- 14-JAN-22
+-- first day of the current month
+select trunc(sysdate, 'MM') from dual; -- 01-JAN-22
+-- first day of the current quarter
+select trunc(sysdate, 'Q') from dual; -- 01-JAN-22
+
+select     
+    localtimestamp, -- 16-JAN-22 12.09.24.647000000 PM
+    current_timestamp, -- 16-JAN-22 12.09.24.647000000 PM ASIA/CALCUTTA
+    current_date, -- 16-JAN-22
+    systimestamp, -- 16-JAN-22 12.07.57.088000000 PM +05:30 -- Server
+    sysdate -- 16-JAN-22 -- Server
+from 
+dual;
+
+/*** Qn-44 ***/
+SELECT sysdate-to_date('01-JANUARY-2019') FROM DUAL; -- 1109.421
+SELECT ROUND(sysdate-TO_DATE('01/JANUARY/2019')) FROM DUAL; -- 1109
+SELECT sysdate-'01-JANUARY-2019' FROM DUAL; -- Error
+SELECT TO_DATE(SYSDATE, 'DD/MONTH/YYYY') - '01/JANUARY/2019' FROM DUAL; -- Error
+
+/*** Qn-50 ***/
+select interval '4380000 12:30:00' day(7) to second from dual;
+-- +4380000 12:30:00.000000
+
+/*** Qn-51 ***/
+select to_date('01-12-21', 'DD-MM-RR') from dual; -- 01-DEC-21
+select to_date('01-12-21', 'MM-DD-RR') from dual; -- 12-JAN-21
+select to_char(to_date('01-12-21', 'DD-MM-RR'), 'Mon dd yyyy') from dual; -- Dec 01 2021
+select to_char(to_date('01-12-21', 'DD-MM-RR'), 'Dd mon yy') from dual; -- 01 dec 21
+
+/*** Qn-52 ***/
+rollback;
+savepoint a;
+rollback to savepoint a;
+
+rollback to savepoint b; -- Error
+
+savepoint c;
+commit to savepoint c; -- Error
+
+
+/*** Qn-53 ***/
+SELECT TO_CHAR(SYSDATE, 'FMDAY, DD MONTH, YYYY') FROM DUAL; -- FRIDAY, 14 JANUARY, 2022
+SELECT TO_CHAR(SYSDATE, 'FMDAY, DDTH MONTH, YYYY') FROM DUAL; -- FRIDAY, 14TH JANUARY, 2022
+SELECT TO_CHAR(SYSDATE, 'DAY, DD MONTH, YYYY') FROM DUAL; -- FRIDAY   , 14 JANUARY  , 2022
+
+/*** Qn-57 ***/
+-- ANSI Date Format, must be in 'YYYY-MM-DD' format
+select DATE '1998-12-25' from dual; -- 25-DEC-98 
+-- Oracle format
+SELECT TO_DATE('1998-12-25', 'YYYY-MM-DD') FROM DUAL; -- 25-DEC-98
 
 /*** Qn- ***/
+SELECT COALESCE('DATE', SYSDATE) FROM (SELECT NULL AS "DATE" FROM DUAL);
+-- ORA-00932: inconsistent datatypes: expected CHAR got DATE
+SELECT COALESCE('DATE', SYSDATE) FROM DUAL;
+-- ORA-00932: inconsistent datatypes: expected CHAR got DATE
+SELECT NVL('DATE', SYSDATE) FROM DUAL;
+SELECT COALESCE(0, SYSDATE) FROM DUAL;
+-- ORA-00932: inconsistent datatypes: expected NUMBER got DATE
+SELECT NVL('DATE', 200) FROM (SELECT NULL AS "DATE" FROM DUAL);
 
-/*** Qn- ***/
+*****************************************
 
-/*** Qn- ***/
+Practice Test
+
+*****************************************
+/*** Qn-1 ***/
+CREATE TABLE dept (dept_id NUMBER PRIMARY KEY, dept_name VARCHAR2(50) );
+
+CREATE TABLE emp (emp_id NUMBER PRIMARY KEY, emp_name VARCHAR2(50), dept_id NUMBER,
+     CONSTRAINT emp_fk FOREIGN KEY (dept_id)
+     REFERENCES dept (dept_id) );
+
+CREATE SEQUENCE myseq1 NOCACHE;
+
+INSERT ALL INTO emp (emp_id, emp_name)
+   VALUES (myseq1.nextVal, 'name1') -- name1 insertion
+   INTO dept (dept_id, dept_name)
+   VALUES (10, 'dept1') -- dept1 insertion
+   INTO emp (emp_id, emp_name, dept_id)
+   VALUES (myseq1.nextVal, 'name2', 10) -- name2 insertion
+SELECT * FROM dual;
+-- ORA-00001: unique constraint (RAKESH.SYS_C008492) violated
+
+select myseq1.CURRVAL from dual;
+select * from emp;
+select * from dept;
+select * from user_constraints where constraint_name = 'SYS_C008492';
+
+INSERT ALL 
+    INTO emp (emp_id, emp_name)
+    VALUES (myseq1.nextVal, 'name1') -- name1 insertion
+    INTO dept (dept_id, dept_name)
+    VALUES (10, 'dept1') -- dept1 insertion
+    INTO emp (emp_id, emp_name, dept_id)
+    VALUES (myseq1.nextVal+1, 'name2', 10) -- name2 insertion
+SELECT * FROM dual;
+
+drop table dept;
+drop table emp;
+
+/*** Qn-6 ***/
+select manager_id from employees;
+select manager_id from employees order by 1 desc;
+select manager_id from employees order by 1 desc NULLS LAST;
+
+/*** Qn-7 ***/
+create table t (n1 number not null, n2 number);
+insert into t(n1) values (seq1.nextval); -- Success
+insert into t values ((select seq1.nextval, 1 from dual)); -- Error
+
+select seq1.currval from dual;
+select * from t;
+drop table t;
+
+/*** Qn-11 ***/
+
+-- Does not prompt
+define x = 'employees'
+select employee_id from &&x where last_name = 'King';
+-- value for y is now saved, will be re-used till the session is active
+
+-- Prompts exactly once
+select employee_id from &&y where last_name = 'King';
+-- value for y is now saved, will be re-used till the session is active
+
+-- Prompts every time
+select employee_id from &z where last_name = 'King';
+
+-- Prompts exactly once
+prompt Enter Table Name &&y
+select employee_id from &y where last_name = 'King';
+
+/*** Qn-19 ***/
+create table t 
+(d timestamp default current_date not null,
+c char(16));
+
+insert into t(c) values ('abcdef');
+
+select * from t;
+
+drop table t;
+
+create table t 
+(d date default sysdate not null,
+c char(16));
 
 /*** Qn- ***/
 
@@ -986,4 +1344,25 @@ order by col1 desc;
 /*** Qn- ***/
 
 *****************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

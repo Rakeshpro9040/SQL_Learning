@@ -6,30 +6,15 @@ https://www.oracletutorial.com/
 https://www.techonthenet.com/oracle/index.php
 https://oracle-base.com/
 
-Connect to OT Database.
+Connect to OT Database. (connect to OT@ADB)
 
+-- If connecting through on-prem DB
 /*
     Change password, Run the below command.
     Instead of rakesh3 use a new password.
 */
+-- If prompted for password change
 --ALTER USER rakesh IDENTIFIED BY rakesh3;
-
-/*
-    Cleanup-Drop all existing tables.
-    Import Sample HR Database. 
-    Refer Learning >> Oracle Install >> Create a Sample Database
-*/
-/*
-BEGIN
-    FOR c IN (SELECT table_name FROM user_tables) LOOP
-    EXECUTE IMMEDIATE ('DROP TABLE "' || c.table_name || '" CASCADE CONSTRAINTS');
-    END LOOP;
-    
-    FOR s IN (SELECT sequence_name FROM user_sequences) LOOP
-    EXECUTE IMMEDIATE ('DROP SEQUENCE ' || s.sequence_name);
-    END LOOP;
-END;
-*/
 
 *****************************************
 
@@ -63,18 +48,14 @@ select object_type, count(*)
 from dba_objects where owner = 'RAKESH'
 group by object_type;
 select * from dba_objects where owner = 'RAKESH' and object_type = 'TABLE PARTITION';
-select distinct do.owner 
-from dba_objects do 
-where do.owner not in
-('SYS','SYSTEM','DBSNMP','APPQOSSYS','DBSFWUSER','REMOTE_SCHEDULER_AGENT',
-'PUBLIC','CTXSYS','AUDSYS','OJVMSYS','SI_INFORMTN_SCHEMA','DVF','DVSYS',
-'GSMADMIN_INTERNAL','ORDPLUGINS','ORDDATA','MDSYS','OLAPSYS','LBACSYS',
-'OUTLN','ORACLE_OCM','XDB','WMSYS','ORDSYS');
 
 select user from dual;
 SELECT sys_context('userenv','instance_name') FROM dual;
 select sys_context('userenv','db_name') from dual; -- To ckeck DB name
 SELECT sys_context('USERENV', 'SID') FROM DUAL;
+
+select * from V$FIXED_TABLE;
+
 
 *****************************************
 
@@ -485,9 +466,7 @@ SELECT
 FROM
     employees
 group by first_name || ' ' || last_name,
-    email
-ORDER BY
-    name1 DESC;
+    email;
 
 SELECT
     first_name || ' ' || last_name name1,
@@ -503,9 +482,7 @@ SELECT
 FROM
     employees
 group by first_name || ' ' || last_name,
-    email
-ORDER BY
-    name1 DESC;
+    email;
 
 SELECT
     last_name
@@ -515,9 +492,7 @@ INTERSECT
 SELECT
     last_name
 FROM
-    employees
-ORDER BY
-    last_name desc;
+    employees;
 
 SELECT
   product_id
@@ -760,6 +735,7 @@ select lengthb(x), lengthb(y) from t;
 -- Run both the blocks at once
 variable v varchar2(10)
 exec :v := 'Oracle';
+/
 
 -- To run the below use "Run Script"
 -- non-blank-padding semantics comparison
@@ -1227,10 +1203,10 @@ SELECT d "Original Date",
 FROM dates;
 
 -- TRIM
-select TRIM(' 874 ') from dual;
-select TRIM(BOTH 8 FROM 8748) from dual;
-select TRIM(LEADING 8 FROM 8748) from dual;
-select TRIM(TRAILING 8 FROM 8748) from dual;
+select TRIM(' 874 ') from dual; -- 874
+select TRIM(BOTH 8 FROM 8748) from dual; -- 74
+select TRIM(LEADING 8 FROM 8748) from dual; -- 748
+select TRIM(TRAILING 8 FROM 8748) from dual; -- 874
 
 -- ROUND
 select ROUND(874.917) from dual;
@@ -1253,6 +1229,9 @@ select INSTR('CORPORATE FLOOR','OR', 3, 2) "Instring" FROM DUAL;
 select INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL;
 -- Starting Pos = -3, Occurance = 2
 
+-- NULLIF
+
+
 *****************************************
 
 Advanced Oracle SQL
@@ -1273,6 +1252,29 @@ SELECT *
 FROM (SELECT f.*, COUNT(*) OVER (PARTITION BY fruit_name, color) c FROM fruits f)
 WHERE c > 1;
 
+*****************************************
+
+External Table
+
+*****************************************
+create directory lang_external 
+    as 'D:\C_Workspaces_Repositories\GitHub_Repositories\SQL_Learning\OracleWorkspace\loader';
+
+CREATE TABLE languages(
+    language_id INT,
+    language_name VARCHAR2(30)
+)
+ORGANIZATION EXTERNAL(
+    TYPE oracle_loader
+    DEFAULT DIRECTORY lang_external
+    ACCESS PARAMETERS 
+    (FIELDS TERMINATED BY ',')
+    LOCATION ('languages.csv')
+);
+
+select * from languages;
+
+desc languages;
 
 *****************************************
 
@@ -1280,7 +1282,33 @@ Misc
 
 *****************************************
 
+SELECT JSON_QUERY('{a:100, b:200, c:300}', '$.a' WITH WRAPPER) AS value FROM DUAL;
+select 'A' "B" from dual;
+select (select 'A' from dual), 'B' from dual; -- Success
+select (select 'A', 'B' from dual), 'C' from dual; 
+-- ORA-00913: too many values
 
+select max(min(employee_id)) FROM employees;
+-- ORA-00978: nested group function without GROUP BY
+
+-- Success
+select substr(round(trim(trunc(employee_id))),1) FROM employees;
+select trunc(employee_id) FROM employees group by trunc(employee_id);
+select trunc(employee_id) FROM employees group by employee_id;
+
+select 
+    power(9,2), -- 81
+    --add(9,2), -- Error
+    mod(9,2), -- 1
+    concat('Rakesh ', 'Panigrahi')
+from dual;
+
+SELECT INSTR('CORPORATE FLOOR','OR', 3, 2) "Instring" FROM DUAL; -- 14
+SELECT INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL; -- 2
+SELECT SUBSTR('ABCDEFG',3,4) "Substring" FROM DUAL; -- CDEF
+SELECT SUBSTR('ABCDEFG',-5,4) "Substring" FROM DUAL; -- CDEF
+
+select INTERVAL '100' MONTH DURATION from dual;
 
 *****************************************
 

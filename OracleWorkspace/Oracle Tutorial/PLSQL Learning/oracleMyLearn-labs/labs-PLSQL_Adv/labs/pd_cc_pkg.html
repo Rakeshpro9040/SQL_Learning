@@ -1,0 +1,1437 @@
+<HTML lang="en">
+<HEAD>
+<TITLE>PL/SQL Elapsed Time (microsecs) Analysis for 'pd_cc_pkg'</TITLE>
+</HEAD>
+<BODY>
+
+<H1>PL/SQL Elapsed Time (microsecs) Analysis</H1>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<H3>The PL/SQL Hierarchical Profiler produces a collection of reports that
+present information derived from the profiler's output log in a variety
+of formats.  The following reports have been found to be the most generally
+useful as starting points for browsing:</H3>
+<UL>
+<LI> <A HREF = #hprof_ts>
+     Function Elapsed Time (microsecs) Data sorted by Total Subtree Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_tf>
+     Function Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_sid>
+     SQL ID Elapsed Time (microsecs) Data sorted by SQL ID
+     </A> </LI>
+</UL>
+<H3>In addition, the following reports are also available:</H3>
+<UL>
+<LI> <A HREF = #hprof_fn>
+     Function Elapsed Time (microsecs) Data sorted by Function Name
+     </A> </LI>
+<LI> <A HREF = #hprof_td>
+     Function Elapsed Time (microsecs) Data sorted by Total Descendants Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_tc>
+     Function Elapsed Time (microsecs) Data sorted by Total Function Call Count
+     </A> </LI>
+<LI> <A HREF = #hprof_ms>
+     Function Elapsed Time (microsecs) Data sorted by Mean Subtree Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_mf>
+     Function Elapsed Time (microsecs) Data sorted by Mean Function Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_md>
+     Function Elapsed Time (microsecs) Data sorted by Mean Descendants Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_2f>
+     Module Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_2n>
+     Module Elapsed Time (microsecs) Data sorted by Module Name
+     </A> </LI>
+<LI> <A HREF = #hprof_2c>
+     Module Elapsed Time (microsecs) Data sorted by Total Function Call Count
+     </A> </LI>
+<LI> <A HREF = #hprof_nsf>
+     Namespace Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)
+     </A> </LI>
+<LI> <A HREF = #hprof_nsp>
+     Namespace Elapsed Time (microsecs) Data sorted by Namespace
+     </A> </LI>
+<LI> <A HREF = #hprof_nsc>
+     Namespace Elapsed Time (microsecs) Data sorted by Total Function Call Count
+     </A> </LI>
+<LI> <A HREF = #hprof_pc>
+     Parents and Children Elapsed Time (microsecs) Data
+     </A> </LI>
+</UL>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_ts><TITLE>Function Elapsed Time (microsecs) Data sorted by Total Subtree Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Total Subtree Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfsh1">Subtree</TH>
+<TH ID="tfsh2">Ind%</TH>
+<TH ID="tfsh3">Function</TH>
+<TH ID="tfsh4">Ind%</TH>
+<TH ID="tfsh5">Descendants</TH>
+<TH ID="tfsh6">Ind%</TH>
+<TH ID="tfsh7">Calls</TH>
+<TH ID="tfsh8">Ind%</TH>
+<TH ID="tfsh9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfsh10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfsh11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfsh1"><B>6673</B></TD>
+<TD HEADERS="r1 tfsh2"><B> 100%</B></TD>
+<TD HEADERS="r1 tfsh3">39</TD>
+<TD HEADERS="r1 tfsh4"> 0.6%</TD>
+<TD HEADERS="r1 tfsh5">6634</TD>
+<TD HEADERS="r1 tfsh6">99.4%</TD>
+<TD HEADERS="r1 tfsh7">8</TD>
+<TD HEADERS="r1 tfsh8">28.6%</TD>
+<TD HEADERS="r1 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfsh1"><B>6634</B></TD>
+<TD HEADERS="r2 tfsh2"><B>99.4%</B></TD>
+<TD HEADERS="r2 tfsh3">467</TD>
+<TD HEADERS="r2 tfsh4"> 7.0%</TD>
+<TD HEADERS="r2 tfsh5">6167</TD>
+<TD HEADERS="r2 tfsh6">92.4%</TD>
+<TD HEADERS="r2 tfsh7">8</TD>
+<TD HEADERS="r2 tfsh8">28.6%</TD>
+<TD HEADERS="r2 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfsh1"><B>6152</B></TD>
+<TD HEADERS="r3 tfsh2"><B>92.2%</B></TD>
+<TD HEADERS="r3 tfsh3">202</TD>
+<TD HEADERS="r3 tfsh4"> 3.0%</TD>
+<TD HEADERS="r3 tfsh5">5950</TD>
+<TD HEADERS="r3 tfsh6">89.2%</TD>
+<TD HEADERS="r3 tfsh7">2</TD>
+<TD HEADERS="r3 tfsh8"> 7.1%</TD>
+<TD HEADERS="r3 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfsh1"><B>5179</B></TD>
+<TD HEADERS="r4 tfsh2"><B>77.6%</B></TD>
+<TD HEADERS="r4 tfsh3">5179</TD>
+<TD HEADERS="r4 tfsh4">77.6%</TD>
+<TD HEADERS="r4 tfsh5">0</TD>
+<TD HEADERS="r4 tfsh6"> 0.0%</TD>
+<TD HEADERS="r4 tfsh7">2</TD>
+<TD HEADERS="r4 tfsh8"> 7.1%</TD>
+<TD HEADERS="r4 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r4 tfsh10" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r4 tfsh11" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfsh1"><B>771</B></TD>
+<TD HEADERS="r5 tfsh2"><B>11.6%</B></TD>
+<TD HEADERS="r5 tfsh3">771</TD>
+<TD HEADERS="r5 tfsh4">11.6%</TD>
+<TD HEADERS="r5 tfsh5">0</TD>
+<TD HEADERS="r5 tfsh6"> 0.0%</TD>
+<TD HEADERS="r5 tfsh7">2</TD>
+<TD HEADERS="r5 tfsh8"> 7.1%</TD>
+<TD HEADERS="r5 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r5 tfsh10" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r5 tfsh11" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfsh1"><B>15</B></TD>
+<TD HEADERS="r6 tfsh2"><B> 0.2%</B></TD>
+<TD HEADERS="r6 tfsh3">15</TD>
+<TD HEADERS="r6 tfsh4"> 0.2%</TD>
+<TD HEADERS="r6 tfsh5">0</TD>
+<TD HEADERS="r6 tfsh6"> 0.0%</TD>
+<TD HEADERS="r6 tfsh7">5</TD>
+<TD HEADERS="r6 tfsh8">17.9%</TD>
+<TD HEADERS="r6 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfsh1"><B>0</B></TD>
+<TD HEADERS="r7 tfsh2"><B> 0.0%</B></TD>
+<TD HEADERS="r7 tfsh3">0</TD>
+<TD HEADERS="r7 tfsh4"> 0.0%</TD>
+<TD HEADERS="r7 tfsh5">0</TD>
+<TD HEADERS="r7 tfsh6"> 0.0%</TD>
+<TD HEADERS="r7 tfsh7">1</TD>
+<TD HEADERS="r7 tfsh8"> 3.6%</TD>
+<TD HEADERS="r7 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_tf><TITLE>Function Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tffh1">Subtree</TH>
+<TH ID="tffh2">Ind%</TH>
+<TH ID="tffh3">Function</TH>
+<TH ID="tffh4">Ind%</TH>
+<TH ID="tffh5">Cum%</TH>
+<TH ID="tffh6">Descendants</TH>
+<TH ID="tffh7">Ind%</TH>
+<TH ID="tffh8">Calls</TH>
+<TH ID="tffh9">Ind%</TH>
+<TH ID="tffh10" ALIGN=LEFT>Function Name</TH>
+<TH ID="tffh11" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tffh12" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tffh1">5179</TD>
+<TD HEADERS="r1 tffh2">77.6%</TD>
+<TD HEADERS="r1 tffh3"><B>5179</B></TD>
+<TD HEADERS="r1 tffh4"><B>77.6%</B></TD>
+<TD HEADERS="r1 tffh5"><B>77.6%</B></TD>
+<TD HEADERS="r1 tffh6">0</TD>
+<TD HEADERS="r1 tffh7"> 0.0%</TD>
+<TD HEADERS="r1 tffh8">2</TD>
+<TD HEADERS="r1 tffh9"> 7.1%</TD>
+<TD HEADERS="r1 tffh10" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r1 tffh11" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r1 tffh12" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tffh1">771</TD>
+<TD HEADERS="r2 tffh2">11.6%</TD>
+<TD HEADERS="r2 tffh3"><B>771</B></TD>
+<TD HEADERS="r2 tffh4"><B>11.6%</B></TD>
+<TD HEADERS="r2 tffh5"><B>89.2%</B></TD>
+<TD HEADERS="r2 tffh6">0</TD>
+<TD HEADERS="r2 tffh7"> 0.0%</TD>
+<TD HEADERS="r2 tffh8">2</TD>
+<TD HEADERS="r2 tffh9"> 7.1%</TD>
+<TD HEADERS="r2 tffh10" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r2 tffh11" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r2 tffh12" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tffh1">6634</TD>
+<TD HEADERS="r3 tffh2">99.4%</TD>
+<TD HEADERS="r3 tffh3"><B>467</B></TD>
+<TD HEADERS="r3 tffh4"><B> 7.0%</B></TD>
+<TD HEADERS="r3 tffh5"><B>96.2%</B></TD>
+<TD HEADERS="r3 tffh6">6167</TD>
+<TD HEADERS="r3 tffh7">92.4%</TD>
+<TD HEADERS="r3 tffh8">8</TD>
+<TD HEADERS="r3 tffh9">28.6%</TD>
+<TD HEADERS="r3 tffh10" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tffh1">6152</TD>
+<TD HEADERS="r4 tffh2">92.2%</TD>
+<TD HEADERS="r4 tffh3"><B>202</B></TD>
+<TD HEADERS="r4 tffh4"><B> 3.0%</B></TD>
+<TD HEADERS="r4 tffh5"><B>99.2%</B></TD>
+<TD HEADERS="r4 tffh6">5950</TD>
+<TD HEADERS="r4 tffh7">89.2%</TD>
+<TD HEADERS="r4 tffh8">2</TD>
+<TD HEADERS="r4 tffh9"> 7.1%</TD>
+<TD HEADERS="r4 tffh10" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tffh1">6673</TD>
+<TD HEADERS="r5 tffh2"> 100%</TD>
+<TD HEADERS="r5 tffh3"><B>39</B></TD>
+<TD HEADERS="r5 tffh4"><B> 0.6%</B></TD>
+<TD HEADERS="r5 tffh5"><B>99.8%</B></TD>
+<TD HEADERS="r5 tffh6">6634</TD>
+<TD HEADERS="r5 tffh7">99.4%</TD>
+<TD HEADERS="r5 tffh8">8</TD>
+<TD HEADERS="r5 tffh9">28.6%</TD>
+<TD HEADERS="r5 tffh10" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tffh1">15</TD>
+<TD HEADERS="r6 tffh2"> 0.2%</TD>
+<TD HEADERS="r6 tffh3"><B>15</B></TD>
+<TD HEADERS="r6 tffh4"><B> 0.2%</B></TD>
+<TD HEADERS="r6 tffh5"><B> 100%</B></TD>
+<TD HEADERS="r6 tffh6">0</TD>
+<TD HEADERS="r6 tffh7"> 0.0%</TD>
+<TD HEADERS="r6 tffh8">5</TD>
+<TD HEADERS="r6 tffh9">17.9%</TD>
+<TD HEADERS="r6 tffh10" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tffh1">0</TD>
+<TD HEADERS="r7 tffh2"> 0.0%</TD>
+<TD HEADERS="r7 tffh3"><B>0</B></TD>
+<TD HEADERS="r7 tffh4"><B> 0.0%</B></TD>
+<TD HEADERS="r7 tffh5"><B> 100%</B></TD>
+<TD HEADERS="r7 tffh6">0</TD>
+<TD HEADERS="r7 tffh7"> 0.0%</TD>
+<TD HEADERS="r7 tffh8">1</TD>
+<TD HEADERS="r7 tffh9"> 3.6%</TD>
+<TD HEADERS="r7 tffh10" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_sid><TITLE>SQL ID Elapsed Time (microsecs) Data sorted by SQL ID for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>SQL ID Elapsed Time (microsecs) Data sorted by SQL ID</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tsih1" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tsih2" ALIGN=LEFT>SQL TEXT</TH>
+<TH ID="tsih3">Function</TH>
+<TH ID="tsih4">Ind%</TH>
+<TH ID="tsih5">Calls</TH>
+<TH ID="tsih6">Ind%</TH>
+</TR>
+<TR ALIGN=RIGHT><TD HEADERS="r1 tsih1" ALIGN=LEFT><B>3zjmncb1j06t6</B></TD><TD HEADERS="r1 tsih2" ALIGN=LEFT><B>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</B></TD><TD ID="r1" HEADERS="tsih3">515</TD>
+<TD HEADERS="r1 tsih4"> 7.7%</TD>
+<TD HEADERS="r1 tsih5">2</TD>
+<TD HEADERS="r1 tsih6"> 7.1%</TD>
+</TR>
+<TR ALIGN=RIGHT><TD HEADERS="r2 tsih1" ALIGN=LEFT><B>4zv5t057j52sn</B></TD><TD HEADERS="r2 tsih2" ALIGN=LEFT><B>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</B></TD><TD ID="r2" HEADERS="tsih3">4222</TD>
+<TD HEADERS="r2 tsih4">63.3%</TD>
+<TD HEADERS="r2 tsih5">2</TD>
+<TD HEADERS="r2 tsih6"> 7.1%</TD>
+</TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_fn><TITLE>Function Elapsed Time (microsecs) Data sorted by Function Name for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Function Name</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfsh1">Subtree</TH>
+<TH ID="tfsh2">Ind%</TH>
+<TH ID="tfsh3">Function</TH>
+<TH ID="tfsh4">Ind%</TH>
+<TH ID="tfsh5">Descendants</TH>
+<TH ID="tfsh6">Ind%</TH>
+<TH ID="tfsh7">Calls</TH>
+<TH ID="tfsh8">Ind%</TH>
+<TH ID="tfsh9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfsh10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfsh11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfsh1">6634</TD>
+<TD HEADERS="r1 tfsh2">99.4%</TD>
+<TD HEADERS="r1 tfsh3">467</TD>
+<TD HEADERS="r1 tfsh4"> 7.0%</TD>
+<TD HEADERS="r1 tfsh5">6167</TD>
+<TD HEADERS="r1 tfsh6">92.4%</TD>
+<TD HEADERS="r1 tfsh7">8</TD>
+<TD HEADERS="r1 tfsh8">28.6%</TD>
+<TD HEADERS="r1 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" ><B>__anonymous_block </B></A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfsh1">6673</TD>
+<TD HEADERS="r2 tfsh2"> 100%</TD>
+<TD HEADERS="r2 tfsh3">39</TD>
+<TD HEADERS="r2 tfsh4"> 0.6%</TD>
+<TD HEADERS="r2 tfsh5">6634</TD>
+<TD HEADERS="r2 tfsh6">99.4%</TD>
+<TD HEADERS="r2 tfsh7">8</TD>
+<TD HEADERS="r2 tfsh8">28.6%</TD>
+<TD HEADERS="r2 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" ><B>__plsql_vm </B></A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfsh1">6152</TD>
+<TD HEADERS="r3 tfsh2">92.2%</TD>
+<TD HEADERS="r3 tfsh3">202</TD>
+<TD HEADERS="r3 tfsh4"> 3.0%</TD>
+<TD HEADERS="r3 tfsh5">5950</TD>
+<TD HEADERS="r3 tfsh6">89.2%</TD>
+<TD HEADERS="r3 tfsh7">2</TD>
+<TD HEADERS="r3 tfsh8"> 7.1%</TD>
+<TD HEADERS="r3 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)><B>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</B></A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfsh1">0</TD>
+<TD HEADERS="r4 tfsh2"> 0.0%</TD>
+<TD HEADERS="r4 tfsh3">0</TD>
+<TD HEADERS="r4 tfsh4"> 0.0%</TD>
+<TD HEADERS="r4 tfsh5">0</TD>
+<TD HEADERS="r4 tfsh6"> 0.0%</TD>
+<TD HEADERS="r4 tfsh7">1</TD>
+<TD HEADERS="r4 tfsh8"> 3.6%</TD>
+<TD HEADERS="r4 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)><B>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</B></A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfsh1">15</TD>
+<TD HEADERS="r5 tfsh2"> 0.2%</TD>
+<TD HEADERS="r5 tfsh3">15</TD>
+<TD HEADERS="r5 tfsh4"> 0.2%</TD>
+<TD HEADERS="r5 tfsh5">0</TD>
+<TD HEADERS="r5 tfsh6"> 0.0%</TD>
+<TD HEADERS="r5 tfsh7">5</TD>
+<TD HEADERS="r5 tfsh8">17.9%</TD>
+<TD HEADERS="r5 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)><B>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</B></A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfsh1">5179</TD>
+<TD HEADERS="r6 tfsh2">77.6%</TD>
+<TD HEADERS="r6 tfsh3">5179</TD>
+<TD HEADERS="r6 tfsh4">77.6%</TD>
+<TD HEADERS="r6 tfsh5">0</TD>
+<TD HEADERS="r6 tfsh6"> 0.0%</TD>
+<TD HEADERS="r6 tfsh7">2</TD>
+<TD HEADERS="r6 tfsh8"> 7.1%</TD>
+<TD HEADERS="r6 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)><B>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</B></A></TD><TD HEADERS="r6 tfsh10" ALIGN=LEFT><B>4zv5t057j52sn</B></TD><TD HEADERS="r6 tfsh11" ALIGN=LEFT><B>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</B></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfsh1">771</TD>
+<TD HEADERS="r7 tfsh2">11.6%</TD>
+<TD HEADERS="r7 tfsh3">771</TD>
+<TD HEADERS="r7 tfsh4">11.6%</TD>
+<TD HEADERS="r7 tfsh5">0</TD>
+<TD HEADERS="r7 tfsh6"> 0.0%</TD>
+<TD HEADERS="r7 tfsh7">2</TD>
+<TD HEADERS="r7 tfsh8"> 7.1%</TD>
+<TD HEADERS="r7 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)><B>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</B></A></TD><TD HEADERS="r7 tfsh10" ALIGN=LEFT><B>3zjmncb1j06t6</B></TD><TD HEADERS="r7 tfsh11" ALIGN=LEFT><B>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</B></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_td><TITLE>Function Elapsed Time (microsecs) Data sorted by Total Descendants Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Total Descendants Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfsh1">Subtree</TH>
+<TH ID="tfsh2">Ind%</TH>
+<TH ID="tfsh3">Function</TH>
+<TH ID="tfsh4">Ind%</TH>
+<TH ID="tfsh5">Descendants</TH>
+<TH ID="tfsh6">Ind%</TH>
+<TH ID="tfsh7">Calls</TH>
+<TH ID="tfsh8">Ind%</TH>
+<TH ID="tfsh9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfsh10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfsh11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfsh1">6673</TD>
+<TD HEADERS="r1 tfsh2"> 100%</TD>
+<TD HEADERS="r1 tfsh3">39</TD>
+<TD HEADERS="r1 tfsh4"> 0.6%</TD>
+<TD HEADERS="r1 tfsh5"><B>6634</B></TD>
+<TD HEADERS="r1 tfsh6"><B>99.4%</B></TD>
+<TD HEADERS="r1 tfsh7">8</TD>
+<TD HEADERS="r1 tfsh8">28.6%</TD>
+<TD HEADERS="r1 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfsh1">6634</TD>
+<TD HEADERS="r2 tfsh2">99.4%</TD>
+<TD HEADERS="r2 tfsh3">467</TD>
+<TD HEADERS="r2 tfsh4"> 7.0%</TD>
+<TD HEADERS="r2 tfsh5"><B>6167</B></TD>
+<TD HEADERS="r2 tfsh6"><B>92.4%</B></TD>
+<TD HEADERS="r2 tfsh7">8</TD>
+<TD HEADERS="r2 tfsh8">28.6%</TD>
+<TD HEADERS="r2 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfsh1">6152</TD>
+<TD HEADERS="r3 tfsh2">92.2%</TD>
+<TD HEADERS="r3 tfsh3">202</TD>
+<TD HEADERS="r3 tfsh4"> 3.0%</TD>
+<TD HEADERS="r3 tfsh5"><B>5950</B></TD>
+<TD HEADERS="r3 tfsh6"><B>89.2%</B></TD>
+<TD HEADERS="r3 tfsh7">2</TD>
+<TD HEADERS="r3 tfsh8"> 7.1%</TD>
+<TD HEADERS="r3 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfsh1">0</TD>
+<TD HEADERS="r4 tfsh2"> 0.0%</TD>
+<TD HEADERS="r4 tfsh3">0</TD>
+<TD HEADERS="r4 tfsh4"> 0.0%</TD>
+<TD HEADERS="r4 tfsh5"><B>0</B></TD>
+<TD HEADERS="r4 tfsh6"><B> 0.0%</B></TD>
+<TD HEADERS="r4 tfsh7">1</TD>
+<TD HEADERS="r4 tfsh8"> 3.6%</TD>
+<TD HEADERS="r4 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfsh1">5179</TD>
+<TD HEADERS="r5 tfsh2">77.6%</TD>
+<TD HEADERS="r5 tfsh3">5179</TD>
+<TD HEADERS="r5 tfsh4">77.6%</TD>
+<TD HEADERS="r5 tfsh5"><B>0</B></TD>
+<TD HEADERS="r5 tfsh6"><B> 0.0%</B></TD>
+<TD HEADERS="r5 tfsh7">2</TD>
+<TD HEADERS="r5 tfsh8"> 7.1%</TD>
+<TD HEADERS="r5 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r5 tfsh10" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r5 tfsh11" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfsh1">15</TD>
+<TD HEADERS="r6 tfsh2"> 0.2%</TD>
+<TD HEADERS="r6 tfsh3">15</TD>
+<TD HEADERS="r6 tfsh4"> 0.2%</TD>
+<TD HEADERS="r6 tfsh5"><B>0</B></TD>
+<TD HEADERS="r6 tfsh6"><B> 0.0%</B></TD>
+<TD HEADERS="r6 tfsh7">5</TD>
+<TD HEADERS="r6 tfsh8">17.9%</TD>
+<TD HEADERS="r6 tfsh9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfsh1">771</TD>
+<TD HEADERS="r7 tfsh2">11.6%</TD>
+<TD HEADERS="r7 tfsh3">771</TD>
+<TD HEADERS="r7 tfsh4">11.6%</TD>
+<TD HEADERS="r7 tfsh5"><B>0</B></TD>
+<TD HEADERS="r7 tfsh6"><B> 0.0%</B></TD>
+<TD HEADERS="r7 tfsh7">2</TD>
+<TD HEADERS="r7 tfsh8"> 7.1%</TD>
+<TD HEADERS="r7 tfsh9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r7 tfsh10" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r7 tfsh11" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_tc><TITLE>Function Elapsed Time (microsecs) Data sorted by Total Function Call Count for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Total Function Call Count</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfch1">Subtree</TH>
+<TH ID="tfch2">Ind%</TH>
+<TH ID="tfch3">Function</TH>
+<TH ID="tfch4">Ind%</TH>
+<TH ID="tfch5">Descendants</TH>
+<TH ID="tfch6">Ind%</TH>
+<TH ID="tfch7">Calls</TH>
+<TH ID="tfch8">Ind%</TH>
+<TH ID="tfch9">Cum%</TH>
+<TH ID="tfch10" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfch11" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfch12" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfch1">6634</TD>
+<TD HEADERS="r1 tfch2">99.4%</TD>
+<TD HEADERS="r1 tfch3">467</TD>
+<TD HEADERS="r1 tfch4"> 7.0%</TD>
+<TD HEADERS="r1 tfch5">6167</TD>
+<TD HEADERS="r1 tfch6">92.4%</TD>
+<TD HEADERS="r1 tfch7"><B>8</B></TD>
+<TD HEADERS="r1 tfch8"><B>28.6%</B></TD>
+<TD HEADERS="r1 tfch9"><B>28.6%</B></TD>
+<TD HEADERS="r1 tfch10" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfch1">6673</TD>
+<TD HEADERS="r2 tfch2"> 100%</TD>
+<TD HEADERS="r2 tfch3">39</TD>
+<TD HEADERS="r2 tfch4"> 0.6%</TD>
+<TD HEADERS="r2 tfch5">6634</TD>
+<TD HEADERS="r2 tfch6">99.4%</TD>
+<TD HEADERS="r2 tfch7"><B>8</B></TD>
+<TD HEADERS="r2 tfch8"><B>28.6%</B></TD>
+<TD HEADERS="r2 tfch9"><B>57.1%</B></TD>
+<TD HEADERS="r2 tfch10" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfch1">15</TD>
+<TD HEADERS="r3 tfch2"> 0.2%</TD>
+<TD HEADERS="r3 tfch3">15</TD>
+<TD HEADERS="r3 tfch4"> 0.2%</TD>
+<TD HEADERS="r3 tfch5">0</TD>
+<TD HEADERS="r3 tfch6"> 0.0%</TD>
+<TD HEADERS="r3 tfch7"><B>5</B></TD>
+<TD HEADERS="r3 tfch8"><B>17.9%</B></TD>
+<TD HEADERS="r3 tfch9"><B>75.0%</B></TD>
+<TD HEADERS="r3 tfch10" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfch1">6152</TD>
+<TD HEADERS="r4 tfch2">92.2%</TD>
+<TD HEADERS="r4 tfch3">202</TD>
+<TD HEADERS="r4 tfch4"> 3.0%</TD>
+<TD HEADERS="r4 tfch5">5950</TD>
+<TD HEADERS="r4 tfch6">89.2%</TD>
+<TD HEADERS="r4 tfch7"><B>2</B></TD>
+<TD HEADERS="r4 tfch8"><B> 7.1%</B></TD>
+<TD HEADERS="r4 tfch9"><B>82.1%</B></TD>
+<TD HEADERS="r4 tfch10" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfch1">5179</TD>
+<TD HEADERS="r5 tfch2">77.6%</TD>
+<TD HEADERS="r5 tfch3">5179</TD>
+<TD HEADERS="r5 tfch4">77.6%</TD>
+<TD HEADERS="r5 tfch5">0</TD>
+<TD HEADERS="r5 tfch6"> 0.0%</TD>
+<TD HEADERS="r5 tfch7"><B>2</B></TD>
+<TD HEADERS="r5 tfch8"><B> 7.1%</B></TD>
+<TD HEADERS="r5 tfch9"><B>89.3%</B></TD>
+<TD HEADERS="r5 tfch10" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r5 tfch11" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r5 tfch12" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfch1">771</TD>
+<TD HEADERS="r6 tfch2">11.6%</TD>
+<TD HEADERS="r6 tfch3">771</TD>
+<TD HEADERS="r6 tfch4">11.6%</TD>
+<TD HEADERS="r6 tfch5">0</TD>
+<TD HEADERS="r6 tfch6"> 0.0%</TD>
+<TD HEADERS="r6 tfch7"><B>2</B></TD>
+<TD HEADERS="r6 tfch8"><B> 7.1%</B></TD>
+<TD HEADERS="r6 tfch9"><B>96.4%</B></TD>
+<TD HEADERS="r6 tfch10" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r6 tfch11" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r6 tfch12" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfch1">0</TD>
+<TD HEADERS="r7 tfch2"> 0.0%</TD>
+<TD HEADERS="r7 tfch3">0</TD>
+<TD HEADERS="r7 tfch4"> 0.0%</TD>
+<TD HEADERS="r7 tfch5">0</TD>
+<TD HEADERS="r7 tfch6"> 0.0%</TD>
+<TD HEADERS="r7 tfch7"><B>1</B></TD>
+<TD HEADERS="r7 tfch8"><B> 3.6%</B></TD>
+<TD HEADERS="r7 tfch9"><B> 100%</B></TD>
+<TD HEADERS="r7 tfch10" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_ms><TITLE>Function Elapsed Time (microsecs) Data sorted by Mean Subtree Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Mean Subtree Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfmh1">Subtree</TH>
+<TH ID="tfmh2">Ind%</TH>
+<TH ID="tfmh3">Function</TH>
+<TH ID="tfmh4">Ind%</TH>
+<TH ID="tfmh5">Descendants</TH>
+<TH ID="tfmh6">Ind%</TH>
+<TH ID="tfmh7">Calls</TH>
+<TH ID="tfmh8">Ind%</TH>
+<TH ID="tfmh9">Mean Subtree</TH>
+<TH ID="tfmh10">Mean Function</TH>
+<TH ID="tfmh11">Mean Descendants</TH>
+<TH ID="tfmh12" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfmh13" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfmh14" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfmh1">6152</TD>
+<TD HEADERS="r1 tfmh2">92.2%</TD>
+<TD HEADERS="r1 tfmh3">202</TD>
+<TD HEADERS="r1 tfmh4"> 3.0%</TD>
+<TD HEADERS="r1 tfmh5">5950</TD>
+<TD HEADERS="r1 tfmh6">89.2%</TD>
+<TD HEADERS="r1 tfmh7">2</TD>
+<TD HEADERS="r1 tfmh8"> 7.1%</TD>
+<TD HEADERS="r1 tfmh9"><B>3076</B></TD>
+<TD HEADERS="r1 tfmh10">101</TD>
+<TD HEADERS="r1 tfmh11">2975</TD>
+<TD HEADERS="r1 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfmh1">5179</TD>
+<TD HEADERS="r2 tfmh2">77.6%</TD>
+<TD HEADERS="r2 tfmh3">5179</TD>
+<TD HEADERS="r2 tfmh4">77.6%</TD>
+<TD HEADERS="r2 tfmh5">0</TD>
+<TD HEADERS="r2 tfmh6"> 0.0%</TD>
+<TD HEADERS="r2 tfmh7">2</TD>
+<TD HEADERS="r2 tfmh8"> 7.1%</TD>
+<TD HEADERS="r2 tfmh9"><B>2590</B></TD>
+<TD HEADERS="r2 tfmh10">2590</TD>
+<TD HEADERS="r2 tfmh11">0</TD>
+<TD HEADERS="r2 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r2 tfmh13" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r2 tfmh14" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfmh1">6673</TD>
+<TD HEADERS="r3 tfmh2"> 100%</TD>
+<TD HEADERS="r3 tfmh3">39</TD>
+<TD HEADERS="r3 tfmh4"> 0.6%</TD>
+<TD HEADERS="r3 tfmh5">6634</TD>
+<TD HEADERS="r3 tfmh6">99.4%</TD>
+<TD HEADERS="r3 tfmh7">8</TD>
+<TD HEADERS="r3 tfmh8">28.6%</TD>
+<TD HEADERS="r3 tfmh9"><B>834</B></TD>
+<TD HEADERS="r3 tfmh10">5</TD>
+<TD HEADERS="r3 tfmh11">829</TD>
+<TD HEADERS="r3 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfmh1">6634</TD>
+<TD HEADERS="r4 tfmh2">99.4%</TD>
+<TD HEADERS="r4 tfmh3">467</TD>
+<TD HEADERS="r4 tfmh4"> 7.0%</TD>
+<TD HEADERS="r4 tfmh5">6167</TD>
+<TD HEADERS="r4 tfmh6">92.4%</TD>
+<TD HEADERS="r4 tfmh7">8</TD>
+<TD HEADERS="r4 tfmh8">28.6%</TD>
+<TD HEADERS="r4 tfmh9"><B>829</B></TD>
+<TD HEADERS="r4 tfmh10">58</TD>
+<TD HEADERS="r4 tfmh11">771</TD>
+<TD HEADERS="r4 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfmh1">771</TD>
+<TD HEADERS="r5 tfmh2">11.6%</TD>
+<TD HEADERS="r5 tfmh3">771</TD>
+<TD HEADERS="r5 tfmh4">11.6%</TD>
+<TD HEADERS="r5 tfmh5">0</TD>
+<TD HEADERS="r5 tfmh6"> 0.0%</TD>
+<TD HEADERS="r5 tfmh7">2</TD>
+<TD HEADERS="r5 tfmh8"> 7.1%</TD>
+<TD HEADERS="r5 tfmh9"><B>386</B></TD>
+<TD HEADERS="r5 tfmh10">386</TD>
+<TD HEADERS="r5 tfmh11">0</TD>
+<TD HEADERS="r5 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r5 tfmh13" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r5 tfmh14" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfmh1">15</TD>
+<TD HEADERS="r6 tfmh2"> 0.2%</TD>
+<TD HEADERS="r6 tfmh3">15</TD>
+<TD HEADERS="r6 tfmh4"> 0.2%</TD>
+<TD HEADERS="r6 tfmh5">0</TD>
+<TD HEADERS="r6 tfmh6"> 0.0%</TD>
+<TD HEADERS="r6 tfmh7">5</TD>
+<TD HEADERS="r6 tfmh8">17.9%</TD>
+<TD HEADERS="r6 tfmh9"><B>3</B></TD>
+<TD HEADERS="r6 tfmh10">3</TD>
+<TD HEADERS="r6 tfmh11">0</TD>
+<TD HEADERS="r6 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfmh1">0</TD>
+<TD HEADERS="r7 tfmh2"> 0.0%</TD>
+<TD HEADERS="r7 tfmh3">0</TD>
+<TD HEADERS="r7 tfmh4"> 0.0%</TD>
+<TD HEADERS="r7 tfmh5">0</TD>
+<TD HEADERS="r7 tfmh6"> 0.0%</TD>
+<TD HEADERS="r7 tfmh7">1</TD>
+<TD HEADERS="r7 tfmh8"> 3.6%</TD>
+<TD HEADERS="r7 tfmh9"><B>0</B></TD>
+<TD HEADERS="r7 tfmh10">0</TD>
+<TD HEADERS="r7 tfmh11">0</TD>
+<TD HEADERS="r7 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_mf><TITLE>Function Elapsed Time (microsecs) Data sorted by Mean Function Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Mean Function Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfmh1">Subtree</TH>
+<TH ID="tfmh2">Ind%</TH>
+<TH ID="tfmh3">Function</TH>
+<TH ID="tfmh4">Ind%</TH>
+<TH ID="tfmh5">Descendants</TH>
+<TH ID="tfmh6">Ind%</TH>
+<TH ID="tfmh7">Calls</TH>
+<TH ID="tfmh8">Ind%</TH>
+<TH ID="tfmh9">Mean Subtree</TH>
+<TH ID="tfmh10">Mean Function</TH>
+<TH ID="tfmh11">Mean Descendants</TH>
+<TH ID="tfmh12" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfmh13" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfmh14" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfmh1">5179</TD>
+<TD HEADERS="r1 tfmh2">77.6%</TD>
+<TD HEADERS="r1 tfmh3">5179</TD>
+<TD HEADERS="r1 tfmh4">77.6%</TD>
+<TD HEADERS="r1 tfmh5">0</TD>
+<TD HEADERS="r1 tfmh6"> 0.0%</TD>
+<TD HEADERS="r1 tfmh7">2</TD>
+<TD HEADERS="r1 tfmh8"> 7.1%</TD>
+<TD HEADERS="r1 tfmh9">2590</TD>
+<TD HEADERS="r1 tfmh10"><B>2590</B></TD>
+<TD HEADERS="r1 tfmh11">0</TD>
+<TD HEADERS="r1 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r1 tfmh13" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r1 tfmh14" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfmh1">771</TD>
+<TD HEADERS="r2 tfmh2">11.6%</TD>
+<TD HEADERS="r2 tfmh3">771</TD>
+<TD HEADERS="r2 tfmh4">11.6%</TD>
+<TD HEADERS="r2 tfmh5">0</TD>
+<TD HEADERS="r2 tfmh6"> 0.0%</TD>
+<TD HEADERS="r2 tfmh7">2</TD>
+<TD HEADERS="r2 tfmh8"> 7.1%</TD>
+<TD HEADERS="r2 tfmh9">386</TD>
+<TD HEADERS="r2 tfmh10"><B>386</B></TD>
+<TD HEADERS="r2 tfmh11">0</TD>
+<TD HEADERS="r2 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r2 tfmh13" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r2 tfmh14" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfmh1">6152</TD>
+<TD HEADERS="r3 tfmh2">92.2%</TD>
+<TD HEADERS="r3 tfmh3">202</TD>
+<TD HEADERS="r3 tfmh4"> 3.0%</TD>
+<TD HEADERS="r3 tfmh5">5950</TD>
+<TD HEADERS="r3 tfmh6">89.2%</TD>
+<TD HEADERS="r3 tfmh7">2</TD>
+<TD HEADERS="r3 tfmh8"> 7.1%</TD>
+<TD HEADERS="r3 tfmh9">3076</TD>
+<TD HEADERS="r3 tfmh10"><B>101</B></TD>
+<TD HEADERS="r3 tfmh11">2975</TD>
+<TD HEADERS="r3 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfmh1">6634</TD>
+<TD HEADERS="r4 tfmh2">99.4%</TD>
+<TD HEADERS="r4 tfmh3">467</TD>
+<TD HEADERS="r4 tfmh4"> 7.0%</TD>
+<TD HEADERS="r4 tfmh5">6167</TD>
+<TD HEADERS="r4 tfmh6">92.4%</TD>
+<TD HEADERS="r4 tfmh7">8</TD>
+<TD HEADERS="r4 tfmh8">28.6%</TD>
+<TD HEADERS="r4 tfmh9">829</TD>
+<TD HEADERS="r4 tfmh10"><B>58</B></TD>
+<TD HEADERS="r4 tfmh11">771</TD>
+<TD HEADERS="r4 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfmh1">6673</TD>
+<TD HEADERS="r5 tfmh2"> 100%</TD>
+<TD HEADERS="r5 tfmh3">39</TD>
+<TD HEADERS="r5 tfmh4"> 0.6%</TD>
+<TD HEADERS="r5 tfmh5">6634</TD>
+<TD HEADERS="r5 tfmh6">99.4%</TD>
+<TD HEADERS="r5 tfmh7">8</TD>
+<TD HEADERS="r5 tfmh8">28.6%</TD>
+<TD HEADERS="r5 tfmh9">834</TD>
+<TD HEADERS="r5 tfmh10"><B>5</B></TD>
+<TD HEADERS="r5 tfmh11">829</TD>
+<TD HEADERS="r5 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfmh1">15</TD>
+<TD HEADERS="r6 tfmh2"> 0.2%</TD>
+<TD HEADERS="r6 tfmh3">15</TD>
+<TD HEADERS="r6 tfmh4"> 0.2%</TD>
+<TD HEADERS="r6 tfmh5">0</TD>
+<TD HEADERS="r6 tfmh6"> 0.0%</TD>
+<TD HEADERS="r6 tfmh7">5</TD>
+<TD HEADERS="r6 tfmh8">17.9%</TD>
+<TD HEADERS="r6 tfmh9">3</TD>
+<TD HEADERS="r6 tfmh10"><B>3</B></TD>
+<TD HEADERS="r6 tfmh11">0</TD>
+<TD HEADERS="r6 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfmh1">0</TD>
+<TD HEADERS="r7 tfmh2"> 0.0%</TD>
+<TD HEADERS="r7 tfmh3">0</TD>
+<TD HEADERS="r7 tfmh4"> 0.0%</TD>
+<TD HEADERS="r7 tfmh5">0</TD>
+<TD HEADERS="r7 tfmh6"> 0.0%</TD>
+<TD HEADERS="r7 tfmh7">1</TD>
+<TD HEADERS="r7 tfmh8"> 3.6%</TD>
+<TD HEADERS="r7 tfmh9">0</TD>
+<TD HEADERS="r7 tfmh10"><B>0</B></TD>
+<TD HEADERS="r7 tfmh11">0</TD>
+<TD HEADERS="r7 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_md><TITLE>Function Elapsed Time (microsecs) Data sorted by Mean Descendants Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Function Elapsed Time (microsecs) Data sorted by Mean Descendants Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tfmh1">Subtree</TH>
+<TH ID="tfmh2">Ind%</TH>
+<TH ID="tfmh3">Function</TH>
+<TH ID="tfmh4">Ind%</TH>
+<TH ID="tfmh5">Descendants</TH>
+<TH ID="tfmh6">Ind%</TH>
+<TH ID="tfmh7">Calls</TH>
+<TH ID="tfmh8">Ind%</TH>
+<TH ID="tfmh9">Mean Subtree</TH>
+<TH ID="tfmh10">Mean Function</TH>
+<TH ID="tfmh11">Mean Descendants</TH>
+<TH ID="tfmh12" ALIGN=LEFT>Function Name</TH>
+<TH ID="tfmh13" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tfmh14" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tfmh1">6152</TD>
+<TD HEADERS="r1 tfmh2">92.2%</TD>
+<TD HEADERS="r1 tfmh3">202</TD>
+<TD HEADERS="r1 tfmh4"> 3.0%</TD>
+<TD HEADERS="r1 tfmh5">5950</TD>
+<TD HEADERS="r1 tfmh6">89.2%</TD>
+<TD HEADERS="r1 tfmh7">2</TD>
+<TD HEADERS="r1 tfmh8"> 7.1%</TD>
+<TD HEADERS="r1 tfmh9">3076</TD>
+<TD HEADERS="r1 tfmh10">101</TD>
+<TD HEADERS="r1 tfmh11"><B>2975</B></TD>
+<TD HEADERS="r1 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tfmh1">6673</TD>
+<TD HEADERS="r2 tfmh2"> 100%</TD>
+<TD HEADERS="r2 tfmh3">39</TD>
+<TD HEADERS="r2 tfmh4"> 0.6%</TD>
+<TD HEADERS="r2 tfmh5">6634</TD>
+<TD HEADERS="r2 tfmh6">99.4%</TD>
+<TD HEADERS="r2 tfmh7">8</TD>
+<TD HEADERS="r2 tfmh8">28.6%</TD>
+<TD HEADERS="r2 tfmh9">834</TD>
+<TD HEADERS="r2 tfmh10">5</TD>
+<TD HEADERS="r2 tfmh11"><B>829</B></TD>
+<TD HEADERS="r2 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tfmh1">6634</TD>
+<TD HEADERS="r3 tfmh2">99.4%</TD>
+<TD HEADERS="r3 tfmh3">467</TD>
+<TD HEADERS="r3 tfmh4"> 7.0%</TD>
+<TD HEADERS="r3 tfmh5">6167</TD>
+<TD HEADERS="r3 tfmh6">92.4%</TD>
+<TD HEADERS="r3 tfmh7">8</TD>
+<TD HEADERS="r3 tfmh8">28.6%</TD>
+<TD HEADERS="r3 tfmh9">829</TD>
+<TD HEADERS="r3 tfmh10">58</TD>
+<TD HEADERS="r3 tfmh11"><B>771</B></TD>
+<TD HEADERS="r3 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tfmh1">771</TD>
+<TD HEADERS="r4 tfmh2">11.6%</TD>
+<TD HEADERS="r4 tfmh3">771</TD>
+<TD HEADERS="r4 tfmh4">11.6%</TD>
+<TD HEADERS="r4 tfmh5">0</TD>
+<TD HEADERS="r4 tfmh6"> 0.0%</TD>
+<TD HEADERS="r4 tfmh7">2</TD>
+<TD HEADERS="r4 tfmh8"> 7.1%</TD>
+<TD HEADERS="r4 tfmh9">386</TD>
+<TD HEADERS="r4 tfmh10">386</TD>
+<TD HEADERS="r4 tfmh11"><B>0</B></TD>
+<TD HEADERS="r4 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r4 tfmh13" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r4 tfmh14" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tfmh1">15</TD>
+<TD HEADERS="r5 tfmh2"> 0.2%</TD>
+<TD HEADERS="r5 tfmh3">15</TD>
+<TD HEADERS="r5 tfmh4"> 0.2%</TD>
+<TD HEADERS="r5 tfmh5">0</TD>
+<TD HEADERS="r5 tfmh6"> 0.0%</TD>
+<TD HEADERS="r5 tfmh7">5</TD>
+<TD HEADERS="r5 tfmh8">17.9%</TD>
+<TD HEADERS="r5 tfmh9">3</TD>
+<TD HEADERS="r5 tfmh10">3</TD>
+<TD HEADERS="r5 tfmh11"><B>0</B></TD>
+<TD HEADERS="r5 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tfmh1">5179</TD>
+<TD HEADERS="r6 tfmh2">77.6%</TD>
+<TD HEADERS="r6 tfmh3">5179</TD>
+<TD HEADERS="r6 tfmh4">77.6%</TD>
+<TD HEADERS="r6 tfmh5">0</TD>
+<TD HEADERS="r6 tfmh6"> 0.0%</TD>
+<TD HEADERS="r6 tfmh7">2</TD>
+<TD HEADERS="r6 tfmh8"> 7.1%</TD>
+<TD HEADERS="r6 tfmh9">2590</TD>
+<TD HEADERS="r6 tfmh10">2590</TD>
+<TD HEADERS="r6 tfmh11"><B>0</B></TD>
+<TD HEADERS="r6 tfmh12" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r6 tfmh13" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r6 tfmh14" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tfmh1">0</TD>
+<TD HEADERS="r7 tfmh2"> 0.0%</TD>
+<TD HEADERS="r7 tfmh3">0</TD>
+<TD HEADERS="r7 tfmh4"> 0.0%</TD>
+<TD HEADERS="r7 tfmh5">0</TD>
+<TD HEADERS="r7 tfmh6"> 0.0%</TD>
+<TD HEADERS="r7 tfmh7">1</TD>
+<TD HEADERS="r7 tfmh8"> 3.6%</TD>
+<TD HEADERS="r7 tfmh9">0</TD>
+<TD HEADERS="r7 tfmh10">0</TD>
+<TD HEADERS="r7 tfmh11"><B>0</B></TD>
+<TD HEADERS="r7 tfmh12" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_2f><TITLE>Module Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Module Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tmfh1">Module</TH>
+<TH ID="tmfh2">Ind%</TH>
+<TH ID="tmfh3">Cum%</TH>
+<TH ID="tmfh4">Calls</TH>
+<TH ID="tmfh5">Ind%</TH>
+<TH ID="tmfh6" ALIGN=LEFT>Module Name</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tmfh1"><B>6152</B></TD>
+<TD HEADERS="r1 tmfh2"><B>92.2%</B></TD>
+<TD HEADERS="r1 tmfh3"><B>92.2%</B></TD>
+<TD HEADERS="r1 tmfh4">6</TD>
+<TD HEADERS="r1 tmfh5">21.4%</TD>
+<TD HEADERS="r1 tmfh6" ALIGN=LEFT>OE.CREDIT_CARD_PKG</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tmfh1"><B>506</B></TD>
+<TD HEADERS="r2 tmfh2"><B> 7.6%</B></TD>
+<TD HEADERS="r2 tmfh3"><B>99.8%</B></TD>
+<TD HEADERS="r2 tmfh4">16</TD>
+<TD HEADERS="r2 tmfh5">57.1%</TD>
+<TD HEADERS="r2 tmfh6" ALIGN=LEFT></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tmfh1"><B>15</B></TD>
+<TD HEADERS="r3 tmfh2"><B> 0.2%</B></TD>
+<TD HEADERS="r3 tmfh3"><B> 100%</B></TD>
+<TD HEADERS="r3 tmfh4">5</TD>
+<TD HEADERS="r3 tmfh5">17.9%</TD>
+<TD HEADERS="r3 tmfh6" ALIGN=LEFT>SYS.DBMS_OUTPUT</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tmfh1"><B>0</B></TD>
+<TD HEADERS="r4 tmfh2"><B> 0.0%</B></TD>
+<TD HEADERS="r4 tmfh3"><B> 100%</B></TD>
+<TD HEADERS="r4 tmfh4">1</TD>
+<TD HEADERS="r4 tmfh5"> 3.6%</TD>
+<TD HEADERS="r4 tmfh6" ALIGN=LEFT>SYS.DBMS_HPROF</TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_2n><TITLE>Module Elapsed Time (microsecs) Data sorted by Module Name for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Module Elapsed Time (microsecs) Data sorted by Module Name</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tmnh1">Module</TH>
+<TH ID="tmnh2">Ind%</TH>
+<TH ID="tmnh3">Calls</TH>
+<TH ID="tmnh4">Ind%</TH>
+<TH ID="tmnh5" ALIGN=LEFT>Module Name</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tmnh1">506</TD>
+<TD HEADERS="r1 tmnh2"> 7.6%</TD>
+<TD HEADERS="r1 tmnh3">16</TD>
+<TD HEADERS="r1 tmnh4">57.1%</TD>
+<TD HEADERS="r1 tmnh5" ALIGN=LEFT><B></B></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tmnh1">6152</TD>
+<TD HEADERS="r2 tmnh2">92.2%</TD>
+<TD HEADERS="r2 tmnh3">6</TD>
+<TD HEADERS="r2 tmnh4">21.4%</TD>
+<TD HEADERS="r2 tmnh5" ALIGN=LEFT><B>OE.CREDIT_CARD_PKG</B></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tmnh1">0</TD>
+<TD HEADERS="r3 tmnh2"> 0.0%</TD>
+<TD HEADERS="r3 tmnh3">1</TD>
+<TD HEADERS="r3 tmnh4"> 3.6%</TD>
+<TD HEADERS="r3 tmnh5" ALIGN=LEFT><B>SYS.DBMS_HPROF</B></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tmnh1">15</TD>
+<TD HEADERS="r4 tmnh2"> 0.2%</TD>
+<TD HEADERS="r4 tmnh3">5</TD>
+<TD HEADERS="r4 tmnh4">17.9%</TD>
+<TD HEADERS="r4 tmnh5" ALIGN=LEFT><B>SYS.DBMS_OUTPUT</B></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_2c><TITLE>Module Elapsed Time (microsecs) Data sorted by Total Function Call Count for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Module Elapsed Time (microsecs) Data sorted by Total Function Call Count</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tmch1">Module</TH>
+<TH ID="tmch2">Ind%</TH>
+<TH ID="tmch3">Calls</TH>
+<TH ID="tmch4">Ind%</TH>
+<TH ID="tmch5">Cum%</TH>
+<TH ID="tmch6" ALIGN=LEFT>Module Name</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tmch1">506</TD>
+<TD HEADERS="r1 tmch2"> 7.6%</TD>
+<TD HEADERS="r1 tmch3"><B>16</B></TD>
+<TD HEADERS="r1 tmch4"><B>57.1%</B></TD>
+<TD HEADERS="r1 tmch5"><B>57.1%</B></TD>
+<TD HEADERS="r1 tmch6" ALIGN=LEFT></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tmch1">6152</TD>
+<TD HEADERS="r2 tmch2">92.2%</TD>
+<TD HEADERS="r2 tmch3"><B>6</B></TD>
+<TD HEADERS="r2 tmch4"><B>21.4%</B></TD>
+<TD HEADERS="r2 tmch5"><B>78.6%</B></TD>
+<TD HEADERS="r2 tmch6" ALIGN=LEFT>OE.CREDIT_CARD_PKG</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tmch1">15</TD>
+<TD HEADERS="r3 tmch2"> 0.2%</TD>
+<TD HEADERS="r3 tmch3"><B>5</B></TD>
+<TD HEADERS="r3 tmch4"><B>17.9%</B></TD>
+<TD HEADERS="r3 tmch5"><B>96.4%</B></TD>
+<TD HEADERS="r3 tmch6" ALIGN=LEFT>SYS.DBMS_OUTPUT</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tmch1">0</TD>
+<TD HEADERS="r4 tmch2"> 0.0%</TD>
+<TD HEADERS="r4 tmch3"><B>1</B></TD>
+<TD HEADERS="r4 tmch4"><B> 3.6%</B></TD>
+<TD HEADERS="r4 tmch5"><B> 100%</B></TD>
+<TD HEADERS="r4 tmch6" ALIGN=LEFT>SYS.DBMS_HPROF</TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_nsf><TITLE>Namespace Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs) for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Namespace Elapsed Time (microsecs) Data sorted by Total Function Elapsed Time (microsecs)</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tnfh1">Function</TH>
+<TH ID="tnfh2">Ind%</TH>
+<TH ID="tnfh3">Cum%</TH>
+<TH ID="tnfh4">Calls</TH>
+<TH ID="tnfh5">Ind%</TH>
+<TH ID="tnfh6" ALIGN=LEFT>Namespace</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tnfh1"><B>5950</B></TD>
+<TD HEADERS="r1 tnfh2"><B>89.2%</B></TD>
+<TD HEADERS="r1 tnfh3"><B>89.2%</B></TD>
+<TD HEADERS="r1 tnfh4">4</TD>
+<TD HEADERS="r1 tnfh5">14.3%</TD>
+<TD HEADERS="r1 tnfh6" ALIGN=LEFT>SQL</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tnfh1"><B>723</B></TD>
+<TD HEADERS="r2 tnfh2"><B>10.8%</B></TD>
+<TD HEADERS="r2 tnfh3"><B> 100%</B></TD>
+<TD HEADERS="r2 tnfh4">24</TD>
+<TD HEADERS="r2 tnfh5">85.7%</TD>
+<TD HEADERS="r2 tnfh6" ALIGN=LEFT>PLSQL</TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_nsp><TITLE>Namespace Elapsed Time (microsecs) Data sorted by Namespace for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Namespace Elapsed Time (microsecs) Data sorted by Namespace</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tnnh1">Function</TH>
+<TH ID="tnnh2">Ind%</TH>
+<TH ID="tnnh3">Calls</TH>
+<TH ID="tnnh4">Ind%</TH>
+<TH ID="tnnh5" ALIGN=LEFT>Namespace</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tnnh1">723</TD>
+<TD HEADERS="r1 tnnh2">10.8%</TD>
+<TD HEADERS="r1 tnnh3">24</TD>
+<TD HEADERS="r1 tnnh4">85.7%</TD>
+<TD HEADERS="r1 tnnh5" ALIGN=LEFT><B>PLSQL</B></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tnnh1">5950</TD>
+<TD HEADERS="r2 tnnh2">89.2%</TD>
+<TD HEADERS="r2 tnnh3">4</TD>
+<TD HEADERS="r2 tnnh4">14.3%</TD>
+<TD HEADERS="r2 tnnh5" ALIGN=LEFT><B>SQL</B></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_nsc><TITLE>Namespace Elapsed Time (microsecs) Data sorted by Total Function Call Count for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Namespace Elapsed Time (microsecs) Data sorted by Total Function Call Count</H1>
+<PRE>
+<H3>6673 microsecs (elapsed time) &amp; 28 function calls</H3>
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tnch1">Function</TH>
+<TH ID="tnch2">Ind%</TH>
+<TH ID="tnch3">Calls</TH>
+<TH ID="tnch4">Ind%</TH>
+<TH ID="tnch5">Cum%</TH>
+<TH ID="tnch6" ALIGN=LEFT>Namespace</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tnch1">723</TD>
+<TD HEADERS="r1 tnch2">10.8%</TD>
+<TD HEADERS="r1 tnch3"><B>24</B></TD>
+<TD HEADERS="r1 tnch4"><B>85.7%</B></TD>
+<TD HEADERS="r1 tnch5"><B>85.7%</B></TD>
+<TD HEADERS="r1 tnch6" ALIGN=LEFT>PLSQL</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tnch1">5950</TD>
+<TD HEADERS="r2 tnch2">89.2%</TD>
+<TD HEADERS="r2 tnch3"><B>4</B></TD>
+<TD HEADERS="r2 tnch4"><B>14.3%</B></TD>
+<TD HEADERS="r2 tnch5"><B> 100%</B></TD>
+<TD HEADERS="r2 tnch6" ALIGN=LEFT>SQL</TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+<HEAD>
+<A NAME = hprof_pc><TITLE>Parents and Children Elapsed Time (microsecs) Data for 'pd_cc_pkg'</TITLE></A>
+</HEAD>
+<BODY>
+
+<H1>Parents and Children Elapsed Time (microsecs) Data</H1>
+<PRE>
+
+
+<b><A NAME = PLSQL."".""."__anonymous_block" >__anonymous_block </A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc1h1">Subtree</TH>
+<TH ID="tpc1h2">Ind%</TH>
+<TH ID="tpc1h3">Function</TH>
+<TH ID="tpc1h4">Ind%</TH>
+<TH ID="tpc1h5">Descendants</TH>
+<TH ID="tpc1h6">Ind%</TH>
+<TH ID="tpc1h7">Calls</TH>
+<TH ID="tpc1h8">Ind%</TH>
+<TH ID="tpc1h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc1h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc1h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r1" HEADERS="tpc1h1"><B>6634</B></TD>
+<TD HEADERS="r1 tpc1h2"><B>99.4%</B></TD>
+<TD HEADERS="r1 tpc1h3">467</TD>
+<TD HEADERS="r1 tpc1h4"> 7.0%</TD>
+<TD HEADERS="r1 tpc1h5">6167</TD>
+<TD HEADERS="r1 tpc1h6">92.4%</TD>
+<TD HEADERS="r1 tpc1h7">8</TD>
+<TD HEADERS="r1 tpc1h8">28.6%</TD>
+<TD HEADERS="r1 tpc1h9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR><TH ID="tpc1hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r2" HEADERS="tpc1hph1"><B>6634</B></TD>
+<TD HEADERS="r2 tpc1hph2"><B> 100%</B></TD>
+<TD HEADERS="r2 tpc1hph3">467</TD>
+<TD HEADERS="r2 tpc1hph4"> 100%</TD>
+<TD HEADERS="r2 tpc1hph5">6167</TD>
+<TD HEADERS="r2 tpc1hph6"> 100%</TD>
+<TD HEADERS="r2 tpc1hph7">8</TD>
+<TD HEADERS="r2 tpc1hph8"> 100%</TD>
+<TD HEADERS="r2 tpc1hph9" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR><TH ID="tpc1hc ">Children:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r3" HEADERS="tpc1hc h1"><B>6152</B></TD>
+<TD HEADERS="r3 tpc1hc h2"><B>99.8%</B></TD>
+<TD HEADERS="r3 tpc1hc h3">202</TD>
+<TD HEADERS="r3 tpc1hc h4"> 100%</TD>
+<TD HEADERS="r3 tpc1hc h5">5950</TD>
+<TD HEADERS="r3 tpc1hc h6"> 100%</TD>
+<TD HEADERS="r3 tpc1hc h7">2</TD>
+<TD HEADERS="r3 tpc1hc h8"> 100%</TD>
+<TD HEADERS="r3 tpc1hc h9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r4" HEADERS="tpc1hc h1"><B>15</B></TD>
+<TD HEADERS="r4 tpc1hc h2"><B> 0.2%</B></TD>
+<TD HEADERS="r4 tpc1hc h3">15</TD>
+<TD HEADERS="r4 tpc1hc h4"> 100%</TD>
+<TD HEADERS="r4 tpc1hc h5">0</TD>
+<TD HEADERS="r4 tpc1hc h6">N/A</TD>
+<TD HEADERS="r4 tpc1hc h7">5</TD>
+<TD HEADERS="r4 tpc1hc h8"> 100%</TD>
+<TD HEADERS="r4 tpc1hc h9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR ALIGN=RIGHT><TD ID="r5" HEADERS="tpc1hc h1"><B>0</B></TD>
+<TD HEADERS="r5 tpc1hc h2"><B> 0.0%</B></TD>
+<TD HEADERS="r5 tpc1hc h3">0</TD>
+<TD HEADERS="r5 tpc1hc h4">N/A</TD>
+<TD HEADERS="r5 tpc1hc h5">0</TD>
+<TD HEADERS="r5 tpc1hc h6">N/A</TD>
+<TD HEADERS="r5 tpc1hc h7">1</TD>
+<TD HEADERS="r5 tpc1hc h8"> 100%</TD>
+<TD HEADERS="r5 tpc1hc h9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+</TABLE>
+
+
+<b><A NAME = PLSQL."".""."__plsql_vm" >__plsql_vm </A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc2h1">Subtree</TH>
+<TH ID="tpc2h2">Ind%</TH>
+<TH ID="tpc2h3">Function</TH>
+<TH ID="tpc2h4">Ind%</TH>
+<TH ID="tpc2h5">Descendants</TH>
+<TH ID="tpc2h6">Ind%</TH>
+<TH ID="tpc2h7">Calls</TH>
+<TH ID="tpc2h8">Ind%</TH>
+<TH ID="tpc2h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc2h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc2h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r6" HEADERS="tpc2h1"><B>6673</B></TD>
+<TD HEADERS="r6 tpc2h2"><B> 100%</B></TD>
+<TD HEADERS="r6 tpc2h3">39</TD>
+<TD HEADERS="r6 tpc2h4"> 0.6%</TD>
+<TD HEADERS="r6 tpc2h5">6634</TD>
+<TD HEADERS="r6 tpc2h6">99.4%</TD>
+<TD HEADERS="r6 tpc2h7">8</TD>
+<TD HEADERS="r6 tpc2h8">28.6%</TD>
+<TD HEADERS="r6 tpc2h9" ALIGN=LEFT><A HREF = #PLSQL."".""."__plsql_vm" >__plsql_vm </A></TD></TR>
+<TR><TH ID="tpc2hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r7" HEADERS="tpc2hph1"><B>6673</B></TD>
+<TD HEADERS="r7 tpc2hph2"><B> 100%</B></TD>
+<TD HEADERS="r7 tpc2hph3">39</TD>
+<TD HEADERS="r7 tpc2hph4"> 100%</TD>
+<TD HEADERS="r7 tpc2hph5">6634</TD>
+<TD HEADERS="r7 tpc2hph6"> 100%</TD>
+<TD HEADERS="r7 tpc2hph7">8</TD>
+<TD HEADERS="r7 tpc2hph8"> 100%</TD>
+<TD HEADERS="r7 tpc2hph9" ALIGN=LEFT><A HREF = #"ORACLE".&lt;"root"&gt; >ORACLE.root </A></TD></TR>
+<TR><TH ID="tpc2hc ">Children:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r8" HEADERS="tpc2hc h1"><B>6634</B></TD>
+<TD HEADERS="r8 tpc2hc h2"><B> 100%</B></TD>
+<TD HEADERS="r8 tpc2hc h3">467</TD>
+<TD HEADERS="r8 tpc2hc h4"> 100%</TD>
+<TD HEADERS="r8 tpc2hc h5">6167</TD>
+<TD HEADERS="r8 tpc2hc h6"> 100%</TD>
+<TD HEADERS="r8 tpc2hc h7">8</TD>
+<TD HEADERS="r8 tpc2hc h8"> 100%</TD>
+<TD HEADERS="r8 tpc2hc h9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+</TABLE>
+
+
+<b><A NAME = PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc3h1">Subtree</TH>
+<TH ID="tpc3h2">Ind%</TH>
+<TH ID="tpc3h3">Function</TH>
+<TH ID="tpc3h4">Ind%</TH>
+<TH ID="tpc3h5">Descendants</TH>
+<TH ID="tpc3h6">Ind%</TH>
+<TH ID="tpc3h7">Calls</TH>
+<TH ID="tpc3h8">Ind%</TH>
+<TH ID="tpc3h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc3h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc3h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r9" HEADERS="tpc3h1"><B>6152</B></TD>
+<TD HEADERS="r9 tpc3h2"><B>92.2%</B></TD>
+<TD HEADERS="r9 tpc3h3">202</TD>
+<TD HEADERS="r9 tpc3h4"> 3.0%</TD>
+<TD HEADERS="r9 tpc3h5">5950</TD>
+<TD HEADERS="r9 tpc3h6">89.2%</TD>
+<TD HEADERS="r9 tpc3h7">2</TD>
+<TD HEADERS="r9 tpc3h8"> 7.1%</TD>
+<TD HEADERS="r9 tpc3h9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+<TR><TH ID="tpc3hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r10" HEADERS="tpc3hph1"><B>6152</B></TD>
+<TD HEADERS="r10 tpc3hph2"><B> 100%</B></TD>
+<TD HEADERS="r10 tpc3hph3">202</TD>
+<TD HEADERS="r10 tpc3hph4"> 100%</TD>
+<TD HEADERS="r10 tpc3hph5">5950</TD>
+<TD HEADERS="r10 tpc3hph6"> 100%</TD>
+<TD HEADERS="r10 tpc3hph7">2</TD>
+<TD HEADERS="r10 tpc3hph8"> 100%</TD>
+<TD HEADERS="r10 tpc3hph9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+<TR><TH ID="tpc3hc ">Children:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r11" HEADERS="tpc3hc h1"><B>5179</B></TD>
+<TD HEADERS="r11 tpc3hc h2"><B>87.0%</B></TD>
+<TD HEADERS="r11 tpc3hc h3">5179</TD>
+<TD HEADERS="r11 tpc3hc h4"> 100%</TD>
+<TD HEADERS="r11 tpc3hc h5">0</TD>
+<TD HEADERS="r11 tpc3hc h6">N/A</TD>
+<TD HEADERS="r11 tpc3hc h7">2</TD>
+<TD HEADERS="r11 tpc3hc h8"> 100%</TD>
+<TD HEADERS="r11 tpc3hc h9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r11 tpc3hc h10" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r11 tpc3hc h11" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR ALIGN=RIGHT><TD ID="r12" HEADERS="tpc3hc h1"><B>771</B></TD>
+<TD HEADERS="r12 tpc3hc h2"><B>13.0%</B></TD>
+<TD HEADERS="r12 tpc3hc h3">771</TD>
+<TD HEADERS="r12 tpc3hc h4"> 100%</TD>
+<TD HEADERS="r12 tpc3hc h5">0</TD>
+<TD HEADERS="r12 tpc3hc h6">N/A</TD>
+<TD HEADERS="r12 tpc3hc h7">2</TD>
+<TD HEADERS="r12 tpc3hc h8"> 100%</TD>
+<TD HEADERS="r12 tpc3hc h9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r12 tpc3hc h10" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r12 tpc3hc h11" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+</TABLE>
+
+
+<b><A NAME = PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc4h1">Subtree</TH>
+<TH ID="tpc4h2">Ind%</TH>
+<TH ID="tpc4h3">Function</TH>
+<TH ID="tpc4h4">Ind%</TH>
+<TH ID="tpc4h5">Descendants</TH>
+<TH ID="tpc4h6">Ind%</TH>
+<TH ID="tpc4h7">Calls</TH>
+<TH ID="tpc4h8">Ind%</TH>
+<TH ID="tpc4h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc4h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc4h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r13" HEADERS="tpc4h1"><B>0</B></TD>
+<TD HEADERS="r13 tpc4h2"><B> 0.0%</B></TD>
+<TD HEADERS="r13 tpc4h3">0</TD>
+<TD HEADERS="r13 tpc4h4"> 0.0%</TD>
+<TD HEADERS="r13 tpc4h5">0</TD>
+<TD HEADERS="r13 tpc4h6"> 0.0%</TD>
+<TD HEADERS="r13 tpc4h7">1</TD>
+<TD HEADERS="r13 tpc4h8"> 3.6%</TD>
+<TD HEADERS="r13 tpc4h9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_HPROF"::11."STOP_PROFILING"#980980e97e42f8ec (Line 453)>SYS.DBMS_HPROF.STOP_PROFILING (Line 453)</A></TD></TR>
+<TR><TH ID="tpc4hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r14" HEADERS="tpc4hph1"><B>0</B></TD>
+<TD HEADERS="r14 tpc4hph2"><B>N/A</B></TD>
+<TD HEADERS="r14 tpc4hph3">0</TD>
+<TD HEADERS="r14 tpc4hph4">N/A</TD>
+<TD HEADERS="r14 tpc4hph5">0</TD>
+<TD HEADERS="r14 tpc4hph6">N/A</TD>
+<TD HEADERS="r14 tpc4hph7">1</TD>
+<TD HEADERS="r14 tpc4hph8"> 100%</TD>
+<TD HEADERS="r14 tpc4hph9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+</TABLE>
+
+
+<b><A NAME = PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc5h1">Subtree</TH>
+<TH ID="tpc5h2">Ind%</TH>
+<TH ID="tpc5h3">Function</TH>
+<TH ID="tpc5h4">Ind%</TH>
+<TH ID="tpc5h5">Descendants</TH>
+<TH ID="tpc5h6">Ind%</TH>
+<TH ID="tpc5h7">Calls</TH>
+<TH ID="tpc5h8">Ind%</TH>
+<TH ID="tpc5h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc5h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc5h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r15" HEADERS="tpc5h1"><B>15</B></TD>
+<TD HEADERS="r15 tpc5h2"><B> 0.2%</B></TD>
+<TD HEADERS="r15 tpc5h3">15</TD>
+<TD HEADERS="r15 tpc5h4"> 0.2%</TD>
+<TD HEADERS="r15 tpc5h5">0</TD>
+<TD HEADERS="r15 tpc5h6"> 0.0%</TD>
+<TD HEADERS="r15 tpc5h7">5</TD>
+<TD HEADERS="r15 tpc5h8">17.9%</TD>
+<TD HEADERS="r15 tpc5h9" ALIGN=LEFT><A HREF = #PLSQL."SYS"."DBMS_OUTPUT"::11."GET_LINE"#32fb3b6bdac49c05 (Line 129)>SYS.DBMS_OUTPUT.GET_LINE (Line 129)</A></TD></TR>
+<TR><TH ID="tpc5hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r16" HEADERS="tpc5hph1"><B>15</B></TD>
+<TD HEADERS="r16 tpc5hph2"><B> 100%</B></TD>
+<TD HEADERS="r16 tpc5hph3">15</TD>
+<TD HEADERS="r16 tpc5hph4"> 100%</TD>
+<TD HEADERS="r16 tpc5hph5">0</TD>
+<TD HEADERS="r16 tpc5hph6">N/A</TD>
+<TD HEADERS="r16 tpc5hph7">5</TD>
+<TD HEADERS="r16 tpc5hph8"> 100%</TD>
+<TD HEADERS="r16 tpc5hph9" ALIGN=LEFT><A HREF = #PLSQL."".""."__anonymous_block" >__anonymous_block </A></TD></TR>
+</TABLE>
+
+
+<b><A NAME = SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc6h1">Subtree</TH>
+<TH ID="tpc6h2">Ind%</TH>
+<TH ID="tpc6h3">Function</TH>
+<TH ID="tpc6h4">Ind%</TH>
+<TH ID="tpc6h5">Descendants</TH>
+<TH ID="tpc6h6">Ind%</TH>
+<TH ID="tpc6h7">Calls</TH>
+<TH ID="tpc6h8">Ind%</TH>
+<TH ID="tpc6h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc6h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc6h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r17" HEADERS="tpc6h1"><B>5179</B></TD>
+<TD HEADERS="r17 tpc6h2"><B>77.6%</B></TD>
+<TD HEADERS="r17 tpc6h3">5179</TD>
+<TD HEADERS="r17 tpc6h4">77.6%</TD>
+<TD HEADERS="r17 tpc6h5">0</TD>
+<TD HEADERS="r17 tpc6h6"> 0.0%</TD>
+<TD HEADERS="r17 tpc6h7">2</TD>
+<TD HEADERS="r17 tpc6h8"> 7.1%</TD>
+<TD HEADERS="r17 tpc6h9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line17" (Line 17)>OE.CREDIT_CARD_PKG.__static_sql_exec_line17 (Line 17)</A></TD><TD HEADERS="r17 tpc6h10" ALIGN=LEFT>4zv5t057j52sn</TD><TD HEADERS="r17 tpc6h11" ALIGN=LEFT>UPDATE CUSTOMERS SET CREDIT_CARDS = :B2 WHERE CUST</TD></TR>
+<TR><TH ID="tpc6hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r18" HEADERS="tpc6hph1"><B>5179</B></TD>
+<TD HEADERS="r18 tpc6hph2"><B> 100%</B></TD>
+<TD HEADERS="r18 tpc6hph3">5179</TD>
+<TD HEADERS="r18 tpc6hph4"> 100%</TD>
+<TD HEADERS="r18 tpc6hph5">0</TD>
+<TD HEADERS="r18 tpc6hph6">N/A</TD>
+<TD HEADERS="r18 tpc6hph7">2</TD>
+<TD HEADERS="r18 tpc6hph8"> 100%</TD>
+<TD HEADERS="r18 tpc6hph9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+</TABLE>
+
+
+<b><A NAME = SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></b>
+
+<TABLE BORDER=1>
+<TR ALIGN=RIGHT><TH ID="tpc7h1">Subtree</TH>
+<TH ID="tpc7h2">Ind%</TH>
+<TH ID="tpc7h3">Function</TH>
+<TH ID="tpc7h4">Ind%</TH>
+<TH ID="tpc7h5">Descendants</TH>
+<TH ID="tpc7h6">Ind%</TH>
+<TH ID="tpc7h7">Calls</TH>
+<TH ID="tpc7h8">Ind%</TH>
+<TH ID="tpc7h9" ALIGN=LEFT>Function Name</TH>
+<TH ID="tpc7h10" ALIGN=LEFT>SQL ID</TH>
+<TH ID="tpc7h11" ALIGN=LEFT>SQL TEXT</TH>
+</TR>
+<TR ALIGN=RIGHT><TD ID="r19" HEADERS="tpc7h1"><B>771</B></TD>
+<TD HEADERS="r19 tpc7h2"><B>11.6%</B></TD>
+<TD HEADERS="r19 tpc7h3">771</TD>
+<TD HEADERS="r19 tpc7h4">11.6%</TD>
+<TD HEADERS="r19 tpc7h5">0</TD>
+<TD HEADERS="r19 tpc7h6"> 0.0%</TD>
+<TD HEADERS="r19 tpc7h7">2</TD>
+<TD HEADERS="r19 tpc7h8"> 7.1%</TD>
+<TD HEADERS="r19 tpc7h9" ALIGN=LEFT><A HREF = #SQL."OE"."CREDIT_CARD_PKG"::11."__static_sql_exec_line9" (Line 9)>OE.CREDIT_CARD_PKG.__static_sql_exec_line9 (Line 9)</A></TD><TD HEADERS="r19 tpc7h10" ALIGN=LEFT>3zjmncb1j06t6</TD><TD HEADERS="r19 tpc7h11" ALIGN=LEFT>SELECT CREDIT_CARDS FROM CUSTOMERS WHERE CUSTOMER_</TD></TR>
+<TR><TH ID="tpc7hp">Parents:</TH></TR>
+<TR ALIGN=RIGHT><TD ID="r20" HEADERS="tpc7hph1"><B>771</B></TD>
+<TD HEADERS="r20 tpc7hph2"><B> 100%</B></TD>
+<TD HEADERS="r20 tpc7hph3">771</TD>
+<TD HEADERS="r20 tpc7hph4"> 100%</TD>
+<TD HEADERS="r20 tpc7hph5">0</TD>
+<TD HEADERS="r20 tpc7hph6">N/A</TD>
+<TD HEADERS="r20 tpc7hph7">2</TD>
+<TD HEADERS="r20 tpc7hph8"> 100%</TD>
+<TD HEADERS="r20 tpc7hph9" ALIGN=LEFT><A HREF = #PLSQL."OE"."CREDIT_CARD_PKG"::11."UPDATE_CARD_INFO"#3a2b06cfa1322e42 (Line 3)>OE.CREDIT_CARD_PKG.UPDATE_CARD_INFO (Line 3)</A></TD></TR>
+</TABLE>
+</PRE>
+</BODY>
+</HTML>
+</BODY>
+</HTML>
