@@ -1,8 +1,10 @@
 *****************************************
 Instructions:
 *****************************************
-Links:
-https://www.oracletutorial.com/
+Primary Link:
+https://www.oracletutorial.com/oracle-basics/
+
+Other Links:
 https://www.techonthenet.com/oracle/index.php
 https://oracle-base.com/
 
@@ -17,9 +19,7 @@ Connect to OT Database. (connect to OT@ADB)
 --ALTER USER rakesh IDENTIFIED BY rakesh3;
 
 *****************************************
-
 SYS Query
-
 *****************************************
 
 SELECT DF.TABLESPACE_NAME "TABLESPACE",
@@ -58,9 +58,7 @@ select * from V$FIXED_TABLE;
 
 
 *****************************************
-
 FETCH
-
 *****************************************
 SELECT
 	product_name,
@@ -95,10 +93,9 @@ INNER JOIN products
 ORDER BY
     quantity DESC 
 FETCH FIRST 5 PERCENT ROWS ONLY;
+
 *****************************************
-
 LIKE
-
 *****************************************
 SELECT
     first_name,
@@ -129,10 +126,9 @@ FROM
 	discounts
 WHERE
 	discount_message LIKE '%25!%%' ESCAPE '!';
+    
 *****************************************
-
 NULL
-
 *****************************************
 SELECT count(*) FROM orders 
 WHERE salesman_id = NULL
@@ -150,10 +146,9 @@ FROM
     locations
 ORDER BY
     state ASC NULLS FIRST;
+    
 *****************************************
-
 Join
-
 *****************************************
 SELECT
     *
@@ -215,9 +210,7 @@ where cnt > 1
 order by 1 desc;
 
 *****************************************
-
 GROUP BY
-
 *****************************************
 SELECT
     order_id,
@@ -277,10 +270,9 @@ WHERE
    EXTRACT(YEAR FROM order_date) = 2017
 GROUP BY
    ROLLUP(salesman_id,customer_id);
+   
 *****************************************
-
 Subquery
-
 *****************************************
 --subquery
 --subqyery executes first, then outer query (as a whole)
@@ -354,10 +346,9 @@ FROM
     )
 ORDER BY
     product_name;
+    
 *****************************************
-
 EXISTS
-
 *****************************************
 SELECT
     name
@@ -411,9 +402,7 @@ WHERE
     );
 
 *****************************************
-
 ALL & ANY
-
 *****************************************
 SELECT
     product_name,
@@ -446,10 +435,9 @@ WHERE
     AND category_id = 1
 ORDER BY
     list_price DESC;
+    
 *****************************************
-
 Set Operators
-
 *****************************************
 
 SELECT
@@ -503,10 +491,9 @@ SELECT
   product_id
 FROM
   inventories;
+  
 *****************************************
-
 PIVOT
-
 *****************************************
 select * from order_stats;
 
@@ -555,9 +542,7 @@ UNPIVOT INCLUDE NULLS
 );
 
 *****************************************
-
 INSERT
-
 *****************************************
 INSERT INTO discounts(discount_name, amount, start_date, expired_date)
 VALUES('Winter Promotion 2017',  10.5, CURRENT_DATE, DATE '2017-12-31');
@@ -622,10 +607,9 @@ select count(*) from big_orders;
 delete from small_orders;
 delete from medium_orders;
 delete from big_orders;
+
 *****************************************
-
 UPDATE DELETE
-
 *****************************************
 
 UPDATE
@@ -656,9 +640,7 @@ WHEN NOT MATCHED THEN
     VALUES(y.member_id, y.first_name, y.last_name, y.rank);
 
 *****************************************
-
 DDL
-
 *****************************************
 
 CREATE TABLE ot.persons(
@@ -703,9 +685,7 @@ DROP TABLE cars purge;
 TRUNCATE TABLE table_name CASCADE;
 
 *****************************************
-
 Data types
-
 *****************************************
 
 -- returns a VARCHAR2 value containing the datatype code
@@ -840,9 +820,7 @@ begin
 end;
 
 *****************************************
-
 Constraints
-
 *****************************************
 -- Add and Drop constraint
 ALTER TABLE tab_name DROP CONSTRAINT constraint_name;
@@ -926,10 +904,9 @@ CREATE TABLE table_name (
 
 -- private temporary table
 -- Table name starts with ora$ppt_
+
 *****************************************
-
 Views
-
 *****************************************
 -- Creating a View
 CREATE [OR REPLACE] VIEW view_name [(column_aliases)] AS
@@ -1040,9 +1017,7 @@ VALUES(
 
 
 *****************************************
-
 Database Link
-
 *****************************************
 
 select * from user_tables;
@@ -1061,9 +1036,7 @@ select * from customers@pdb;
 
 
 *****************************************
-
 Index
-
 *****************************************
 -- By default, the CREATE INDEX statement creates a btree index.
 
@@ -1145,26 +1118,19 @@ from members
 group by gender;
 
 *****************************************
-
 Sequence
-
 *****************************************
 
 XXX
 
 *****************************************
-
 Synonym
-
 *****************************************
 
 XXX
 
-
 *****************************************
-
 Functions
-
 *****************************************
 -- CONCAT
 select CONCAT('Rakesh', ' Panigrahi') from dual;
@@ -1233,9 +1199,7 @@ select INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL;
 
 
 *****************************************
-
 Advanced Oracle SQL
-
 *****************************************
 -- How to Find Duplicate Records in Oracle
 select * from fruits;
@@ -1253,9 +1217,7 @@ FROM (SELECT f.*, COUNT(*) OVER (PARTITION BY fruit_name, color) c FROM fruits f
 WHERE c > 1;
 
 *****************************************
-
 External Table
-
 *****************************************
 create directory lang_external 
     as 'D:\C_Workspaces_Repositories\GitHub_Repositories\SQL_Learning\OracleWorkspace\loader';
@@ -1277,9 +1239,7 @@ select * from languages;
 desc languages;
 
 *****************************************
-
 Misc
-
 *****************************************
 
 SELECT JSON_QUERY('{a:100, b:200, c:300}', '$.a' WITH WRAPPER) AS value FROM DUAL;

@@ -4,7 +4,6 @@ Instructions:
 
 This File Contains content from below sites:
 https://mylearn.oracle.com/course/oracle-database-19c-plsql-workshop/38560/78807
-https://www.oracletutorial.com/
 
 Login to ADB_USER@ADB.
 You can find HR tables in HR@ADB. For more info check ADB section.
