@@ -689,6 +689,934 @@ END;
 *****************************************
 Stored procedures and Functions
 *****************************************
+-- Procedure and Functions are otherwise known as named PL/SQL block
+-- Procedure
+CREATE OR REPLACE PROCEDURE print_contact(
+    in_customer_id NUMBER 
+)
+IS
+  r_contact contacts%ROWTYPE;
+BEGIN
+  -- get contact based on customer id
+  SELECT *
+  INTO r_contact
+  FROM contacts
+  WHERE customer_id = in_customer_id;
+
+  -- print out contact's information
+  dbms_output.put_line( r_contact.first_name || ' ' ||
+  r_contact.last_name || '<' || r_contact.email ||'>' );
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line( SQLERRM );
+END;
+/
+
+-- The below syntax will show the list of compilation errors
+SHOW ERR;
+
+-- To Execute the Procedure
+EXEC PRINT_CONTACT(10);
+
+-- Implicit Statement Results (DBMS_SQL.RETURN_RESULT)
+-- This is an alternative to OUT REF_CURSOR (Refer to the Doc) 
+CREATE OR REPLACE PROCEDURE get_customer_by_credit(
+    min_credit NUMBER
+)
+AS 
+    c_customers SYS_REFCURSOR;
+BEGIN
+    -- open the cursor
+    OPEN c_customers FOR
+        SELECT customer_id, credit_limit, name
+        FROM customers
+        WHERE credit_limit > min_credit
+        ORDER BY credit_limit;
+    
+    -- return the result set
+    dbms_sql.return_result(c_customers);
+END;
+/
+
+EXEC get_customer_by_credit(4000);
+/
+
+-- Returning multiple result sets
+CREATE OR REPLACE PROCEDURE get_customers(
+    page_no NUMBER, 
+    page_size NUMBER
+)
+AS
+    c_customers SYS_REFCURSOR;
+    c_total_row SYS_REFCURSOR;
+BEGIN
+    -- return the total of customers
+    OPEN c_total_row FOR
+        SELECT COUNT(*)
+        FROM customers;
+    
+    dbms_sql.return_result(c_total_row);
+    
+    -- return the customers 
+    OPEN c_customers FOR
+        SELECT customer_id, name
+        FROM customers
+        ORDER BY name
+        OFFSET page_size * (page_no - 1) ROWS
+        FETCH NEXT page_size ROWS ONLY;
+        
+    dbms_sql.return_result(c_customers);    
+END;
+/
+
+EXEC get_customers(1,10);
+/
+
+-- Capture the result set in a PL/SQL Block (NEW CONCEPT)
+-- Usually in real-world, the result set is utilized by Python/C#/Java
+-- The following anonymous block calls the get_customers() procedure 
+-- and uses the get_next_resultset() procedure to process the result sets.
+SET SERVEROUTPUT ON
+DECLARE
+    l_sql_cursor    PLS_INTEGER;
+    c_cursor        SYS_REFCURSOR;
+    l_return        PLS_INTEGER;
+    
+    l_column_count  PLS_INTEGER;
+    l_desc_tab      dbms_sql.desc_tab;
+    
+    l_total_rows    NUMBER;
+    l_customer_id   customers.customer_id%TYPE;
+    l_name          customers.NAME%TYPE;
+BEGIN
+    -- Execute the function.
+    l_sql_cursor := dbms_sql.open_cursor(treat_as_client_for_results => TRUE);
+    
+    dbms_sql.parse(C             => l_sql_cursor,
+                    STATEMENT     => 'BEGIN get_customers(1,10); END;',
+                    language_flag => dbms_sql.NATIVE);
+    
+    l_return := dbms_sql.EXECUTE(l_sql_cursor);
+
+    -- Loop over the result sets.
+    LOOP
+        -- Get the next resultset.
+        BEGIN
+        dbms_sql.get_next_result(l_sql_cursor, c_cursor);
+        EXCEPTION
+        WHEN no_data_found THEN
+            EXIT;
+        END;
+    
+        -- Get the number of columns in each result set.
+        l_return := dbms_sql.to_cursor_number(c_cursor);
+        dbms_sql.describe_columns (l_return, l_column_count, l_desc_tab);
+        c_cursor := dbms_sql.to_refcursor(l_return);
+    
+        -- Handle the result set based on the number of columns.
+        CASE l_column_count
+        WHEN 1 THEN
+            dbms_output.put_line('The total number of customers:');
+            FETCH c_cursor
+            INTO  l_total_rows;
+    
+            dbms_output.put_line(l_total_rows);
+            CLOSE c_cursor;
+        WHEN 2 THEN
+            dbms_output.put_line('The customer list:');
+            LOOP
+            FETCH c_cursor
+            INTO  l_customer_id, l_name;
+    
+            EXIT WHEN c_cursor%notfound;
+    
+            dbms_output.put_line(l_customer_id || ' ' || l_name);
+            END LOOP;
+            CLOSE c_cursor;
+        ELSE
+            dbms_output.put_line('An error occurred!');
+        END CASE;
+    END LOOP;
+END;
+/
+
+-- Function
+-- At least one RETURN statement is mandatory
+CREATE OR REPLACE FUNCTION get_total_sales(
+    in_year PLS_INTEGER
+) 
+RETURN NUMBER
+IS
+    l_total_sales NUMBER := 0;
+BEGIN
+    -- get total sales
+    SELECT SUM(unit_price * quantity)
+    INTO l_total_sales
+    FROM order_items
+    INNER JOIN orders USING (order_id)
+    WHERE status = 'Shipped'
+    GROUP BY EXTRACT(YEAR FROM order_date)
+    HAVING EXTRACT(YEAR FROM order_date) = in_year;
+    
+    -- return the total sales
+    RETURN l_total_sales;
+END;
+/
+
+SHOW ERR;
+/
+
+select get_total_sales(2017) from dual;
+
+*****************************************
+Packages
+*****************************************
+-- Refer to the Docs for more info
+-- The "Package Specification" Doc is having different ways to Create a Package
+
+-- Package Specification
+-- Way-1 (For env like SQL*PLUS or SQL Devloper)
+-- / is required for SQL*PLUS to tell Oracle to compile the whole block
+create package test_package as
+    gc_status constant varchar(10) := 'Active';
+end;
+/
+
+-- Way-2 (For env like Git/bash/CMD)
+@c:\plsql\sample.sql
+/
+
+-- Example
+CREATE OR REPLACE PACKAGE order_mgmt
+AS
+  gc_shipped_status  CONSTANT VARCHAR(10) := 'Shipped';
+  gc_pending_status CONSTANT VARCHAR(10) := 'Pending';
+  gc_canceled_status CONSTANT VARCHAR(10) := 'Canceled';
+  gv_status varchar2(10);
+
+  -- cursor that returns the order detail
+  CURSOR g_cur_order(p_order_id NUMBER)
+  IS
+    SELECT
+      customer_id,
+      status,
+      salesman_id,
+      order_date,
+      item_id,
+      product_name,
+      quantity,
+      unit_price
+    FROM
+      order_items
+    INNER JOIN orders USING (order_id)
+    INNER JOIN products USING (product_id)
+    WHERE
+      order_id = p_order_id;
+
+  -- get net value of a order
+  FUNCTION get_net_value(
+      p_order_id NUMBER)
+    RETURN NUMBER;
+
+  -- Get net value by customer
+  FUNCTION get_net_value_by_customer(
+      p_customer_id NUMBER,
+      p_year        NUMBER)
+    RETURN NUMBER;
+
+END order_mgmt;
+/
+
+-- Package State
+-- Unique for individual Sessions
+-- Test the below block in two diff sessions
+-- Session-1
+BEGIN
+  order_mgmt.gv_status := order_mgmt.gc_shipped_status;
+  DBMS_OUTPUT.PUT_LINE(order_mgmt.gv_status);
+END;
+/
+
+-- Session-2
+-- To create new Session, click on the SQL* icon on the "SQL Worksheet" tool bar: Ctrl + Shift + N
+BEGIN
+  order_mgmt.gv_status := order_mgmt.gc_pending_status;
+  DBMS_OUTPUT.PUT_LINE(order_mgmt.gv_status);
+END;
+/
+
+-- Test
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(order_mgmt.gv_status);
+END;
+/
+
+-- Package Body
+-- If the package specification has cursors or subprograms, then the package body is mandatory.
+CREATE OR REPLACE PACKAGE BODY order_mgmt
+AS
+  -- Private Items
+  gp_private_field VARCHAR2(10);
+
+  -- Implementation
+  -- get net value of a order
+  FUNCTION get_net_value(
+      p_order_id NUMBER)
+    RETURN NUMBER
+  IS
+    ln_net_value NUMBER;
+  BEGIN
+    SELECT
+      SUM(unit_price * quantity)
+    INTO
+      ln_net_value
+    FROM
+      order_items
+    WHERE
+      order_id = p_order_id;
+
+    RETURN p_order_id;
+
+  EXCEPTION
+  WHEN no_data_found THEN
+    DBMS_OUTPUT.PUT_LINE( SQLERRM );
+  END get_net_value;
+
+  -- Get net value by customer
+  FUNCTION get_net_value_by_customer(
+      p_customer_id NUMBER,
+      p_year        NUMBER)
+    RETURN NUMBER
+  IS
+    ln_net_value NUMBER;
+  BEGIN
+    SELECT
+      SUM(quantity * unit_price)
+    INTO
+      ln_net_value
+    FROM
+      order_items
+    INNER JOIN orders USING (order_id)
+    WHERE
+      extract(YEAR FROM order_date) = p_year
+    AND customer_id                 = p_customer_id
+    AND status                      = gc_shipped_status;
+    RETURN ln_net_value;
+  EXCEPTION
+  WHEN no_data_found THEN
+    DBMS_OUTPUT.PUT_LINE( SQLERRM );
+  END get_net_value_by_customer;
+
+  -- Initialization
+  -- Performs one-time setup tasks
+  -- The initialization part only runs once at the first time the package is referenced. 
+  -- It can also include an exception handler.
+  BEGIN
+    gp_private_field := 'PRIVATE';
+  EXCEPTION
+    WHEN OTHERS THEN
+        NULL;
+END order_mgmt;
+/
+
+-- Testing
+SELECT
+  order_mgmt.get_net_value_by_customer(1,2017) sales
+FROM
+  dual;
+
+-- Drop Package
+-- Package Specification can survive without body, but vice-versa is not true.
+-- This means body can be dropped leaving specification still valid.
+-- But if you drop the specification, the body gets invalidated.
+-- Oracle does not invalidate dependent objects when you drop only the body of a package but not the package specification
+DROP PACKAGE BODY order_mgmt;
+DROP PACKAGE order_mgmt;
+
+-- Grant on Packages
+-- This allows to execute the Package items, as well debug the code (by running the de-bugger)
+GRANT EXECUTE, DEBUG ON order_mgmt to HR;
+
+*****************************************
+Triggers
+*****************************************
+-- Trigger Syntax
+-- Header
+CREATE [OR REPLACE] TRIGGER trigger_name
+{BEFORE | AFTER | INSTEAD OF} triggering_event ON table_name
+[FOR EACH ROW] 
+[REFERENCING OLD AS old_name NEW AS new_name]
+-- Specifies row-level trigger, otherwise statement-level trigger which fires at least once
+[FOLLOWS | PRECEDES another_trigger]
+-- Firing sequence of the dependent trigggers
+[ENABLE / DISABLE ] 
+-- To create a trigger in the disabled state, use DISABLE option, Later you can ENABLE it as required
+[WHEN condition] -- OLD, NEW keyword can be used here
+-- Body
+DECLARE
+    declaration statements
+BEGIN
+    executable statements
+    -- :OLD, :NEW keyword can be used here (OLD= old_name, NEW=new_name)
+    -- UPDATING, INSERTING, DELETING keyword can be used her
+EXCEPTION
+    exception_handling statements
+END;
+/
+
+/*
+triggering_event can be of 4 types:
+    1) DML: INSERT, UPDATE, or DELETE
+    2) DDL: CREATE or ALTER
+    3) System event: STARTUP or SHUTDOWN
+    4) User event: User login or logout
+*/
+
+-- Example
+CREATE OR REPLACE TRIGGER customers_audit_trg
+    AFTER UPDATE OR DELETE ON customers
+    FOR EACH ROW    
+DECLARE
+   --PRAGMA ;AUTONOMOUS_TRANSACTION -- to make changes permanent
+   l_transaction VARCHAR2(10);
+BEGIN
+   -- determine the transaction type
+   l_transaction := CASE  
+         WHEN UPDATING THEN 'UPDATE'
+         WHEN DELETING THEN 'DELETE'
+   END;
+
+   -- insert a row into the audit table   
+   INSERT INTO audits (table_name, transaction_name, by_user, transaction_date)
+   VALUES('CUSTOMERS', l_transaction, USER, SYSDATE);
+END;
+/
+
+-- Testing
+delete from customers where customer_id = 10;
+select * from audits;
+rollback;
+/
+
+update customers set credit_limit = 2000 where customer_id = 10;
+select * from audits;
+rollback;
+/
+
+-- Satement-level Triggers
+/*
+Used to enforce extra security measures on the kind of transaction that may be performed on a table.
+*/
+select extract(day from sysdate) day from dual;
+
+CREATE OR REPLACE TRIGGER customers_credit_trg
+    BEFORE UPDATE OF credit_limit  
+    -- Trigger will only be fired if updates happen to only credit_limit column
+    -- Otherwise it will not fire
+    ON customers
+DECLARE
+    l_day_of_month NUMBER;
+BEGIN
+    -- determine the transaction type
+    l_day_of_month := EXTRACT(DAY FROM sysdate);
+
+    IF (l_day_of_month BETWEEN 28 AND 31) OR (l_day_of_month = 19) THEN
+        raise_application_error(-20100,'Cannot update customer credit from 28th to 31st');
+        -- Oracle automatically rollbacks the update because of the raise_application_error
+    END IF;
+END;
+/
+
+-- Testing
+select customer_id, credit_limit from customers;
+begin
+    UPDATE 
+        customers 
+    SET 
+        credit_limit = credit_limit * 110;
+    dbms_output.put_line(SQL%ROWCOUNT);
+end;
+/
+-- Check for any pending transactions (This will return 0 rows)
+SELECT
+    COUNT(*)
+FROM
+    v$transaction t,
+    v$session     s,
+    v$mystat      m
+WHERE
+        t.ses_addr = s.saddr
+    AND s.sid = m.sid
+    AND ROWNUM = 1;
+/
+
+select s.sid
+      ,s.serial#
+      ,s.username
+      ,s.machine
+      ,s.status
+      ,s.lockwait
+      ,t.used_ublk
+      ,t.used_urec
+      ,t.start_time
+from v$transaction t
+inner join v$session s 
+    on t.addr = s.taddr;
+/
+
+-- Row-level Triggers (Refer to the Doc for more details)
+/*
+Useful for data-related activities such as data auditing and data validation.
+It fires for each row.
+NEW & OLD value reference is only applicable for row-level trigger.
+Inside BEGIN block use :NEW/:OLD keywords.
+Inside WHEN block use NEW/OLD keywords.
+A BEFORE row-level trigger can modify the NEW column values, but an AFTER row-level trigger cannot.
+*/
+-- Example
+CREATE OR REPLACE TRIGGER customers_update_credit_trg 
+    BEFORE UPDATE OF credit_limit
+    ON customers
+    FOR EACH ROW
+    WHEN (NEW.credit_limit > 0) -- This will improve the preformance
+BEGIN
+    -- check the credit limit
+    IF :NEW.credit_limit >= 2 * :OLD.credit_limit THEN
+        raise_application_error(-20101,'The new credit ' || :NEW.credit_limit || 
+            ' cannot increase to more than double, the current credit ' || :OLD.credit_limit);
+    END IF;
+END;
+/
+
+-- Testing
+SELECT credit_limit FROM customers  WHERE customer_id = 10;
+UPDATE customers
+SET credit_limit = 5000
+WHERE customer_id = 10;
+/
+
+-- Instead of Trigggers (Refer to teh Doc)
+-- An INSTEAD OF trigger is a trigger that allows you to update data in tables 
+-- via their view which cannot be modified directly through DML statements.
+-- In Oracle, you can create an INSTEAD OF trigger for a view only. 
+-- You cannot create an INSTEAD OF trigger for a table.
+-- Syntax
+CREATE [OR REPLACE] TRIGGER trigger_name
+INSTEAD OF {INSERT | UPDATE | DELETE}
+ON view_name
+FOR EACH ROW
+BEGIN
+    EXCEPTION
+    ...
+END;
+/
+
+-- Example
+CREATE VIEW vw_customers AS
+    SELECT 
+        name, 
+        address, 
+        website, 
+        credit_limit, 
+        first_name, 
+        last_name, 
+        email, 
+        phone
+    FROM 
+        customers 
+        -- non-key-preserved table, as the primary/unique key customer_id is not present in the query
+        -- This will not allow to insert data into the customers table via this view
+    INNER JOIN contacts USING (customer_id);
+/
+
+CREATE OR REPLACE TRIGGER new_customer_trg
+    INSTEAD OF INSERT ON vw_customers
+    FOR EACH ROW
+DECLARE
+    l_customer_id NUMBER;
+BEGIN
+    -- insert a new customer first
+    INSERT INTO customers(name, address, website, credit_limit)
+    VALUES(:NEW.NAME, :NEW.address, :NEW.website, :NEW.credit_limit)
+    RETURNING customer_id INTO l_customer_id;
+    
+    -- insert the contact
+    INSERT INTO contacts(first_name, last_name, email, phone, customer_id)
+    VALUES(:NEW.first_name, :NEW.last_name, :NEW.email, :NEW.phone, l_customer_id);
+END;
+/
+
+-- Testing
+/*
+Before creating the INSTEAD OF Trigger:
+The below insert will throw below error -
+ORA-01779: cannot modify a column which maps to a non key-preserved table
+
+After creating the INSTEAD OF Trigger:
+new record will be inserted into both customers & contacts table.
+*/
+INSERT INTO 
+    vw_customers(
+        name, 
+        address, 
+        website, 
+        credit_limit, 
+        first_name, 
+        last_name, 
+        email, 
+        phone
+    )
+VALUES(
+    'Lam Research',
+    'Fremont, California, USA', 
+    'https://www.lamresearch.com/',
+    2000,
+    'John',
+    'Smith',
+    'john.smith@lamresearch.com',
+    '+1-510-572-0200'
+);
+/
+
+select * from customers order by customer_id desc;
+select * from contacts  order by customer_id desc;
+/
+
+-- Enable/Disable Trigger
+ALTER TRIGGER trigger_name DISABLE; -- Disbale a single Trigger
+ALTER TABLE table_name DISABLE ALL TRIGGERS; -- Disbale all Triggers on a table
+
+-- Drop Trigger
+DROP TRIGGER [schema_name.]trigger_name;
+/*
+Schema must have: DROP ANY TRIGGER system privilege.
+*/
+-- Drop trigger IF Exists
+CREATE OR REPLACE PROCEDURE drop_trigger_if_exists(
+    in_trigger_name VARCHAR2
+)
+AS
+    l_exist PLS_INTEGER;
+BEGIN
+    -- get the trigger count
+    SELECT COUNT(*) INTO l_exist
+    FROM user_triggers
+    WHERE trigger_name = UPPER(in_trigger_name);
+    
+    -- if the trigger exist, drop it
+    IF l_exist > 0 THEN 
+        EXECUTE IMMEDIATE 'DROP TRIGGER ' ||  in_trigger_name;
+    END IF;
+END;
+/
+
+EXEC drop_trigger_if_exists('CUSTOMERS_UPDATE_CREDIT_TRG');
+/
+
+-- Mutating Table Error
+-- To fix the mutating table error, you can use a compound trigger.
+-- Simulating this Error
+CREATE OR REPLACE TRIGGER customers_credit_policy_trg 
+    AFTER INSERT OR UPDATE 
+    ON customers
+    FOR EACH ROW 
+DECLARE 
+    l_max_credit   customers.credit_limit%TYPE; 
+BEGIN 
+    -- get the lowest non-zero credit 
+    SELECT MIN (credit_limit) * 5 
+        INTO l_max_credit 
+        FROM customers
+        WHERE credit_limit > 0;
+    
+    -- check with the new credit
+    IF l_max_credit < :NEW.credit_limit 
+    THEN 
+        UPDATE customers 
+        SET credit_limit = l_max_credit 
+        WHERE customer_id = :NEW.customer_id; 
+    END IF; 
+END;
+/
+
+UPDATE customers
+SET credit_limit = 12000
+WHERE customer_id = 1;
+/
+
+-- Error: ORA-04091: table OT.CUSTOMERS is mutating, trigger/function may not see it
+-- This is due to inside the row-level trigger it is again trying to select/update the same table 
+
+-- Solution
+-- To fix the mutating table error, you can use a compound trigger.
+CREATE OR REPLACE TRIGGER customers_credit_policy_trg    
+    FOR UPDATE OR INSERT ON customers    
+    COMPOUND TRIGGER     
+    
+    -- Decare Array to Store the Customer Ids and their Credits
+    TYPE r_customers_type IS RECORD (    
+        customer_id   customers.customer_id%TYPE, 
+        credit_limit  customers.credit_limit%TYPE    
+    );    
+
+    TYPE t_customers_type IS TABLE OF r_customers_type  
+        INDEX BY PLS_INTEGER;    
+
+    t_customer   t_customers_type;    
+
+    AFTER EACH ROW IS    
+    BEGIN  
+        t_customer (t_customer.COUNT + 1).customer_id :=    
+            :NEW.customer_id;    
+        t_customer (t_customer.COUNT).credit_limit := :NEW.credit_limit;
+    END AFTER EACH ROW;    
+
+    AFTER STATEMENT IS    
+        l_max_credit   customers.credit_limit%TYPE;    
+    BEGIN      
+        SELECT MIN (credit_limit) * 5    
+            INTO l_max_credit    
+            FROM customers
+            WHERE credit_limit > 0;
+
+        FOR indx IN 1 .. t_customer.COUNT    
+        LOOP                                      
+            IF l_max_credit < t_customer (indx).credit_limit    
+            THEN    
+                UPDATE customers    
+                SET credit_limit = l_max_credit    
+                WHERE customer_id = t_customer (indx).customer_id;    
+            END IF;    
+        END LOOP;    
+    END AFTER STATEMENT;    
+END; 
+/
+
+UPDATE customers
+SET credit_limit = 12000
+WHERE customer_id = 1;
+/
+-- Due to the Compound Trigger logic, the mutating table error is now resolved
+
+*****************************************
+Collections
+*****************************************
+/*
+Type Category-1:
+    1) Associative Arrays/ INDEX-BY TABLEs/ PL/SQL Tables
+    2) Nested Tables
+    3) VARRAY
+Type Category-2:
+    1) Sparse - Eelements are not sequential, it may have gaps between elements.
+    2) Not Sparse: Never has gaps between the elements.
+Type Category-3:
+    1) Unbounded - It has a predetermined limits number of elements.
+    2) Bounded - Fixed number of elements.
+Type Category-4:
+    1) Single/One-dimentional - Each row in the collection contain single column.
+    2)
+Type Category-5:
+    1) Homogenous - Each element is of same datatype.
+    2) Heterogenous
+*/
+
+-- Associative Arrays
+/*
+Associative arrays are single-dimensional, unbounded, sparse collections of homogeneous elements.
+An associative array can be indexed by numbers or characters.
+Declaring an associative array is a two-step process. 
+    1) First, you declare an associative array type.
+    2) Second, you declare an associative array variable of that type.
+*/
+-- Example
+DECLARE
+    -- declare an associative array type
+    TYPE t_capital_type 
+        IS TABLE OF VARCHAR2(100) 
+        INDEX BY VARCHAR2(50);
+    -- declare a variable of the t_capital_type
+    t_capital t_capital_type;
+    -- local variable
+    l_country VARCHAR2(50);
+BEGIN   
+    -- Assign value to array elements
+    t_capital('USA')            := 'Washington, D.C.';
+    t_capital('United Kingdom') := 'London';
+    t_capital('Japan')          := 'Tokyo';
+      
+    -- Array method call: array_name.method_name(parameters); --> Similar to C#/Java
+    if (t_capital.COUNT) > 0 then  
+        dbms_output.put_line(t_capital.COUNT || ' items avilable in the collection');
+        dbms_output.put_line('--------------------------------'); 
+        
+        -- To iterate over an Associative array use FIRST and NEXT combinition
+        l_country := t_capital.FIRST;
+        WHILE l_country IS NOT NULL LOOP
+            dbms_output.put_line('Current Index: ' || l_country);
+            dbms_output.put_line('The capital of ' || 
+                l_country || 
+                ' is ' || 
+                t_capital(l_country)); -- Accessing array elements
+            dbms_output.put_line('Next Index: ' || t_capital.NEXT(l_country));     
+            l_country := t_capital.NEXT(l_country);
+            dbms_output.put_line('--------------------------------'); 
+        END LOOP;
+    else
+        dbms_output.put_line('No items avilable in the collection');
+    end if;
+END;
+/
+
+-- Nested Tables
+/*
+Nested tables are single-dimensional, unbounded collections of homogeneous elements.
+Noted that a nested table is initially dense. However, it can become sparse through the removal of elements.
+Declaring and Initializing a nested table:
+    1) First, declare the nested table type.
+    2) Second, declare the nested table variable based on a nested table type.
+    3) Third, initialize a nested table variable: To initialize a nested table, 
+        you can use a constructor function. The constructor function has the same name as the type.
+        This is similar to constructor instantiate in C#/Java.
+When you declare a nested table variable, it is initialized to NULL. Ex: nested_table_variable nested_table_type;
+To add an element to a nested table, you first use the EXTEND(n) method.
+To iterate through the Nested table use FIRST and LAST methods (returns first and last indexes of elements).
+It is possible to create a nested table type located in the database.
+    CREATE [OR REPLACE] TYPE element_datatype IS OBJECT (field list...);
+    CREATE [OR REPLACE] TYPE nested_table_type IS TABLE OF element_datatype [NOT NULL];
+If you want to drop a type, use the following DROP TYPE statement: DROP TYPE type_name [FORCE];
+*/
+
+-- Example
+DECLARE
+    -- declare a cursor that return customer name
+    CURSOR c_customer IS 
+        SELECT name 
+        FROM customers
+        ORDER BY name 
+        FETCH FIRST 10 ROWS ONLY;
+    
+    -- declare a nested table type   
+    TYPE t_customer_name_type 
+        IS TABLE OF customers.name%TYPE;
+    
+    -- declare and initialize a nested table variable
+    t_customer_names t_customer_name_type := t_customer_name_type();
+    /*
+    This is similar to:
+    t_customer_names t_customer_name_type; -- First declare variable
+    t_customer_names := t_customer_name_type(); -- Second initialize the variable    
+    */  
+BEGIN
+    -- populate customer names from a cursor
+    FOR r_customer IN c_customer 
+    LOOP
+        t_customer_names.EXTEND;
+        t_customer_names(t_customer_names.LAST) := r_customer.name;
+    END LOOP;
+    
+    -- display customer names
+    -- Interate through the Nested Table elements
+    FOR l_index IN t_customer_names.FIRST..t_customer_names.LAST 
+    LOOP
+        dbms_output.put_line(t_customer_names(l_index));
+    END LOOP;
+END;
+/
+
+-- VARRAY
+/*
+A VARRAY is single-dimensional collections of elements with the same data type.
+A VARRAY always has a fixed number of elements(bounded) and never has gaps between the elements (not sparse).
+Note that you can assign a VARRAY to another using the following syntax: varray_name := another_varray_name;
+*/
+
+-- Example
+DECLARE
+    -- define record type
+    TYPE r_customer_type IS RECORD(
+        customer_name customers.NAME%TYPE,
+        credit_limit customers.credit_limit%TYPE
+    ); 
+    
+    -- declare a VARRAY type of the record r_customer_type with the size of two
+    TYPE t_customer_type IS VARRAY(2) 
+        OF r_customer_type;
+    
+    --  declare a VARRAY variable of the VARRAY type t_customer_type
+    t_customers t_customer_type := t_customer_type();
+    t_customers_new t_customer_type := t_customer_type();
+BEGIN
+    -- Use the EXTEND method to add an instance to t_customers 
+    -- and the LAST method to append an element at the end of the VARRAY t_customers
+    t_customers.EXTEND;
+    t_customers(t_customers.LAST).customer_name := 'ABC Corp';
+    t_customers(t_customers.LAST).credit_limit  := 10000;
+    
+    t_customers.EXTEND;
+    t_customers(t_customers.LAST).customer_name := 'XYZ Inc';
+    t_customers(t_customers.LAST).credit_limit  := 20000;
+    
+    -- assigning a VARRAY to another
+    t_customers_new := t_customers;
+    
+    -- use the COUNT method to get the number of elements in the array
+    dbms_output.put_line('The number of customers is ' || t_customers.COUNT);
+    dbms_output.put_line('The number of customers-new is ' || t_customers_new.COUNT);
+END;
+/
+
+-- The following example uses a cursor to retrieve five customers 
+-- who have the highest credits from the customers table and add data to a VARRAY
+DECLARE
+    TYPE r_customer_type IS RECORD(
+        customer_name customers.name%TYPE,
+        credit_limit customers.credit_limit%TYPE
+    ); 
+
+    TYPE t_customer_type IS VARRAY(5) 
+        OF r_customer_type;
+    
+    t_customers t_customer_type := t_customer_type();
+
+    CURSOR c_customer IS 
+        SELECT NAME, credit_limit 
+        FROM customers 
+        ORDER BY credit_limit DESC 
+        FETCH FIRST 5 ROWS ONLY;
+BEGIN
+    -- fetch data from a cursor
+    FOR r_customer IN c_customer LOOP
+        t_customers.EXTEND;
+        t_customers(t_customers.LAST).customer_name := r_customer.name;
+        t_customers(t_customers.LAST).credit_limit  := r_customer.credit_limit;
+    END LOOP;
+
+    -- show all customers
+    FOR l_index IN t_customers .FIRST..t_customers.LAST 
+    LOOP
+        dbms_output.put_line(
+            'The customer ' ||
+            t_customers(l_index).customer_name ||
+            ' has a credit of ' ||
+            t_customers(l_index).credit_limit
+        );
+    END LOOP;
+
+END;
+/
+
+-- Delete elements from a VARRAY
+-- To delete all elements of a VARRAY, you use the DELETE method:
+varray_name.DELETE;
+-- To remove one element from the end of a VARRAY, you use the TRIM method:
+varray_name.TRIM;
+-- To remove n elements from the end of a VARRAY, you use the TRIM(n) method:
+varray_name.TRIM(n)
+
+
+
+
 
 
 

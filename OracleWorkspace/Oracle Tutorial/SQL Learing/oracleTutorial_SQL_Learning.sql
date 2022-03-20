@@ -908,23 +908,27 @@ CREATE TABLE table_name (
 *****************************************
 Views
 *****************************************
+-- Refer to: https://www.oracletutorial.com/oracle-view/
 -- Creating a View
 CREATE [OR REPLACE] VIEW view_name [(column_aliases)] AS
     defining-query
 [WITH READ ONLY]
 [WITH CHECK OPTION]
 ;
-oracletutorial_Learning.sql
 
 -- Drop a View
 DROP VIEW schema_name.view_name 
 [CASCADE CONSTRAINT];
+
 -- Dropping uderlying table will make the View Invalid
 SELECT object_name, status
 FROM user_objects
 WHERE object_type = 'VIEW' AND object_name = 'SALESMAN_CONTACTS';
 
 -- DML operation on Views
+-- Here cars table is knwon as key-preserved table
+-- A key-preserved table is a base table with a one-to-one row relationship with the rows in the view, 
+-- via either the primary key or a unique key.
 CREATE VIEW all_cars AS 
 SELECT
     car_id,
@@ -1019,7 +1023,7 @@ VALUES(
 *****************************************
 Database Link
 *****************************************
-
+-- Refer to: https://www.oracletutorial.com/oracle-administration/#:~:text=Section%208.%20Database%20Links
 select * from user_tables;
 select sys_context('userenv','db_name') from dual; -- To ckeck DB name
 -- D:\db_home\network\admin
@@ -1038,6 +1042,7 @@ select * from customers@pdb;
 *****************************************
 Index
 *****************************************
+-- Refer to: https://www.oracletutorial.com/oracle-index/
 -- By default, the CREATE INDEX statement creates a btree index.
 
 -- Explain plan to check query performance
@@ -1120,17 +1125,15 @@ group by gender;
 *****************************************
 Sequence
 *****************************************
-
-XXX
+-- Refer to: https://www.oracletutorial.com/oracle-sequence/
 
 *****************************************
 Synonym
 *****************************************
-
-XXX
+-- Refer to: https://www.oracletutorial.com/oracle-synonym/
 
 *****************************************
-Functions
+Oracle SQL Functions
 *****************************************
 -- CONCAT
 select CONCAT('Rakesh', ' Panigrahi') from dual;
@@ -1269,6 +1272,7 @@ SELECT SUBSTR('ABCDEFG',3,4) "Substring" FROM DUAL; -- CDEF
 SELECT SUBSTR('ABCDEFG',-5,4) "Substring" FROM DUAL; -- CDEF
 
 select INTERVAL '100' MONTH DURATION from dual;
+
 
 *****************************************
 

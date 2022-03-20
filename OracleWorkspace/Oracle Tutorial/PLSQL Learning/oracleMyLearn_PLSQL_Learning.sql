@@ -13,7 +13,6 @@ You can find oracletutorial databse in OT@ADB.
 *****************************************
 Misc
 *****************************************
-
 -- Autonomous Transactions
 CREATE TABLE at_test (
   id           NUMBER       NOT NULL,
@@ -77,7 +76,6 @@ select * from error_logs; -- commit not impacted by the exception block roll bac
 *****************************************
 Practice Exam
 *****************************************
-
 -- Qn
 SET SERVEROUTPUT ON;
 DECLARE
@@ -158,7 +156,6 @@ Print v_bind1;
 *****************************************
 PL/SQL Variables
 *****************************************
-
 -- Implicit conversion
 select 1+'2' from dual; --3
 select to_date('02-FEB-2021') from dual; -- 02-FEB-21
@@ -201,7 +198,6 @@ select * from employees where employee_id = :x;
 *****************************************
 PL/SQL Blocks
 *****************************************
-
 -- Simple PLSQL Blocks
 SET SERVEROUTPUT ON;
 DECLARE
@@ -858,7 +854,8 @@ CREATE OR REPLACE DIRECTORY ROOT_DIR AS '';
 SELECT * FROM DBMS_CLOUD.list_files('ROOT_DIR');
 
 -- For rakesh_orcl
-CREATE OR REPLACE DIRECTORY REPORTS_DIR as 'D:\C_Workspaces_Repositories\GitHub_Repositories\SQL_Learning\OracleWorkspace\OracleTutorial-OT\PLSQL Learning\plpu\reports';
+CREATE OR REPLACE DIRECTORY REPORTS_DIR 
+    as 'D:\C_Workspaces_Repositories\GitHub_Repositories\SQL_Learning\OracleWorkspace\OracleTutorial-OT\PLSQL Learning\plpu\reports';
 SET SERVEROUTPUT ON;
 EXECUTE read_file('REPORTS_DIR', 'instructor.txt')
 EXECUTE sal_status('REPORTS_DIR_1', 'salreport2.txt')
@@ -916,7 +913,7 @@ CREATE OR REPLACE TRIGGER saltrig AFTER
     INSERT OR UPDATE OF salary ON employees
     FOR EACH ROW
 --DECLARE
-    --PRAGMA AUTONOMOUS_TRANSACTION;
+    --PRAGMA ;AUTONOMOUS_TRANSACTION
 BEGIN
     INSERT INTO salary_log VALUES (
         user,
