@@ -29,6 +29,7 @@ END;
 --Can't tell if x and y are equal or not.
 
 --Qn
+set serveroutput on;
 declare
     "New" number := 1;
     --_a number; --Error
@@ -47,7 +48,6 @@ set SERVEROUTPUT ON
 declare
     v_sal number(10,2) := 1000;
 begin
-    null;
     dbms_output.put_line('Salary is: ' || v_sal);
     declare
         v_sal number;
@@ -69,6 +69,38 @@ Salary is: 2800
 Salary is: 5000
 Salary is: 2800
 */
+
+set SERVEROUTPUT ON
+declare
+    v_sal number(10,2) := 1000;
+begin
+    dbms_output.put_line('Salary is: ' || v_sal);
+    --declare
+        --v_sal number;
+    begin
+        select salary into v_sal from employees where employee_id = 195;
+        dbms_output.put_line('Salary is: ' || v_sal);
+        --declare
+            --v_sal number;
+        begin <<b3>>
+            v_sal := 5000;
+            dbms_output.put_line('Salary is: ' || v_sal);
+        end b3;
+        dbms_output.put_line('Salary is: ' || v_sal);
+    end;
+    dbms_output.put_line('Salary is: ' || v_sal);
+end;
+/
+
+/*
+Salary is: 1000
+Salary is: 2800
+Salary is: 5000
+Salary is: 5000
+Salary is: 5000
+*/
+-- without declare the v_sal global variable is getting overwiritten 
+-- by the local variable
 
 --Qn
 SET SERVEROUTPUT ON
@@ -398,11 +430,47 @@ drop view v1;
 drop view v2;
 /
 
+-- Qn
+set serveroutput on;
+declare
+    low number;
+    high number;
+begin
+    low := 4;
+    high := 4;
+    
+    for i in low..high loop
+        dbms_output.put_line(i);
+    end loop;
+end;
+/
 
+/*
+4
+*/
 
+-- Qn
+set serveroutput on;
+declare
+    ex exception;
+begin
+    declare
+        ex exception;
+    begin
+        raise ex;
+    end;
+exception
+    when ex then
+        dbms_output.put_line('ex');
+    when others then
+        dbms_output.put_line('others');
+end;
+/
 
-
-
+/*
+If you will remove the declare section of inner block,
+then it will display "ex".
+*/
 
 
 

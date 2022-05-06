@@ -1,0 +1,1 @@
+For livesql tutorial you can read the blogs and Practice it on the livesql cloud itself.

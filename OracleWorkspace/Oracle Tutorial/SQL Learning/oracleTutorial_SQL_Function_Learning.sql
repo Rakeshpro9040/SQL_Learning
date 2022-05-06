@@ -504,15 +504,106 @@ FROM
 
 -- ROW_NUMBER
 -- Assign a unique sequential integer starting from 1 to each row in a partition or in the whole result
+/*
+To effectively use the ROW_NUMBER() function, you should use a subquery or 
+a common table expression to retrieve row numbers for a specified range to get the top-N, bottom-N, and inner-N results.
+*/
+-- Syntax
+ROW_NUMBER() OVER (
+   [query_partition_clause] 
+   order_by_clause
+)
+-- To get a single most expensive product by category
+WITH cte_products AS (
+SELECT 
+    row_number() OVER(
+        PARTITION BY category_id
+        ORDER BY list_price DESC
+    ) row_num, 
+    category_id,
+    product_name, 
+    list_price
+FROM 
+    products
+)
+SELECT * FROM cte_products
+WHERE row_num = 1;
+
 
 -- PERCENT_RANK
 -- Calculate the percent rank of a value in a set of values.
+/*
+The PERCENT_RANK() function is similar to the CUME_DIST() function.
+*/
+-- Syntax
+PERCENT_RANK() OVER (
+    [ query_partition_clause ] 
+    order_by_clause
+)
+-- The following statement calculates the sales percentile for each salesman in 2016 and 2017.
+SELECT 
+    salesman_id,
+    year,
+    sales,  
+    ROUND(PERCENT_RANK() OVER (
+        PARTITION BY year
+        ORDER BY sales DESC
+    ) * 100,2) || '%' percent_rank
+FROM 
+    salesman_performance
+WHERE 
+    year in (2016,2017);   
+
 
 -- NTH_VALUE
 -- Get the Nth value in a set of values.
+NTH_VALUE (expression, N)
+[ FROM { FIRST | LAST } ]
+[ { RESPECT | IGNORE } NULLS ] 
+OVER (
+    [ query_partition_clause ] 
+    order_by_clause
+    [frame_clause]
+)
+-- The following query uses the NTH_VALUE() function 
+-- to get all the products as well as the second most expensive product by category:
+SELECT
+    product_id,
+    product_name,
+    category_id,
+    list_price,
+    NTH_VALUE(product_name,2) OVER (
+        PARTITION BY category_id
+        ORDER BY list_price DESC
+        RANGE BETWEEN UNBOUNDED PRECEDING AND 
+            UNBOUNDED FOLLOWING
+    ) AS second_most_expensive_product
+FROM
+    products;
+
 
 -- NTILE
 -- Divide an ordered set of rows into a number of buckets and assign an appropriate bucket number to each row.
+-- Syntax
+NTILE(expression) OVER ( 
+    [query_partition_clause]
+    order_by_clause 
+)
+-- The following statement divides into 4 buckets the values 
+-- in the sales column of the salesman_performance view in the year of 2016 and 2017:
+SELECT 
+	salesman_id, 
+	sales,
+	year,
+	NTILE(4) OVER(
+		PARTITION BY year
+		ORDER BY sales DESC
+	) quartile
+FROM 
+	salesman_performance
+WHERE
+	year = 2016 OR year = 2017;
+
 
 *****************************************
 Comparison Functions
@@ -552,7 +643,7 @@ SELECT CURRENT_TIMESTAMP FROM dual;
 SELECT DBTIMEZONE FROM dual;
 
 -- EXTRACT
--- Extract a value of a date time field e.g., YEAR, MONTH, DAY, … from a date time value.
+-- Extract a value of a date time field e.g., YEAR, MONTH, DAY, ï¿½ from a date time value.
 select
     EXTRACT(YEAR FROM SYSDATE),
     EXTRACT(MONTH FROM SYSDATE),
