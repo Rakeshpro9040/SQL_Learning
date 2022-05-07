@@ -1,5 +1,6 @@
 --Misc
 select * from user_tables;
+select * from cat;
 
 --Qn
 /*
@@ -428,45 +429,236 @@ else 'Leaf' end node,
 FROM BST B
 ORDER BY N;
 
+--Qn
+/*
+New Companies
+*/
 
+select distinct 
+    c.company_code, 
+    c.founder,
+    (select count(distinct lead_manager_code) 
+     from lead_manager 
+     where company_code = c.company_code) AS tot_lead_manager, 
+    (select count(distinct senior_manager_code) 
+     from senior_manager 
+     where company_code = c.company_code) AS tot_senior_manager, 
+    (select count(distinct manager_code) 
+     from manager 
+     where company_code = c.company_code) AS tot_manager, 
+    (select count(distinct employee_code) 
+     from employee 
+     where company_code = c.company_code) AS tot_employee
+from company c
+order by company_code;
 
+--Qn
+/*
+SQL Project Planning
+*/
 
+/*
+create table ot.projects
+(
+    task_id integer,
+    start_date date,
+    end_date date
+);
+*/
 
+select 
+    p1.task_id,
+    p1.start_date, 
+    p1.end_date,
+    (p1.end_date - p1.start_date) AS days, --1 day gap
+    p2.start_date,
+    p2.end_date
+from projects p1, projects p2
+where (p1.end_date+1) = p2.end_date(+) --consecutive dates
+and  p2.start_date is null --last task id of the project
+order by days, p1.start_date;
 
+--Ans
+SELECT START_DATE, MIN(END_DATE)
+FROM
+  (SELECT START_DATE
+   FROM PROJECTS
+   WHERE START_DATE NOT IN
+       (SELECT END_DATE
+        FROM PROJECTS)) A,
+  (SELECT END_DATE
+   FROM PROJECTS
+   WHERE END_DATE NOT IN
+       (SELECT START_DATE
+        FROM PROJECTS)) B
+WHERE START_DATE < END_DATE
+GROUP BY START_DATE
+ORDER BY (MIN(END_DATE) - START_DATE), START_DATE;
 
+--Qn
+/*
+Placement
+*/
+select s1.name 
+from students s1, friends f, packages p1, students s2, packages p2
+where s1.id = f.id
+and s1.id = p1.id
+and f.friend_id = s2.id
+and f.friend_id = p2.id
+and p1.salary < p2.salary
+order by p2.salary;
 
+--Qn
+/*
+Symmetric Pairs
+*/
+select f1.x,f1.y
+from
+    (select x,y
+    from functions
+    where x < y) f1,
+    (select x,y
+    from functions
+    where x > y) f2
+where f1.x = f2.y
+and f1.y = f2.x
+union
+select distinct x,y
+from
+(
+    select x,y,count(*) over(partition by x,y) cnt
+    from functions
+    where x=y
+)
+where cnt > 1
+order by 1;
 
+--Aggregarion Qns
+/*
+Query a count of the number of cities in CITY having a Population larger than 100000.
+*/
+select count(id)
+from city
+where population > 100000;
 
+/*
+Query the total population of all cities in CITY where District is California.
+*/
+select sum(population)
+from city
+where district = 'California';
 
+/*
+Query the average population of all cities in CITY where District is California.
+*/
+select avg(population)
+from city
+where district = 'California';
 
+/*
+Query the average population for all cities in CITY, rounded down to the nearest integer.
+*/
+select floor(avg(population))
+from city;
 
+/*
+Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+*/
+select sum(population)
+from city
+where COUNTRYCODE = 'JPN';
 
+/*
+Query the difference between the maximum and minimum populations in CITY.
+*/
+select max(population)-min(population)
+from city;
 
+/*
+The Bluder
+*/
+/*
+Keyword:
+next integer: ceil
+round down: floor
+*/
+select 2600-replace(2006,0) from dual;
+select ceil(avg(salary)-avg(replace(salary,0)))
+from employees;
 
+/*
+Top Earners
+*/
+select (salary*months) || ' ' || count(employee_id)
+from employee
+where (salary*months) = 
+(
+    select max(salary*months)
+    from employee
+)
+group by (salary*months);
 
+/*
+Weather Observation Station 2
+*/
+select round(sum(lat_n),2), round(sum(long_w),2)
+from station;
 
+/*
+Weather Observation Station 13
+*/
+select trunc(sum(lat_n),4)
+from station
+where lat_n between 38.7880 and 137.2345;
 
+/*
+Weather Observation Station 14
+*/
+select trunc(max(lat_n),4)
+from station
+where lat_n < 137.2345;
 
+/*
+Weather Observation Station 15
+*/
+select round(long_w,4)
+from station
+where lat_n =
+(
+    select max(lat_n)
+    from station
+    where lat_n < 137.2345
+);
 
+/*
+Weather Observation Station 16
+*/
+select round(min(lat_n),4)
+from station
+where lat_n > 38.7780;
 
+/*
+Weather Observation Station 17
+*/
+select round(long_w,4)
+from station
+where lat_n =
+(
+    select min(lat_n)
+    from station
+    where lat_n > 38.7780
+);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+Weather Observation Station 18
+Manhattan Distance: |x2-x1|+|y2-y1|
+*/
+select round((abs(c-a)+abs(d-b)),4)
+from
+(
+    select min(lat_n) a, max(lat_n) c, min(long_w) b, max(long_w) d
+    from station
+);
 
 
 
