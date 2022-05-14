@@ -19,7 +19,7 @@ connection = cx_Oracle.connect(
 
 cursor = connection.cursor()    
 file = r'D:\\C_Workspaces_Repositories\\GitHub_Repositories\\SQL_Learning\\SQL-Practice\\Helper_Tables.xlsx'        
-tab_name = "PROJECTS"
+tab_name = "GRADES_REPORT" # Update this
 tab_exists = """
 DECLARE
   v_exst INT;
@@ -35,17 +35,18 @@ BEGIN
 END;
 """
 cursor.execute(tab_exists)    
+# Update the Table Structure
 create_table = """
 CREATE TABLE """+tab_name+""" (
-       task_id integer NOT NULL,
-       start_date date,
-       end_date date
+       grade integer NOT NULL,
+       min_mark integer,
+       max_mark integer
 )    """    
 cursor.execute(create_table)  
 
 # Insert from single sheet from an excel into an Oracle table (with Sheet-name)
 insert_table = "INSERT INTO "+tab_name+" VALUES (:1,:2,:3)"
-sheet_name = 'Projects'
+sheet_name = tab_name
 df = pd.read_excel(file,sheet_name)
 df_list = df.fillna('').values.tolist()
 cursor.executemany(insert_table,df_list)    

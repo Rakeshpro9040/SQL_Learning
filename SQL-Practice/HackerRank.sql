@@ -660,14 +660,309 @@ from
     from station
 );
 
+/*
+Weather Observation Station 19
+Euclidean distance: sqrt(sqr(x2-x1)+sqr(y2-y1))
+*/
+select round(sqrt(power((c-a),2)+power((d-b),2)),4)
+from
+(
+    select min(lat_n) a, max(lat_n) c, min(long_w) b, max(long_w) d
+    from station
+);
+
+/*
+Weather Observation Station 20
+Median:
+    Dataset-1: 1,2,3,4,5,6,7
+    Median: 4
+    Dataset-2: 1,2,3,4,5,6,7,8
+    Median: (4+5)/2=4.5
+*/
+select round(median(lat_n),4)
+from station;
+
+--Basic Join
+/*
+Challenges
+*/
+select
+    hacker_id,
+    name,
+    cnt_challenge_id
+from
+(
+    select
+        hacker_id,
+        name,
+        cnt_challenge_id,
+        case when (cnt_cnt_challenge_id > 1) 
+                and (cnt_challenge_id < max_cnt_challenge_id)
+            then 1
+            else 0
+        end AS exclude_rec
+    from
+    (
+        select 
+            hacker_id, 
+            name, 
+            cnt_challenge_id,
+            count(cnt_challenge_id) over(partition by cnt_challenge_id)
+            AS cnt_cnt_challenge_id,
+            max(cnt_challenge_id) over(partition by dummy_rec)
+            AS max_cnt_challenge_id
+        from
+        (
+            select h.hacker_id, h.name, count(c.challenge_id) cnt_challenge_id,
+            1 AS dummy_rec
+            from hackers h
+            inner join challenges c
+                on h.hacker_id = c.hacker_id
+            group by h.hacker_id, h.name
+        )
+    )
+)
+where exclude_rec = 0
+order by cnt_challenge_id desc, hacker_id;
+
+/*
+Population Census
+*/
+select sum(c.population)
+from city c inner join country cn
+on c.countrycode = cn.code
+and cn.continent = 'Asia';
+
+/*
+African Cities
+*/
+select c.name AS city_name
+from city c inner join country cn
+on c.countrycode = cn.code
+and cn.continent = 'Africa';
+
+/*
+Average Population of Each Continent
+*/
+select cn.continent, floor(avg(c.population))
+from city c inner join country cn
+on c.countrycode = cn.code
+group by cn.continent;
+
+/*
+The Report
+*/
+select s.name, g.grade, s.marks
+from students_report s inner join grades_report g
+on s.marks between g.min_mark and g.max_mark
+order by s.marks;
+
+select 
+    case when g.grade >=8 then
+            s.name
+        else NULL
+    end AS names,
+    g.grade, 
+    s.marks
+from students_report s inner join grades_report g
+on s.marks between g.min_mark and g.max_mark
+order by 
+    g.grade desc,
+    case when g.grade >= 8 then
+            s.name 
+        else NULL
+    end asc NULLS LAST,
+    case when g.grade < 8 then
+            s.marks
+        else NULL
+    end asc;
+
+/*
+Top Competitors
+*/
+select 
+    h.hacker_id, 
+    h.name
+from hackers h 
+inner join submissions s
+    on h.hacker_id = s.hacker_id
+inner join challenges c
+    on c.challenge_id = s.challenge_id
+inner join difficulty d
+    on d.difficulty_level = c.difficulty_level
+where d.score = s.score
+group by h.hacker_id, h.name
+having count(s.challenge_id) > 1
+order by count(s.challenge_id) desc, h.hacker_id;
+
+/*
+Ollivander's Inventory
+*/
+select 
+    id,
+    age,
+    coins_needed,
+    power
+from
+(
+    select 
+        w.code, 
+        w.id, 
+        wp.age, 
+        w.coins_needed, 
+        w.power,
+        min(w.coins_needed) over(partition by w.code, w.power, wp.age) min_gold_gallens
+    from wands w 
+    inner join wands_property wp
+        on w.code = wp.code
+        and wp.is_evil = 0
+)
+where coins_needed = min_gold_gallens
+order by power desc, age desc;
+
+/*
+Contest Leaderboard
+*/
+select
+    h1.hacker_id,
+    h1.name,
+    sum(max_score) tot_score
+from
+(
+    select 
+        h.hacker_id, 
+        h.name,
+        s.challenge_id,
+        max(s.score) max_score
+    from hackers h 
+    inner join submissions s
+        on h.hacker_id = s.hacker_id
+    group by h.hacker_id, h.name, s.challenge_id
+) h1
+group by h1.hacker_id, h1.name
+having sum(max_score) <> 0
+order by tot_score desc, h1.hacker_id;
+
+--Alternative Queries
+/*
+Print Prime Numbers
+*/
+select listagg(numbers,'&') within group(order by numbers)
+from
+(
+    select level numbers
+    from dual
+    connect by level  <= 10
+);
+
+select l prime_number
+from (select level l from dual connect by level <= 100), 
+    (select level m from dual connect by level <= 100)
+where m<=l
+group by l
+having count(case when trunc(l/m) = l/m then 'Y' end) = 2
+order by l;
+
+select listagg(prime_number,'&') within group(order by prime_number) listprime_number
+from
+(
+    select l prime_number
+    from (select level l from dual connect by level <= 10), 
+        (select level m from dual connect by level <= 10)
+    where m<=l
+    group by l
+    having count(case when trunc(l/m) = l/m then 'Y' end) = 2
+);
+
+/*
+Draw The Triangle 2
+P(R): represents a pattern drawn by Julia in R rows
+*/
+select ltrim(rpad('~', (numbers*2), '* '),'~')
+from
+(
+    select level numbers
+    from dual
+    connect by level  <= 20
+    order by 1
+);
+
+/*
+Draw The Triangle 1
+*/
+
+select ltrim(rpad('~', (numbers*2), '* '),'~')
+from
+(
+    select level numbers
+    from dual
+    connect by level  <= 20
+    order by 1 desc
+);
 
 
+--Advanced Join
+/*
+Interviews
+*/
+select 
+    con.contest_id,
+    con.hacker_id, 
+    con.name, 
+    sum(total_submissions), 
+    sum(total_accepted_submissions), 
+    sum(total_views), 
+    sum(total_unique_views)
+from contests con 
+join colleges col 
+    on con.contest_id = col.contest_id 
+join challenges cha 
+    on  col.college_id = cha.college_id 
+left join
+    (
+        select 
+            challenge_id, 
+            sum(total_views) as total_views, 
+            sum(total_unique_views) as total_unique_views
+        from view_stats 
+        group by challenge_id
+    ) vs 
+    on cha.challenge_id = vs.challenge_id 
+left join
+    (
+        select 
+            challenge_id, 
+            sum(total_submissions) as total_submissions, 
+            sum(total_accepted_submissions) as total_accepted_submissions 
+        from submission_stats 
+        group by challenge_id
+    ) ss 
+    on cha.challenge_id = ss.challenge_id
+group by 
+    con.contest_id, 
+    con.hacker_id, 
+    con.name
+having sum(total_submissions)!=0 or 
+        sum(total_accepted_submissions)!=0 or
+        sum(total_views)!=0 or
+        sum(total_unique_views)!=0
+order by contest_id;
 
-
-
-
-
-
+/*
+15 Days of Learning SQL
+*/
+SELECT SUBMISSION_DATE,
+(SELECT COUNT(DISTINCT HACKER_ID)  
+ FROM SUBMISSIONS S2  
+ WHERE S2.SUBMISSION_DATE = S1.SUBMISSION_DATE AND    
+(SELECT COUNT(DISTINCT S3.SUBMISSION_DATE) 
+ FROM SUBMISSIONS S3 WHERE S3.HACKER_ID = S2.HACKER_ID AND S3.SUBMISSION_DATE < S1.SUBMISSION_DATE) = DATEDIFF(S1.SUBMISSION_DATE , '2016-03-01')),
+(SELECT HACKER_ID FROM SUBMISSIONS S2 WHERE S2.SUBMISSION_DATE = S1.SUBMISSION_DATE 
+GROUP BY HACKER_ID ORDER BY COUNT(SUBMISSION_ID) DESC, HACKER_ID LIMIT 1) AS TMP,
+(SELECT NAME FROM HACKERS WHERE HACKER_ID = TMP)
+FROM
+(SELECT DISTINCT SUBMISSION_DATE FROM SUBMISSIONS) S1
+GROUP BY SUBMISSION_DATE;
 
 
 
