@@ -126,12 +126,13 @@ LISTAGG (
 -- Example-1 (list of job titles along with employees first name)
 SELECT
     job_title,
-    LISTAGG(
+    LISTAGG
+    (
         first_name,
         ',' -- separated by comma
-    ) WITHIN GROUP(
-    ORDER BY
-        first_name
+    ) WITHIN GROUP
+    (
+        ORDER BY first_name
     ) AS employees
 FROM
     employees
@@ -149,12 +150,14 @@ order by 1, 2;
 -- Example-2 (list of order ids along with product name)
 SELECT
     order_id,
-    LISTAGG(
+    LISTAGG
+    (
         product_name,
         ';'
-    ) WITHIN GROUP(
-    ORDER BY
-        product_name
+    ) 
+    WITHIN GROUP
+    (
+        ORDER BY INNERproduct_name
     ) AS products
 FROM
     order_items
@@ -167,12 +170,14 @@ GROUP BY
 -- Oracle will issue teh overflow error: ORA-01489: result of string concatenation is too long 
 SELECT
     category_id,
-    LISTAGG(
+    LISTAGG
+    (
         description,
         ';' ON OVERFLOW ERROR
-    ) WITHIN GROUP(
-    ORDER BY
-        description
+    ) 
+    WITHIN GROUP
+    (
+        ORDER BY description
     ) AS products
 FROM
     products
@@ -185,12 +190,14 @@ ORDER BY
 -- You can use the ON OVERFLOW TRUNCATE clause to handle the overflow error gracefully
 SELECT
     category_id,
-    LISTAGG(
+    LISTAGG
+    (
         description,
         ';' ON OVERFLOW TRUNCATE '!!!' WITHOUT COUNT
-    ) WITHIN GROUP(
-    ORDER BY
-        description
+    ) 
+    WITHIN GROUP
+    (
+        ORDER BY description
     ) AS products
 FROM
     products
@@ -311,7 +318,8 @@ FROM
 	rank_demo;
 
 -- To get the top 10 most expensive products, you use the following statement
-WITH cte_products AS (
+WITH cte_products AS 
+(
 	SELECT 
 		product_name, 
 		list_price, 
@@ -329,15 +337,13 @@ WHERE
 	price_rank <= 10;
 
 -- Returns the top-3 most expensive products for each category
-WITH cte_products AS (
+WITH cte_products AS 
+(
 	SELECT 
 		product_name, 
 		list_price, 
 		category_id,
-		RANK() OVER(
-			PARTITION BY category_id
-			ORDER BY list_price DESC) 
-			price_rank
+		RANK() OVER(PARTITION BY category_id ORDER BY list_price DESC) price_rank
 	FROM 
 		products
 )
@@ -369,15 +375,13 @@ FROM
 	rank_demo;
 
 -- Return the top-5 cheapest products in each category
-WITH cte_products AS(  
+WITH cte_products AS
+(  
 SELECT 
     product_name, 
     category_id,
     list_price, 
-    RANK() OVER (
-    PARTITION BY category_id
-    ORDER BY list_price
-    ) my_rank
+    DENSE_RANK() OVER (PARTITION BY category_id ORDER BY list_price) my_rank
 FROM 
     products
 )
@@ -406,11 +410,7 @@ SELECT
     product_id, 
     product_name,
     list_price, 
-    FIRST_VALUE(product_name) 
-     OVER (
-        PARTITION BY category_id 
-        ORDER BY list_price
-    ) first_product
+    FIRST_VALUE(product_name) OVER (PARTITION BY category_id ORDER BY list_price) first_product
 FROM 
     products;
 
@@ -422,11 +422,8 @@ SELECT
     product_name, 
     category_id,
     list_price,
-    LAST_VALUE(product_name) OVER (
-        PARTITION BY category_id
-        ORDER BY list_price 
-        RANGE BETWEEN UNBOUNDED PRECEDING AND 
-            UNBOUNDED FOLLOWING) highest_price_product_id
+    LAST_VALUE(product_name) OVER (PARTITION BY category_id ORDER BY list_price 
+                                RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) highest_price_product_id
 FROM 
     products;
 
@@ -452,10 +449,7 @@ SELECT
 	salesman_id,
 	year, 
 	sales,
-	LEAD(sales) OVER (
-		PARTITION BY SALESMAN_ID
-		ORDER BY year
-	) following_year_sales
+	LEAD(sales) OVER (PARTITION BY SALESMAN_ID ORDER BY year) following_year_sales
 FROM 
 	salesman_performance;
 
@@ -477,15 +471,13 @@ WITH cte_sales (
 	year, 
 	sales,
 	py_sales) 
-AS (
+AS 
+(
 	SELECT 
 		salesman_id,
 		year, 
 		sales,
-		LAG(sales) OVER (
-			PARTITION BY salesman_id
-			ORDER BY year
-		) py_sales
+		LAG(sales) OVER (PARTITION BY salesman_id ORDER BY year) py_sales
 	FROM 
 		salesman_performance
 )
@@ -514,17 +506,15 @@ ROW_NUMBER() OVER (
    order_by_clause
 )
 -- To get a single most expensive product by category
-WITH cte_products AS (
-SELECT 
-    row_number() OVER(
-        PARTITION BY category_id
-        ORDER BY list_price DESC
-    ) row_num, 
-    category_id,
-    product_name, 
-    list_price
-FROM 
-    products
+WITH cte_products AS 
+(
+    SELECT 
+        row_number() OVER(PARTITION BY category_id ORDER BY list_price DESC) row_num, 
+        category_id,
+        product_name, 
+        list_price
+    FROM 
+        products
 )
 SELECT * FROM cte_products
 WHERE row_num = 1;
@@ -572,12 +562,9 @@ SELECT
     product_name,
     category_id,
     list_price,
-    NTH_VALUE(product_name,2) OVER (
-        PARTITION BY category_id
-        ORDER BY list_price DESC
-        RANGE BETWEEN UNBOUNDED PRECEDING AND 
-            UNBOUNDED FOLLOWING
-    ) AS second_most_expensive_product
+    NTH_VALUE(product_name,2) OVER (PARTITION BY category_id ORDER BY list_price DESC
+                                RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) 
+                                AS second_most_expensive_product
 FROM
     products;
 
@@ -595,10 +582,7 @@ SELECT
 	salesman_id, 
 	sales,
 	year,
-	NTILE(4) OVER(
-		PARTITION BY year
-		ORDER BY sales DESC
-	) quartile
+	NTILE(4) OVER(PARTITION BY year ORDER BY sales DESC) quartile
 FROM 
 	salesman_performance
 WHERE
@@ -610,18 +594,24 @@ Comparison Functions
 *****************************************
 -- COALESCE
 -- show you how to substitute null with a more meaningful alternative.
+-- Return first not null value
+select sal, COALESCE(comm, -5) test from emp;
 
 -- DECODE
 -- learn how to add if-then-else logic to a SQL query.
+select sal, DECODE(sal, 3000, 1, 0) test from emp;
 
 -- NVL
 -- return the first argument if it is not null, otherwise, returns the second argument.
+select sal, NVL(comm, -5) test from emp;
 
 -- NVL2
 -- show you how to substitute a null value with various options.
+select sal, NVL2(comm, 5, -5) test from emp;
 
 --NULLIF
 -- return a null if the first argument equals the second one, otherwise, returns the first argument.
+select sal, NULLIF(sal, 3000) test from emp;
 
 *****************************************
 Date Functions
@@ -629,6 +619,7 @@ Date Functions
 -- ADD_MONTHS
 -- Add a number of months (n) to a date and return the same day which is n of months away.
 select ADD_MONTHS(DATE '2016-02-29', 1) from dual;
+select ADD_MONTHS(SYSDATE, 1) from dual;
 
 -- CURRENT_DATE
 -- Return the current date and time in the session time zone
@@ -657,6 +648,7 @@ select FROM_TZ(TIMESTAMP '2017-08-08 08:09:10', '-09:00') from dual;
 -- LAST_DAY
 -- Gets the last day of the month of a specified date.
 select LAST_DAY(DATE '2016-02-01') from dual;
+select LAST_DAY(SYSDATE) from dual;
 
 -- LOCALTIMESTAMP
 -- Return a TIMESTAMP value that represents the current date and time in the session time zone.
@@ -665,6 +657,7 @@ SELECT LOCALTIMESTAMP FROM dual;
 -- MONTHS_BETWEEN
 -- Return the number of months between two dates.
 select MONTHS_BETWEEN( DATE '2017-07-01', DATE '2017-01-01' ) from dual;
+select MONTHS_BETWEEN(SYSDATE, SYSDATE-30) from dual;
 
 -- NEW_TIME
 -- Convert a date in one time zone to another
@@ -673,10 +666,15 @@ select NEW_TIME(TO_DATE('08-07-2017 01:30:45', 'MM-DD-YYYY HH24:MI:SS'), 'AST', 
 -- NEXT_DAY
 -- Get the first weekday that is later than a specified date.
 select NEXT_DAY(DATE '2000-01-01', 'SUNDAY') from dual;
+select NEXT_DAY(SYSDATE-7, 'SUNDAY') from dual; --Last Sunday
 
 -- ROUND
 -- Return a date rounded to a specific unit of measure.
 select ROUND(DATE '2017-07-16', 'MM') from dual;
+
+-- TRUNC
+-- Return a date truncated to a specific unit of measure.
+select TRUNC(DATE '2017-07-16', 'MM') from dual;
 
 -- SESSIONTIMEZONE
 -- Get the session time zone
@@ -694,10 +692,6 @@ SELECT SYSTIMESTAMP FROM dual;
 -- Convert a DATE or an INTERVAL value to a character string in a specified format.
 select TO_CHAR(SYSDATE, 'DL') from dual;
 SELECT TO_CHAR(INTERVAL '600' SECOND, 'HH24:MM') result FROM  DUAL;
-
--- TRUNC
--- Return a date truncated to a specific unit of measure.
-select TRUNC(DATE '2017-07-16', 'MM') from dual;
 
 -- TZ_OFFSET
 -- Get time zone offset of a time zone name from UTC
@@ -747,44 +741,27 @@ select LOWER('Abc') from dual;
 -- LPAD
 -- Return a string that is left-padded with the specified characters to a certain length.
 select LPAD('ABC',5,'*') from dual;
-
--- LTRIM
--- Remove spaces or other specified characters in a set from the left end of a string.
-select LTRIM(' ABC ') from dual;
-
--- REGEXP_COUNT
--- Return the number of times a pattern occurs in a string.
-select REGEXP_COUNT('1 2 3 abc','\d') from dual;
-
--- REGEXP_INSTR
--- Return the position of a pattern in a string.
-select REGEXP_INSTR('Y2K problem','\d+') from dual;
-
--- REGEXP_LIKE
--- Match a string based on a regular expression pattern.
-/*
-Can not be used in the WHERE condition.
-*/
-SELECT first_name FROM employees WHERE REGEXP_LIKE( first_name, 'y$', 'i' ) ORDER BY first_name; 
-
--- REGEXP_REPLACE
--- Replace substring in a string by a new substring using a regular expression.
-select REGEXP_REPLACE('Year of 2017','\d+', 'Dragon') from dual;
-
--- REGEXP_SUBSTR
--- Extract substrings from a string using a pattern of a regular expression.
-select REGEXP_SUBSTR('Number 10', '\d+') from dual;
-
--- REPLACE
--- Replace all occurrences of a substring by another substring in a string.
-select REPLACE('JACK AND JOND','J','BL') from dual;
+select LPAD('*',ROWNUM,'*') from dual connect by rownum < 10;
 
 -- RPAD
 -- Return a string that is right-padded with the specified characters to a certain length.
 select RPAD('ABC',5,'*') from dual;
 
+-- TRIM
+-- Remove the space character or other specified characters either from the start or end of a string.
+select TRIM(' ABC ') from dual;
+
+-- LTRIM
+-- Remove spaces or other specified characters in a set from the left end of a string.
+select LTRIM(' ABC ') from dual;
+
 -- RTRIM
 -- Remove all spaces or specified character in a set from the right end of a string.
+select REPLACE(RTRIM(' ABC '), ' ') from dual;
+
+-- REPLACE
+-- Replace all occurrences of a substring by another substring in a string.
+select REPLACE('JACK AND JOND','J','BL') from dual;
 select REPLACE(RTRIM(' ABC '), ' ', '$') from dual;
 
 -- SOUNDEX
@@ -799,13 +776,29 @@ select SUBSTR('Oracle Substring', 1, 6 ) from dual;
 -- Replace all occurrences of characters by other characters in a string.
 select TRANSLATE('12345', '143', 'bx') from dual;
 
--- TRIM
--- Remove the space character or other specified characters either from the start or end of a string.
-select TRIM(' ABC ') from dual;
-
 -- UPPER
 -- Convert all characters in a specified string to uppercase.
 select UPPER('Abc') from dual;
+
+-- REGEXP_COUNT
+-- Return the number of times a pattern occurs in a string.
+select REGEXP_COUNT('1 2 3 abc','\d') from dual;
+
+-- REGEXP_INSTR
+-- Return the position of a pattern in a string.
+select REGEXP_INSTR('Y2K problem','\d') from dual;
+
+-- REGEXP_LIKE
+-- Match a string based on a regular expression pattern.
+SELECT first_name FROM employees WHERE REGEXP_LIKE( first_name, 'y$', 'i' ) ORDER BY first_name; 
+
+-- REGEXP_REPLACE
+-- Replace substring in a string by a new substring using a regular expression.
+select REGEXP_REPLACE('Year of 2017','\d+', 'Dragon') from dual;
+
+-- REGEXP_SUBSTR
+-- Extract substrings from a string using a pattern of a regular expression.
+select REGEXP_SUBSTR('Number 10', '\d+') from dual;
 
 *****************************************
 

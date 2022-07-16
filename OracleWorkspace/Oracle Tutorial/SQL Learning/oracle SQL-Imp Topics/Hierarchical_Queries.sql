@@ -31,6 +31,7 @@ FROM entities
 START WITH parent_entity is NULL
 CONNECT BY PRIOR child_entity= parent_entity;
 --Read this one like: child_entity AS parent_entity starting from parent_entity is NULL (Top to Bottom)
+--Query with a CONNECT BY clause defines a hierarchical relationship in which the child_entity value of the parent row is equal to the parent_entity value of the child row.
 
 SELECT parent_entity,child_entity
 FROM entities

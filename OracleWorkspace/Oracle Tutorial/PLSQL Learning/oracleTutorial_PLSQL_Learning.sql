@@ -81,7 +81,7 @@ BEGIN
 END;
 /
 
--- Note: PL/SQL raises a "CASE_NOT_FOUND" error if you don’t specify an ELSE clause 
+-- Note: PL/SQL raises a "CASE_NOT_FOUND" error if you donï¿½t specify an ELSE clause 
 -- and the result of the CASE expression does not match any value in the WHEN clauses.
 
 -- Simple CASE
@@ -490,7 +490,7 @@ END;
 CURSORS
 *****************************************
 /*
-Explicit Cursor Attribute
+Implicit Cursor Attribute
 ----------------
 SQL%ROWCOUNT
 SQL%ISOPEN
@@ -1078,7 +1078,7 @@ CREATE OR REPLACE TRIGGER customers_audit_trg
     AFTER UPDATE OR DELETE ON customers
     FOR EACH ROW    
 DECLARE
-   --PRAGMA ;AUTONOMOUS_TRANSACTION -- to make changes permanent
+   --PRAGMA AUTONOMOUS_TRANSACTION; -- to make changes permanent --But COMMIT is mandatory at the end
    l_transaction VARCHAR2(10);
 BEGIN
    -- determine the transaction type
@@ -1429,6 +1429,17 @@ Declaring an associative array is a two-step process.
     1) First, you declare an associative array type.
     2) Second, you declare an associative array variable of that type.
 */
+
+/*
+Difference between Associative arrays/Nested table/Varrays :-
+Associative arrays index can be either integer or character, but Nested table and Varrays can only
+be integer datatype.
+Associative arrays integer indexed collections can be traverse using FIRST & LAST.
+Associative arrays integer indexed collections can be traverse using FIRST & NEXT.
+Associative arrays are not sequentially indexed, but Nested table & Varrasys are sequentially indexed.
+Associative Arrays & Nested table can be either dense or sparse, but Varrays can only be dense.
+Nested Tables need initilization, but not Associative Arrays.
+*/
 -- Example
 DECLARE
     -- declare an associative array type
@@ -1450,7 +1461,8 @@ BEGIN
         dbms_output.put_line(t_capital.COUNT || ' items avilable in the collection');
         dbms_output.put_line('--------------------------------'); 
         
-        -- To iterate over an Associative array use FIRST and NEXT combinition
+        -- To iterate over an Associative array: using FIRST and NEXT combinition
+        -- Below will work both for PLS_INTEGER & VARCHAR2
         l_country := t_capital.FIRST;
         WHILE l_country IS NOT NULL LOOP
             dbms_output.put_line('Current Index: ' || l_country);
@@ -1462,6 +1474,14 @@ BEGIN
             l_country := t_capital.NEXT(l_country);
             dbms_output.put_line('--------------------------------'); 
         END LOOP;
+
+        -- To iterate over an Associative array: using FIRST and LAST combinition
+        -- Below will only work for PLS_INTEGER
+        /*
+        FOR l_index in t_capital.FIRST .. t_capital.LAST LOOP
+          NULL;    
+        END LOOP;
+        */
     else
         dbms_output.put_line('No items avilable in the collection');
     end if;
@@ -1494,7 +1514,7 @@ DECLARE
         SELECT name 
         FROM customers
         ORDER BY name 
-        FETCH FIRST 10 ROWS ONLY;
+        FETCH FIRST 5 ROWS ONLY;
     
     -- declare a nested table type   
     TYPE t_customer_name_type 
@@ -1507,13 +1527,21 @@ DECLARE
     t_customer_names t_customer_name_type; -- First declare variable
     t_customer_names := t_customer_name_type(); -- Second initialize the variable    
     */  
+
+    v_deleted_element VARCHAR2(10);
 BEGIN
+    -- Length
+    DBMS_OUTPUT.PUT_LINE('Before Length: ' || t_customer_names.COUNT);
     -- populate customer names from a cursor
     FOR r_customer IN c_customer 
     LOOP
         t_customer_names.EXTEND;
         t_customer_names(t_customer_names.LAST) := r_customer.name;
     END LOOP;
+    DBMS_OUTPUT.PUT_LINE('After Length: ' || t_customer_names.COUNT);
+
+    --t_customer_names.DELETE(1); 
+    -- deleting element from a postion is allowed from a Nested Table due to sparse in nature
     
     -- display customer names
     -- Interate through the Nested Table elements
@@ -1526,7 +1554,7 @@ END;
 
 -- VARRAY
 /*
-A VARRAY is single-dimensional collections of elements with the same data type.
+A VARRAY is single-dimensional collections of elements with the same data type having an upper limit.
 A VARRAY always has a fixed number of elements(bounded) and never has gaps between the elements (not sparse).
 Note that you can assign a VARRAY to another using the following syntax: varray_name := another_varray_name;
 */
@@ -1591,6 +1619,9 @@ BEGIN
         t_customers(t_customers.LAST).customer_name := r_customer.name;
         t_customers(t_customers.LAST).credit_limit  := r_customer.credit_limit;
     END LOOP;
+
+    --t_customers.DELETE(1); 
+    -- deleting element from a postion is illegal for a VARRAY due to dense in nature
 
     -- show all customers
     FOR l_index IN t_customers .FIRST..t_customers.LAST 

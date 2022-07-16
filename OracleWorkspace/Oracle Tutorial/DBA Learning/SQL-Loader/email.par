@@ -1,0 +1,6 @@
+USERID=ot@pdborcl/Abcd1234
+CONTROL=email.ctl
+LOG=email.log
+BAD=email.bad
+DATA=email.dat
+DIRECT=true

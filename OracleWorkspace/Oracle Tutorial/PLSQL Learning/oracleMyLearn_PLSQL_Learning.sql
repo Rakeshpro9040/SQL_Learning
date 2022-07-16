@@ -1038,41 +1038,41 @@ CREATE TABLE parts2 ( pnum INTEGER, pname VARCHAR2(15) );
 /
 
 DECLARE 
- TYPE NumTab IS TABLE OF parts1.pnum%TYPE INDEX BY PLS_INTEGER;
- TYPE NameTab IS TABLE OF parts1.pname%TYPE INDEX BY PLS_INTEGER;
- pnums NumTab;
- pnames NameTab;
- 
- iterations CONSTANT PLS_INTEGER := 5; 
- t1 INTEGER; 
- t2 INTEGER; 
- t3 INTEGER; 
-BEGIN
- FOR j IN 1..iterations LOOP -- populate collections 
-  pnums(j) := j;
-  pnames(j) := 'Part No. ' || TO_CHAR(j); 
- END LOOP;
- 
- t1 := DBMS_UTILITY.get_time;
- 
- -- Standard For Loop (Slower)
- FOR i IN 1..iterations LOOP 
-  INSERT INTO parts1 (pnum, pname) VALUES (pnums(i), pnames(i)); 
- END LOOP;
- 
- t2 := DBMS_UTILITY.get_time;
- 
- -- Bulk Binding (Faster)
- FORALL i IN 1..iterations 
-  INSERT INTO parts2 (pnum, pname) VALUES (pnums(i), pnames(i)); 
+    TYPE NumTab IS TABLE OF parts1.pnum%TYPE INDEX BY PLS_INTEGER;
+    TYPE NameTab IS TABLE OF parts1.pname%TYPE INDEX BY PLS_INTEGER;
+    pnums NumTab;
+    pnames NameTab;
 
- t3 := DBMS_UTILITY.get_time;
- 
- DBMS_OUTPUT.PUT_LINE('Execution Time (secs)'); 
- DBMS_OUTPUT.PUT_LINE('---------------------'); 
- DBMS_OUTPUT.PUT_LINE('FOR LOOP: ' || TO_CHAR((t2 - t1)/100));
- DBMS_OUTPUT.PUT_LINE('FORALL: ' || TO_CHAR((t3 - t2)/100)); 
- COMMIT; 
+    iterations CONSTANT PLS_INTEGER := 5; 
+    t1 INTEGER; 
+    t2 INTEGER; 
+    t3 INTEGER; 
+BEGIN
+    FOR j IN 1..iterations LOOP -- populate collections 
+        pnums(j) := j;
+        pnames(j) := 'Part No. ' || TO_CHAR(j); 
+    END LOOP;
+    
+    t1 := DBMS_UTILITY.get_time;
+    
+    -- Standard For Loop (Slower)
+    FOR i IN 1..iterations LOOP 
+        INSERT INTO parts1 (pnum, pname) VALUES (pnums(i), pnames(i)); 
+    END LOOP;
+    
+    t2 := DBMS_UTILITY.get_time;
+    
+    -- Bulk Binding (Faster)
+    FORALL i IN 1..iterations 
+        INSERT INTO parts2 (pnum, pname) VALUES (pnums(i), pnames(i)); 
+
+    t3 := DBMS_UTILITY.get_time;
+    
+    DBMS_OUTPUT.PUT_LINE('Execution Time (secs)'); 
+    DBMS_OUTPUT.PUT_LINE('---------------------'); 
+    DBMS_OUTPUT.PUT_LINE('FOR LOOP: ' || TO_CHAR((t2 - t1)/100));
+    DBMS_OUTPUT.PUT_LINE('FORALL: ' || TO_CHAR((t3 - t2)/100)); 
+    COMMIT; 
 END; 
 /
 
@@ -1094,29 +1094,52 @@ delete from parts2;
 *****************************************
 BULK COLLECT INTO
 *****************************************
+/*
+https://livesql.oracle.com/apex/livesql/file/tutorial_IEHP37S6LTWIIDQIR436SJ59L.html
+*/
 drop table t;
 create table t (empid number);
 /
 
 DECLARE 
- TYPE empidTab IS TABLE OF employees.employee_id%TYPE INDEX BY PLS_INTEGER;
- emp_id empidTab;
+    TYPE empidTab IS TABLE OF employees.employee_id%TYPE INDEX BY PLS_INTEGER;
+    emp_id empidTab;
 BEGIN
- -- Bulk Collect
- select employee_id 
- BULK COLLECT INTO emp_id
- from employees 
- where rownum <= 5;
- 
- FORALL i IN 1..emp_id.count
-  INSERT INTO t VALUES (emp_id(i)); 
+    -- Bulk Collect
+    select employee_id 
+    BULK COLLECT INTO emp_id
+    from employees 
+    where rownum <= 5;
 
- COMMIT; 
+    FORALL i IN 1..emp_id.count
+        INSERT INTO t VALUES (emp_id(i)); 
+
+    COMMIT; 
 END; 
 /
 
 select * from t;
 delete from t;
+
+-- Buylk Collect with Limit
+DECLARE
+   CURSOR emps_c IS SELECT * FROM employees;
+   TYPE emps_t IS TABLE OF emps_c%ROwTYPE;
+   l_emps   emps_t;
+   l_count INTEGER := 0;
+BEGIN
+   OPEN emps_c;
+
+   LOOP
+      FETCH emps_c BULK COLLECT INTO l_emps LIMIT 10;
+      EXIT WHEN l_emps.COUNT = 0;
+      l_count := l_count + l_emps.COUNT;
+   END LOOP;
+   DBMS_OUTPUT.put_line ('Total rows fetched: ' || l_count);
+
+   CLOSE emps_c;
+END;
+/
 
 *****************************************
 BULK COLLECT Exception

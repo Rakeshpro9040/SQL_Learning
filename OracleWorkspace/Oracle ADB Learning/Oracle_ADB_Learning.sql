@@ -1,4 +1,14 @@
 *****************************************
+IMP Blogs
+*****************************************
+/*
+Oracle Autonomous Database: Autonomous Database for Experienced Users:
+https://mjromeo81.com/2020/12/24/oracle-autonomous-database-autonomous-database-for-experienced-users/
+
+*/
+
+
+*****************************************
 ADB Setup
 *****************************************
 
@@ -66,6 +76,22 @@ BEGIN
     END LOOP;
 END;
 */
+
+*****************************************
+Set Idle Time Limits
+*****************************************
+/*
+https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/idle-tile-limits.html#GUID-241F4C85-24E5-4F8A-B9EE-E3FCEF566D36
+
+https://oracle-help.com/oracle-database/how-to-set-idle-time-in-oracle-database/
+*/
+
+select * from dba_profiles order by resource_name;
+select * from dba_profiles where profile='DEFAULT' order by resource_name;
+select * from dba_profiles where profile='DEFAULT' and resource_name in ('IDLE_TIME','CONNECT_TIME');
+
+ALTER PROFILE DEFAULT LIMIT IDLE_TIME 60;
+-- It is changed to 60 min of idle time. The application will disconnect if it is idle for 60.
 
 *****************************************
 Misc
