@@ -172,7 +172,7 @@ login to OT and run:
 KING--Beh
 Observation: hr.get_emp_cbac2 ran with INVOKER's right,
     as emp table is present in the OT schema, it fetched the result KING,
-    but it does neither has executre prevelige on hr.get_emp nor it is having
+    but it does neither has execute prevelige on hr.get_emp nor it is having
     get_emp in its schema, then how it is able to execute the get_emp. This is
     due to in INVOKER's right object names used in DML/SQL(static/dynamic) are resolved
     using INVOKER's right (i.e. OT), but the calls to other packages/functions/procs are
