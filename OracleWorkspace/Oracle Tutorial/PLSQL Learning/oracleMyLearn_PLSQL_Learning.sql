@@ -1253,7 +1253,7 @@ BEGIN
       DBMS_OUTPUT.put_line('Number of failures: ' || l_error_count);
       FOR i IN 1 .. l_error_count LOOP
         DBMS_OUTPUT.put_line('Error: ' || i ||
-          ' Array Index: ' || SQL%BULK_EXCEPTIONS(i).error_index ||
+          ' Array Index: ' || SQL%BULK_EXCEPTIONS(i).ERROR_INDEX ||
           ' Message: ' || SQLERRM(-SQL%BULK_EXCEPTIONS(i).ERROR_CODE));
       END LOOP;
   END;

@@ -157,7 +157,7 @@ SELECT
     ) 
     WITHIN GROUP
     (
-        ORDER BY INNERproduct_name
+        ORDER BY product_name
     ) AS products
 FROM
     order_items
