@@ -1,6 +1,6 @@
-*****************************************
+/*****************************************
 IMP Blogs
-*****************************************
+*****************************************/
 /*
 Oracle Autonomous Database: Autonomous Database for Experienced Users:
 https://mjromeo81.com/2020/12/24/oracle-autonomous-database-autonomous-database-for-experienced-users/
@@ -8,9 +8,9 @@ https://mjromeo81.com/2020/12/24/oracle-autonomous-database-autonomous-database-
 */
 
 
-*****************************************
+/*****************************************
 ADB Setup
-*****************************************
+*****************************************/
 
 -- Connect to ADB_USER
 select * from all_users order by 3 desc;
@@ -77,9 +77,9 @@ BEGIN
 END;
 */
 
-*****************************************
+/*****************************************
 Set Idle Time Limits
-*****************************************
+*****************************************/
 /*
 https://docs.oracle.com/en/cloud/paas/autonomous-database/adbsa/idle-tile-limits.html#GUID-241F4C85-24E5-4F8A-B9EE-E3FCEF566D36
 
@@ -93,9 +93,16 @@ select * from dba_profiles where profile='DEFAULT' and resource_name in ('IDLE_T
 ALTER PROFILE DEFAULT LIMIT IDLE_TIME 60;
 -- It is changed to 60 min of idle time. The application will disconnect if it is idle for 60.
 
-*****************************************
+/*****************************************
+Password Update
+*****************************************/
+-- https://oracle-base.com/articles/misc/change-your-own-password-in-oracle-database
+
+ALTER USER my_user IDENTIFIED BY MyNewPassword123;
+
+/*****************************************
 Misc
-*****************************************
+*****************************************/
 -- Simulate Long Running query
 grant execute on sys.dbms_lock to adb_user;
 

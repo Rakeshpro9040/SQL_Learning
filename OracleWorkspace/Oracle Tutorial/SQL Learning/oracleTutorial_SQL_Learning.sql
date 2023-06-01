@@ -1246,6 +1246,22 @@ select INSTR('CORPORATE FLOOR','OR', -3, 2) "Reversed Instring" FROM DUAL;
 
 -- NULLIF
 
+*****************************************
+Hierarchical SQL
+*****************************************
+-- Check Hierarchical Queries Notes --
+
+select * from emp;
+
+select e.*,
+    connect_by_root ename as root_ename,
+    sys_connect_by_path(ename,'~') as ename_hier,
+    connect_by_isleaf as is_this_lastnode,
+    level as level_in_hier,
+    lpad('*', (level - 1), '*') as level_visual
+from emp e
+start with e.mgr is null
+connect by nocycle prior empno = mgr;
 
 *****************************************
 Advanced Oracle SQL

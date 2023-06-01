@@ -55,7 +55,8 @@ declare
     l_shipping_status VARCHAR2( 25 ) NOT NULL := 'Shipped'; -- cannot accept a NULL value
     l_customer_name customers.name%TYPE; -- Anchored declaration
 begin
-    dbms_output.put_line(co_pi);
+    dbms_output.put_line(to_char(var8,'DD-MON-RRRR HH.MI.SS AM TZD'));
+    dbms_output.put_line(var13);
 end;
 /
 
@@ -81,7 +82,7 @@ BEGIN
 END;
 /
 
--- Note: PL/SQL raises a "CASE_NOT_FOUND" error if you don�t specify an ELSE clause 
+-- Note: PL/SQL raises a "CASE_NOT_FOUND" error if you don't specify an ELSE clause 
 -- and the result of the CASE expression does not match any value in the WHEN clauses.
 
 -- Simple CASE
@@ -1645,18 +1646,29 @@ varray_name.TRIM;
 -- To remove n elements from the end of a VARRAY, you use the TRIM(n) method:
 varray_name.TRIM(n)
 
+*****************************************
+Dynamic SQL
+*****************************************
 
+DECLARE
+  v_employee_id NUMBER;
+  v_employee_name VARCHAR2(100);
+  v_department_id NUMBER := 100;
+BEGIN
+  -- Dynamic SQL statement
+  EXECUTE IMMEDIATE 'SELECT employee_id, employee_name FROM employees WHERE department_id = :dept_id'
+    INTO v_employee_id, v_employee_name
+    USING v_department_id;
+  
+  -- Output the retrieved values
+  DBMS_OUTPUT.PUT_LINE('Employee ID: ' || v_employee_id);
+  DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_employee_name);
+END;
+/
 
-
-
-
-
-
-
-
-
-
-
+*****************************************
+Misc
+*****************************************
 
 *****************************************
 

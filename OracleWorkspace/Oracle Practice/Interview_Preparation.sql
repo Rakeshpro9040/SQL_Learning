@@ -20,3 +20,9 @@ cut -f 1-3 Employee.txt --fetch field from 1 to 3
 tr "[a-z]" "[A-Z]" < File_name -- replace
 tr -d 'U' < Linux.txt -- deletes U from file
 
+-- PLSQL
+PRAGMA AUTONOMOUS_TRANSACTION
+FORALL --> SAVE EXCEPTIONS --> SQL%BULK_EXCEPTIONS.COUNT;SQL%BULK_EXCEPTIONS(i).ERROR_INDEX;SQLERRM(-SQL%BULK_EXCEPTIONS(i).ERROR_CODE))
+OPEN_CURSOR --> PARSE --> BIND_VARLABLE --> DEFINE_COLUMN --> EXECUTE --> FETCH_ROWS --> COLUMN_VALUE --> CLOSE_CURSOR
+
+sqlldr parfile=dept_loader.par

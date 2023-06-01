@@ -51,12 +51,14 @@ BEGIN
 EXCEPTION
   WHEN OTHERS THEN
     log_errors (p_error_message => SQLERRM);
+    dbms_output.put_line('Error logged into error_logs!');
     ROLLBACK;
 END;
 /
 
 -- 1st Run:
 -- Error due to AUTONOMOUS_TRANSACTION block was not commited/rolled back explicitly
+-- ORA-06519: active autonomous transaction detected and rolled back
 -- 2nd Run: Success
 
 CREATE OR REPLACE PROCEDURE log_errors (p_error_message  IN  VARCHAR2) AS
@@ -68,10 +70,14 @@ BEGIN
 END;
 /
 
-select * from at_test; -- rolled back
-select * from error_logs; -- commit not impacted by the exception block roll back
+select * from at_test; 
+-- rolled back
+select * from error_logs; 
+-- commit not impacted by the exception block roll back
 
-
+drop table at_test;
+drop table error_logs;
+drop procedure log_errors;
 
 *****************************************
 Practice Exam
@@ -82,7 +88,7 @@ DECLARE
 c_id employees.employee_id%type; c_name employees.first_name%type;
 CURSOR c_emp IS SELECT employee_id, first_name FROM employees;
 BEGIN
-    --OPEN c_emp;
+    OPEN c_emp;
     LOOP
      FETCH c_emp into c_id, c_name;
            EXIT WHEN c_emp%notfound;
@@ -103,7 +109,7 @@ loop
     j := i;
     loop
         exit when j = 0;
-        dbms_output.put_line('*');        
+        dbms_output.put('*');        
         j := j - 1;
     end loop;
     i := i + 1;
@@ -118,7 +124,7 @@ declare
     --mile,nbr number; -- Can't have , init
     mile#_nbr number; -- Can have # or _
     mile_2 number; -- Can have number init
-    this_is_a_user_defined_variable number; - till 12c Max allowed was 30 Char
+    this_is_a_user_defined_variable number; -- till 12c Max allowed was 30 Char
 begin
     null;
 end;
@@ -128,8 +134,8 @@ end;
 DECLARE
 v_hiredate DATE := '12-June-2020';
 v_salary REAL := 25000;
-v_comm CONSTANT NUMBER; -- initialization for a CONSTANT is mandatory
---v_comm CONSTANT NUMBER := 5;
+--v_comm CONSTANT NUMBER; -- initialization for a CONSTANT is mandatory
+v_comm CONSTANT NUMBER := 5;
 BEGIN
 DBMS_OUTPUT.PUT_LINE ('Hire date '  || v_hiredate);
 DBMS_OUTPUT.PUT_LINE ('Salary '  || v_salary);
@@ -138,15 +144,17 @@ END;
 /
 
 -- Qn
-drop package hr.demopkg; -- PKG specification dropped successfully
-drop package body compile_pkg; -- PKG body dropped successfully
+drop package hr.demopkg; 
+-- PKG specification dropped successfully
+drop package body compile_pkg; 
+-- PKG body dropped successfully
 
 -- Qn
 SET SERVEROUTPUT ON;
 VARIABLE v_bind1 VARCHAR2(20);
 
 BEGIN
-:v_bind1 := 'Rakesh';
+:v_bind1 := 'RRR';
 END;
 /
 Print v_bind1;
@@ -157,15 +165,18 @@ Print v_bind1;
 PL/SQL Variables
 *****************************************
 -- Implicit conversion
-select 1+'2' from dual; --3
-select to_date('02-FEB-2021') from dual; -- 02-FEB-21
+select 1+'2' from dual; 
+--3
+select to_date('02-FEB-2021') from dual; 
+-- 02-FEB-21
 
 -- Explicit conversion
-select to_date('February, 02 2021', 'Month, DD YYYY') from dual; -- 02-FEB-21
+select to_date('February, 02 2021', 'Month, DD YYYY') from dual; 
+-- 02-FEB-21
 
 -- Alternative quote operator
 select e.last_name || q'[ isn't a ]' || e.job_id
-from employees e;
+from hr.employees e;
 
 -- Bind Variables
 VARIABLE x number

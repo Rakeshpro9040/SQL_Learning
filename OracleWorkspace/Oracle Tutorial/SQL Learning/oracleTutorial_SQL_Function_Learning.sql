@@ -167,7 +167,7 @@ GROUP BY
     order_id;
 
 -- Example-3: ON OVERFLOW ERROR
--- Oracle will issue teh overflow error: ORA-01489: result of string concatenation is too long 
+-- Oracle will issue the overflow error: ORA-01489: result of string concatenation is too long 
 SELECT
     category_id,
     LISTAGG
@@ -587,6 +587,45 @@ FROM
 	salesman_performance
 WHERE
 	year = 2016 OR year = 2017;
+
+-- from oracle-base --
+
+select * from emp;
+
+select e.*,
+    first_value(e.sal) ignore nulls over(partition by e.deptno order by e.sal) min_sal_dept_wise,
+    last_value(e.sal) ignore nulls over(partition by e.deptno order by e.sal 
+                            rows between unbounded preceding and unbounded following) max_sal_dept_wise,
+    nth_value(e.sal,2) from first ignore nulls over(partition by e.deptno order by e.sal 
+                            rows between unbounded preceding and unbounded following) "2nd_min_sal_dept_wise",
+    nth_value(e.sal,2) from last ignore nulls over(partition by e.deptno order by e.sal 
+                            rows between unbounded preceding and unbounded following) "2nd_max_sal_dept_wise"
+from emp e
+order by deptno, sal;
+
+select e.*,
+    lag(e.sal, 1, 0) over(partition by e.deptno order by e.sal) prev_emp_in_dept_sal,
+    lead(e.sal, 1, 0) over(partition by e.deptno order by e.sal) next_emp_in_dept_sal
+from emp e
+order by deptno, sal;
+
+select e.*,
+    rank() over(partition by e.deptno order by e.sal) rank_emp_dept_sal_wise,
+    dense_rank() over(partition by e.deptno order by e.sal) u_dense_rank,
+    row_number() over(partition by e.deptno order by e.sal) u_row_number
+from emp e
+order by deptno, sal;
+
+select deptno, rank(9999) within group (order by sal) find_rank
+from emp e
+group by deptno
+order by deptno;
+
+select e.*,
+    ntile(2) over(partition by e.deptno order by e.sal) tile_bucket_no
+from emp e
+order by deptno, sal;
+-- Divide the window into nth bucket
 
 
 *****************************************

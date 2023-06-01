@@ -1,3 +1,32 @@
+/*********** Infosys - April 2023 ***********/
+---- What will be the output from below query?
+select 1 from dual
+union all
+select '1' from dual;
+-- ORA-01790: expression must have same datatype as corresponding expression
+
+-- Query to list table created today so that you can give that to DBA for cleanup
+select object_name
+from all_objects
+where object_type = 'TABLE'
+and trunc(created) = trunc(sysdate);
+
+-- How can you troubleshoot performance of a long running SQL query
+
+-- How can you ftech rows from a table not availbel in another table
+select table1.*
+from table1
+left join table2 on table1.column1 = table2.column2
+where table2.column2 is null;
+
+-- List the Oracle cursor attributes
+-- How can you explain Implicit cursor to a fresher
+-- What is Bulk collect, how it can be used
+-- Can you define expection in declaration part
+-- If a PLSQL job has failed in between, how can you reume that after fixing the issue
+DBMS_APPLICATION_INFO.SET_MODULE
+-- What is Fragmented Space in Oracle
+
 /*********** Infosys - 14th May ***********/
 --Validate the Email Id
 create table email_validation_temp
