@@ -1,3 +1,12 @@
+/*********** Misc ***********/
+-- is there any Oracle dictionary view to fetch all the prcoedures in a Packages?
+select *
+from all_procedures
+where object_name = 'PKG_COMMON';
+
+-- Extract first name, last_name, domain from a mail id
+
+
 /*********** Infosys - April 2023 ***********/
 ---- What will be the output from below query?
 select 1 from dual

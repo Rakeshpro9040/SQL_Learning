@@ -612,7 +612,7 @@ declare
     e_oops exception;
     pragma exception_init(e_oops, -01400);
 begin
-    insert into departments
+    insert into hr.departments
     values(900, null, null, null);
     
 exception
@@ -620,6 +620,7 @@ exception
         dbms_output.put_line('sql code: '||SQLCODE);
         dbms_output.put_line('sql error message: '||SQLERRM);
         dbms_output.put_line('No nulls for deptname');
+        dbms_output.put_line(dbms_utility.format_error_stack);
 end;
 /*
 sql code: -1400

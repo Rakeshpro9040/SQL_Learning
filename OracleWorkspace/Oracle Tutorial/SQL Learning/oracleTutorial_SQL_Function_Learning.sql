@@ -34,6 +34,8 @@ with test_tab as
     select 2 from dual
     union all
     select 4 from dual
+    union all
+    select null from dual
 )
 select
     SUM(DISTINCT test_col) distinct_sum,
@@ -735,6 +737,8 @@ SELECT TO_CHAR(INTERVAL '600' SECOND, 'HH24:MM') result FROM  DUAL;
 -- TZ_OFFSET
 -- Get time zone offset of a time zone name from UTC
 select TZ_OFFSET( 'Asia/Kolkata') from dual;
+select TZ_OFFSET('EST') from dual;
+
 
 *****************************************
 String Functions

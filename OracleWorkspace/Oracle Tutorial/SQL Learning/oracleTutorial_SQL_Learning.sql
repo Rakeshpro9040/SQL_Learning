@@ -29,22 +29,32 @@ If you want to connect to on-prem DB (pluggable), open the DB and then connect t
 SYS Query
 *****************************************
 
-SELECT DF.TABLESPACE_NAME "TABLESPACE",
-TOTALUSEDSPACE "USED MB",
-(DF.TOTALSPACE - TU.TOTALUSEDSPACE) "FREE MB",
-DF.TOTALSPACE "TOTAL MB",
-ROUND(100 * ( (DF.TOTALSPACE - TU.TOTALUSEDSPACE)/ DF.TOTALSPACE))
-"PCT. FREE"
-FROM
-(SELECT TABLESPACE_NAME,
-ROUND(SUM(BYTES) / 1048576) TOTALSPACE
-FROM DBA_DATA_FILES
-GROUP BY TABLESPACE_NAME) DF,
-(SELECT OWNER, ROUND(SUM(BYTES)/(1024*1024)) TOTALUSEDSPACE, TABLESPACE_NAME
-FROM DBA_SEGMENTS
-GROUP BY OWNER, TABLESPACE_NAME) TU
-WHERE DF.TABLESPACE_NAME = TU.TABLESPACE_NAME
-AND TU.OWNER = 'OT';
+select df.tablespace_name "tablespace",
+    totalusedspace "used mb",
+    (df.totalspace - tu.totalusedspace) "free mb",
+    df.totalspace "total mb",
+    round(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace))
+    "pct. free"
+from
+(
+    select tablespace_name, round(sum(bytes) / 1048576) totalspace
+    from dba_data_files
+    group by tablespace_name
+) df,
+(
+    select owner, round(sum(bytes)/(1024*1024)) totalusedspace, tablespace_name
+    from dba_segments
+    group by owner, tablespace_name
+) tu
+where df.tablespace_name = tu.tablespace_name
+and tu.owner = 'OT';
+
+select distinct t1.tablespace_name, 
+    listagg(distinct t2.owner,'//' on overflow truncate '...') 
+        within group(order by t2.owner)
+        over (partition by t1.tablespace_name) as users_list
+from dba_data_files t1, dba_segments t2
+where t1.tablespace_name = t2.tablespace_name(+);
 
 select * from v$version;
 select * from all_users order by 3 desc;
@@ -319,39 +329,39 @@ ORDER BY
     name;
     
 --Inline View
-SELECT
+select
     category_name,
     max_list_price
-FROM
+from
     product_categories a,
     (
-        SELECT
+        select
             category_id,
-            MAX( list_price ) max_list_price
-        FROM
+            max( list_price ) max_list_price
+        from
             products
-        GROUP BY
+        group by
             category_id
     ) b
-WHERE
+where
     a.category_id = b.category_id
-ORDER BY
+order by
     category_name;
 
-SELECT
+select
     product_name,
     category_name
-FROM
+from
     products p,
-    LATERAL(
-        SELECT
+    lateral(
+        select
             *
-        FROM
+        from
             product_categories c
-        WHERE
+        where
             c.category_id = p.category_id
     )
-ORDER BY
+order by
     product_name;
     
 *****************************************
@@ -508,6 +518,32 @@ SELECT *
 FROM order_stats
 PIVOT
 (
+    SUM(order_value) sales
+    FOR category_name -- pivot_for_clause
+    IN ('CPU' CPU,'Video Card' VideoCard,
+        'Mother Board' MotherBoard,'Storage' Storage) -- pivot_in_clause
+)
+ORDER BY status;
+
+select listagg('''' || col || ''' AS "' || col || '"', ', ') within group (order by col) opt1,
+    listagg('''' || col || '''', ', ') within group (order by col) opt2
+from (select distinct department_id as col from hr.employees)
+where trim(col) is not null;
+
+SELECT * 
+FROM order_stats
+PIVOT
+(
+    SUM(order_value) sales
+    FOR STATUS -- pivot_for_clause
+    IN ('Canceled' AS "Canceled", 'Pending' AS "Pending", 'Shipped' AS "Shipped") -- pivot_in_clause
+)
+ORDER BY category_name;
+
+SELECT * 
+FROM order_stats
+PIVOT
+(
     COUNT(order_id) order_count, -- pivot clause
     SUM(order_value) sales
     FOR category_name -- pivot_for_clause
@@ -551,61 +587,61 @@ UNPIVOT INCLUDE NULLS
 *****************************************
 INSERT
 *****************************************
-INSERT INTO discounts(discount_name, amount, start_date, expired_date)
-VALUES('Winter Promotion 2017',  10.5, CURRENT_DATE, DATE '2017-12-31');
+insert into discounts(discount_name, amount, start_date, expired_date)
+values('Winter Promotion 2017',  10.5, current_date, date '2017-12-31');
 
-INSERT INTO  sales(customer_id, product_id, order_date, total)
-SELECT customer_id,
+insert into  sales(customer_id, product_id, order_date, total)
+select customer_id,
        product_id,
        order_date,
-       SUM(quantity * unit_price) amount
-FROM orders
-INNER JOIN order_items USING(order_id)
-WHERE status = 'Shipped'
-GROUP BY customer_id,
+       sum(quantity * unit_price) amount
+from orders
+inner join order_items using(order_id)
+where status = 'Shipped'
+group by customer_id,
          product_id,
          order_date;
 
-INSERT ALL 
-    INTO fruits(fruit_name, color)
-    VALUES ('Apple','Red') 
+insert all 
+    into fruits(fruit_name, color)
+    values ('Apple','Red') 
 
-    INTO fruits(fruit_name, color)
-    VALUES ('Orange','Orange') 
+    into fruits(fruit_name, color)
+    values ('Orange','Orange') 
 
-    INTO fruits(fruit_name, color)
-    VALUES ('Banana','Yellow')
-SELECT 1 FROM dual;
+    into fruits(fruit_name, color)
+    values ('Banana','Yellow')
+select 1 from dual;
 
 select * from fruits;
 
-INSERT ALL
-   WHEN amount < 10000 THEN
-      INTO small_orders
-   WHEN amount >= 10000 AND amount <= 30000 THEN
-      INTO medium_orders
-   WHEN amount >= 20000 THEN -- You can use ELSE here as well
-      INTO big_orders
+insert all
+   when amount < 10000 then
+      into small_orders
+   when amount >= 10000 and amount <= 30000 then
+      into medium_orders
+   when amount >= 20000 then -- You can use ELSE here as well
+      into big_orders
       
-  SELECT order_id,
+  select order_id,
          customer_id,
          (quantity * unit_price) amount
-  FROM orders
-  INNER JOIN order_items USING(order_id);
+  from orders
+  inner join order_items using(order_id);
 
-INSERT FIRST
-   WHEN amount < 10000 THEN
-      INTO small_orders
-   WHEN amount >= 10000 AND amount <= 30000 THEN
-      INTO medium_orders
-   WHEN amount >= 20000 THEN -- You can use ELSE here as well
-      INTO big_orders
+insert first
+   when amount < 10000 then
+      into small_orders
+   when amount >= 10000 and amount <= 30000 then
+      into medium_orders
+   when amount >= 20000 then -- You can use ELSE here as well
+      into big_orders
       
-  SELECT order_id,
+  select order_id,
          customer_id,
          (quantity * unit_price) amount
-  FROM orders
-  INNER JOIN order_items USING(order_id);
+  from orders
+  inner join order_items using(order_id);
 
 select count(*) from small_orders;
 select count(*) from medium_orders;
@@ -650,30 +686,30 @@ WHEN NOT MATCHED THEN
 DDL
 *****************************************
 
-CREATE TABLE ot.persons(
-    person_id NUMBER GENERATED BY DEFAULT AS IDENTITY,
-    first_name VARCHAR2(50) NOT NULL,
-    last_name VARCHAR2(50) NOT NULL,
-    PRIMARY KEY(person_id)
+create table ot.persons(
+    person_id number generated by default as identity,
+    first_name varchar2(50) not null,
+    last_name varchar2(50) not null,
+    primary key(person_id)
 );
 
 drop table ot.persons;
 
-CREATE  TABLE identity_demo(
-    id NUMBER GENERATED BY DEFAULT AS IDENTITY,
-    description VARCHAR2(100) not null
+create  table identity_demo(
+    id number generated by default as identity,
+    description varchar2(100) not null
 );
 
-CREATE  TABLE identity_demo(
-    id NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY START WITH 10 INCREMENT BY 10,
-    description VARCHAR2(100) not null
+create  table identity_demo(
+    id number generated by default on null as identity start with 10 increment by 10,
+    description varchar2(100) not null
 );
 
-INSERT INTO identity_demo(id, description)
-VALUES(4, 'Oracle identity column example with GENERATED BY DEFAULT');
+insert into identity_demo(id, description)
+values(4, 'Oracle identity column example with GENERATED BY DEFAULT');
 
-INSERT INTO identity_demo(description)
-VALUES('Oracle identity column example with GENERATED BY DEFAULT');
+insert into identity_demo(description)
+values('Oracle identity column example with GENERATED BY DEFAULT');
 
 select * from identity_demo;
 
@@ -697,6 +733,8 @@ Data types
 
 -- returns a VARCHAR2 value containing the datatype code
 SELECT DUMP('abc', 1016) FROM DUAL;
+SELECT DUMP('"', 1016) FROM DUAL;
+SELECT char(22) FROM DUAL;
 
 -- negative sclae will round the number from right to left
 select cast('127.56' AS NUMBER(5,-2)) dummy_col from dual;
@@ -933,7 +971,7 @@ WHERE object_type = 'VIEW'
 AND object_name = 'SALESMAN_CONTACTS';
 
 -- DML operation on Views
--- Here cars table is knwon as key-preserved table
+-- Here cars table is known as key-preserved table
 -- A key-preserved table is a base table with a one-to-one row relationship with the rows in the view, 
 -- via either the primary key or a unique key.
 CREATE VIEW all_cars AS 
@@ -1054,7 +1092,7 @@ Index
 
 -- Explain plan to check query performance
 EXPLAIN PLAN FOR
-SELECT * FROM members WHERE last_name = 'Harse';
+SELECT * FROM employees WHERE last_name = 'Ramos';
 SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
 -- Before: TABLE ACCESS FULL; Cost: 5
 -- After: INDEX RANGE SCAN; Cost: 2
@@ -1105,7 +1143,7 @@ drop table t2;
 --Function-based index
 EXPLAIN PLAN FOR
 SELECT * FROM members WHERE upper(last_name) = upper('Harse');
-SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY());
 -- Before: TABLE ACCESS FULL; Cost: 5 -- This is due to UPPER function is used
 -- After: INDEX RANGE SCAN; Cost: 2
 
@@ -1185,7 +1223,7 @@ Check "oracleTutorial_SQL_Function_Learning.sql" File
 select CONCAT('Rakesh', ' Panigrahi') from dual;
 
 -- POWER
-select POWER(2,3) from dual; -- 2*2*2 = 8
+select POWER(2,31) from dual; -- 2*2*2 = 8
 
 -- MOD
 select MOD(9,2) "Remainder" from dual; -- 9/2 = 4 (Quotient); 1 = Remainder
@@ -1215,7 +1253,8 @@ SELECT d "Original Date",
        trunc(d, 'iw') "Start of Week",   
        trunc(d, 'mm') "Start of Month",   
        trunc(d, 'year') "Start of Year"   
-FROM dates;
+FROM dates
+where rownum = 1;
 
 -- TRIM
 select TRIM(' 874 ') from dual; -- 874

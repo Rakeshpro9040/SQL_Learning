@@ -12,15 +12,40 @@ SELECT distinct city
 FROM STATION
 WHERE REGEXP_LIKE (city, '^[aeiou]', 'i');
 
-SELECT last_name
+SELECT last_name, regexp_substr(last_name, '([aeiou])\1')
 FROM employees
 WHERE REGEXP_LIKE (last_name, '([aeiou])\1', 'i')
 ORDER BY last_name;
+/*
+Finds the last name contains a duplicated vowel .
+\1 backreference that matches the exact same character that was captured in the first group.
+*/
 
 SELECT last_name
 FROM employees
 WHERE REGEXP_LIKE (last_name, '^[aeiou]', 'i')
 ORDER BY last_name;
+
+/*
+Explain me the use of Lookbehind and Lookahead in REGEXP_LIKE using EMPLOYEES table data.
+Please provide visual table formats while explaining.
+
+Please provide 20 insert statements to populate the EMPLOYEES_REGLOOK table 
+    with sample data for testing regular expressions with Lookbehind and Lookahead.
+*/
+
+-- Lookbehind
+/*
+Find all employees whose job title is preceded by the word "Senior"
+-- Oracle does not support.
+*/
+
+-- Lookahead
+/*
+Find all employees whose job title is followed by the word "Manager".
+-- Oracle does not support.
+*/
+
 
 -- Qn
 /*
@@ -68,6 +93,12 @@ FROM employees
 WHERE NOT REGEXP_LIKE (last_name, '^[aeiou]', 'i')
 ORDER BY last_name;
 
+SELECT last_name
+FROM employees
+WHERE REGEXP_LIKE (last_name, '^[^aeiou]', 'i')
+ORDER BY last_name;
+
+
 -- Qn
 /*
 Query the list of CITY 
@@ -81,6 +112,11 @@ WHERE NOT REGEXP_LIKE (city, '[aeiou]$', 'i');
 SELECT last_name
 FROM employees
 WHERE NOT REGEXP_LIKE (last_name, '[aeiou]$', 'i')
+ORDER BY last_name;
+
+SELECT last_name
+FROM employees
+WHERE REGEXP_LIKE (last_name, '[^aeiou]$', 'i')
 ORDER BY last_name;
 
 -- Qn
@@ -100,6 +136,17 @@ WHERE (NOT REGEXP_LIKE (last_name, '^[aeiou]', 'i'))
 AND (NOT REGEXP_LIKE (last_name, '[aeiou]$', 'i'))
 ORDER BY last_name;
 
+SELECT last_name
+FROM employees
+WHERE REGEXP_LIKE (last_name, '^[^aeiou]', 'i')
+AND REGEXP_LIKE (last_name, '[^aeiou]$', 'i')
+ORDER BY last_name;
+
+SELECT last_name
+FROM employees
+WHERE REGEXP_LIKE (last_name, '^[^aeiou].*[^aeiou]$', 'i')
+ORDER BY last_name;
+
 -- Qn
 /*
 Query the Name of any student in STUDENTS who scored higher than 75 Marks. 
@@ -107,13 +154,23 @@ Order your output by the last three characters of each name.
 If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), 
 secondary sort them by ascending ID.
 */
+
+select *
+from employees e
+where hire_date > '24-APR-16';
+
+select e.*, substr(lower(e.first_name),-3)
+from employees e
+where hire_date > '24-APR-16'
+order by substr(lower(e.first_name),-3), e.employee_id;
+
 select name
 from students
 where marks > 75
 order by substr(name,-3, 3);
 
 select e.last_name
-from employees e
+from hr.employees e
 where e.salary > 12000
 order by substr(e.last_name,-3, 3);
 
@@ -232,10 +289,8 @@ from
     PIVOT
     (
       COUNT(occupation)
-      FOR occupation IN ('Doctor' AS Doctor, 
-                         'Professor' AS Professor, 
-                         'Singer' AS Singer, 
-                         'Actor' AS Actor)
+      FOR occupation 
+      IN ('Doctor' AS Doctor, 'Professor' AS Professor, 'Singer' AS Singer, 'Actor' AS Actor)
     )
 ) main;
 
@@ -355,24 +410,20 @@ Priya Priyanka Kristeen Samantha
 
 -- PIVOT Table Hands-on
 -- Task: Display Dept as column and Data for Job id and last name
-select
-    *
-from
-(
-    select
-        department_id,
-        job_id, 
-        last_name,
-        salary
-    from
-        employees
-)
+select *
+from hr.employees
 pivot
 (
-    sum(salary) FOR department_id
-        in (10,15,20,30,40,50,60,70,80,90,100,110)
+    sum(salary) 
+    for department_id
+    in ('10', '20', '30', '40', '50', '60', '70', '80', '90', '100', '110')
 )
 order by 1,2;
+
+select listagg('''' || col || ''' AS "' || col || '"', ', ') within group (order by col) opt1,
+    listagg('''' || col || '''', ', ') within group (order by col) opt2
+from (select distinct department_id as col from hr.employees)
+where trim(col) is not null;
 
 -- Qn
 /*
@@ -477,6 +528,10 @@ from projects p1, projects p2
 where (p1.end_date+1) = p2.end_date(+) --consecutive dates
 and  p2.start_date is null --last task id of the project
 order by days, p1.start_date;
+
+select *
+from projects
+order by task_id, start_date;
 
 --Ans
 SELECT START_DATE, MIN(END_DATE)
@@ -659,6 +714,9 @@ from
     select min(lat_n) a, max(lat_n) c, min(long_w) b, max(long_w) d
     from station
 );
+
+select abs(-40.5), abs(40.5)
+from dual;
 
 /*
 Weather Observation Station 19
