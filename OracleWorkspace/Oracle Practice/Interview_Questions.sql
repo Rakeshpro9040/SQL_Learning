@@ -6,6 +6,177 @@ where object_name = 'PKG_COMMON';
 
 -- Extract first name, last_name, domain from a mail id
 
+/*********** IBM - Aug 2023 ***********/
+
+
+/*
+Oracle:
+-- Lets say we have two tables A and B; A has 4 rows 1 1 1 1 and B has 3 rows 1 1 null, what will be the output of all joins
+-- Write a SQL to print 99 96 93 .. 3 (multiple of 3 in reverse order)
+-- Write a Procedure which takes table name as input and drop the table.
+-- Write a block which copies the data from emp table to emp_bkp [using collection, bulk-collect and forall]
+-- What is compound trigger?
+-- What are the different Trigger timings?
+-- Can we update a table via a View [View is created by joining multiple tables]
+-- How can we give a name to an unnamed exception?
+--  In Oracle what is a btree index, how it works under the hood.
+--  How you load a CSV file into an oracle table?
+--  Lets say in the CSV file you have 10 fields, and your table has only 6 cols, how you will be able to load the 6 fields.
+--  Difference between disc and bad file in sqlldr.
+--  Can a Oracle function return more than 1 values.
+--  What is REF cursor and where/why we should use it.
+--  Can we use DML operations in a Function, if yes then how?
+--  Connect Oracle database from Unix.
+
+UNIX:
+-- Lets say we have a file sample.txt. Write a shell command to replace keyword "UNIX" with "LINUX"
+    sed -i 's/UNIX/LINUX/g' sample.txt
+    sed -i -e 's/UNIX/LINUX/g' sample.txt
+--  Delete first 20 lines from this file.
+    sed -i '1,20d' sample.txt
+--  Count the keyword "UNIX" inside this file.
+    grep -o 'UNIX' sample.txt | wc -l
+--  Lets a we have a file with fields: address name ph_no [TAB separated]. Command to fetch the ph_no field.
+    cut -f3 employee.txt
+--  Merge two files f1, f2 into f3.
+    cat f1.txt f2.txt > f3.txt
+--  Delete all the files/folders recusively from a given folder.
+    rm -r Misc_1
+
+*/
+
+----------------------------------
+
+drop table t;
+drop table t1;
+
+create table t (c1 varchar2(50));
+create table t1 (c1 varchar2(50));
+
+insert into t values (1);
+insert into t values (1);
+insert into t values (1);
+insert into t values (1);
+
+insert into t1 values (1);
+insert into t1 values (1);
+insert into t1 values (null);
+
+commit;
+
+select * from t;
+select * from t1;
+
+select *
+from t inner join t1
+on t.c1 = t1.c1;
+-- 4*2=8
+
+select *
+from t left join t1
+on t.c1 = t1.c1;
+-- 8
+
+select *
+from t right join t1
+on t.c1 = t1.c1;
+-- 9
+
+select *
+from t full join t1
+on t.c1 = t1.c1;
+-- 9
+
+select *
+from t cross join t1;
+-- 4*3 = 12
+
+----------------------------------
+
+select listagg(list_no, ',') within group(order by list_no desc) as list
+from
+(
+select 102-(3*level) as list_no
+from dual
+connect by level <= 33
+);
+
+select 99 - (3 * (rownum - 1)) as value
+from dual
+connect by rownum <= 34;
+
+select 99 - (3 * (level - 1)) as value
+from dual
+connect by level <= 34;
+
+----------------------------------
+drop procedure p1;
+
+create or replace procedure p1 (i_tab_name in varchar2) is
+    v_sql varchar2(100);
+begin
+    v_sql := 'drop table ' || i_tab_name;
+    execute immediate v_sql;
+    dbms_output.put_line
+end;
+/
+
+exec p1('t1');
+
+select * from t1;
+
+----------------------------------
+
+select * from emp;
+create table emp_bkp as select * from emp where 1 = 0;
+select * from emp_bkp;
+delete from emp_bkp;
+commit;
+
+declare
+    cursor emp_cur is select * from emp;
+    type emp_type is table of emp_cur%rowtype;
+    emp_tb emp_type;
+begin
+    select *
+    bulk collect into emp_tb
+    from emp;
+
+    forall i in emp_tb.first..emp_tb.last
+        insert into emp_bkp (empno, ename, job, mgr, hiredate, sal, comm, deptno) 
+        values (emp_tb(i).empno, emp_tb(i).ename, emp_tb(i).job, 
+                emp_tb(i).mgr, emp_tb(i).hiredate, emp_tb(i).sal, emp_tb(i).comm, emp_tb(i).deptno);
+    commit;
+end;
+/
+
+declare
+    cursor emp_cur is select * from emp;
+    type emp_type is table of emp_cur%rowtype;
+    emp_tb emp_type;    
+begin
+    open emp_cur;
+    loop
+        fetch emp_cur bulk collect into emp_tb limit 100;
+        exit when emp_tb.count = 0;
+
+        forall i in emp_tb.first..emp_tb.last
+            insert into emp_bkp (empno, ename, job, mgr, hiredate, sal, comm, deptno) 
+            values (emp_tb(i).empno, emp_tb(i).ename, emp_tb(i).job, 
+                    emp_tb(i).mgr, emp_tb(i).hiredate, emp_tb(i).sal, emp_tb(i).comm, emp_tb(i).deptno);
+        commit;        
+    end loop;
+    close emp_cur;
+end;
+/
+
+select dbms_utility.get_time() from dual;
+
+----------------------------------
+
+
+
+----------------------------------
 
 /*********** Infosys - April 2023 ***********/
 ---- What will be the output from below query?

@@ -175,8 +175,8 @@ select to_date('February, 02 2021', 'Month, DD YYYY') from dual;
 -- 02-FEB-21
 
 -- Alternative quote operator
-select e.last_name || q'[ isn't a ]' || e.job_id
-from hr.employees e;
+/*select e.last_name || q'[ isn't a ]' || e.job_id
+from hr.employees e;*/
 
 -- Bind Variables
 VARIABLE x number
