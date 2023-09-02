@@ -8,6 +8,21 @@ execute dbms_session.reset_package;
 select * from user_tables;
 select * from user_objects;
 
+-- Qn
+drop table t1;
+create table t1 (c1 varchar2(50));
+create or replace view t1_v as select * from t1;
+select * from all_tab_cols where table_name = 'T1_V';
+-- 1 col
+alter table t1 add c2 varchar2(50);
+select * from all_tab_cols where table_name = 'T1_V';
+-- 1 col
+select * from all_objects where object_name = 'T1_V';
+-- VALID
+select * from t1;
+select * from t1_v;
+insert into t1 values(1,1); commit;
+
 -- Dynamic SQL [Query Collection]
 CREATE OR REPLACE PACKAGE pkg AUTHID DEFINER AS
   TYPE rec IS RECORD(f1 NUMBER, f2 VARCHAR2(30));
